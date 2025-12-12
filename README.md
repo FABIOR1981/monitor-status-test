@@ -1,5 +1,11 @@
 # Monitor de Disponibilidad de Servicios
 
+La documentación principal del proyecto se encuentra en `docs/readme.md`.
+Por favor, consulta la documentación ahí para instrucciones de desarrollo, despliegue y contribución.
+
+Enlace rápido: [docs/readme.md](docs/readme.md)
+# Monitor de Disponibilidad de Servicios
+
 Este repositorio contiene un monitor sencillo de disponibilidad y latencia para una lista de URLs.
 
 Resumen rápido:
