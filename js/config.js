@@ -34,6 +34,17 @@ const TEMA_FILES = {
 };
 
 // =======================================================
+// 2.5. CONSTANTES ESPECÍFICAS PARA LA LEYENDA
+// =======================================================
+const DEFAULT_LEYENDA_TEMA = 'def';
+const LEYENDA_TEMA_FILES = {
+    'default': 'css/leyenda_def.css',
+    'def': 'css/leyenda_def.css',
+    'pro': 'css/leyenda_pro.css',
+    'min': 'css/leyenda_min.css'
+};
+
+// =======================================================
 // 3. CONSTANTES DE API Y MONITOREO
 // =======================================================
 

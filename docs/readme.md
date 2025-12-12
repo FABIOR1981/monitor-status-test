@@ -1,5 +1,12 @@
 # Monitor de Disponibilidad de Servicios 🚀
 
+> Actualización: La documentación principal se movió al README raíz. Ver [README.md](README.md) para la visión general y las instrucciones actualizadas.
+
+## Cambios recientes
+- Centralización de los textos (i18n) en `js/i18n_es.js`.
+- La lógica de la Leyenda ahora está en `js/leyenda_script.js` y los temas/constantes en `js/config.js`.
+- Se eliminaron archivos obsoletos (leyenda_i18n_core.js y leyenda_logic.js).
+
 ## Descripción
 Este proyecto es un monitor de disponibilidad web diseñado para
 verificar el estado (*status code*) y la latencia (tiempo de
