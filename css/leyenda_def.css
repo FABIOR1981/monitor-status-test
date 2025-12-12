@@ -1,0 +1,91 @@
+/* ======================================================= */
+/* LEYENDA TEMA: DEFAULT (styles_def.css) */
+/* Colores: Fondo Claro (#f4f7f9), Texto Oscuro (#333), Acento Azul (#007bff) */
+/* ======================================================= */
+
+/* --- Colores de Base --- */
+body {
+    background-color: #f4f7f9;
+    color: #333; 
+}
+
+header {
+    border-bottom: 2px solid #007bff; /* Color de acento */
+}
+
+#titulo-leyenda {
+    color: #007bff;
+}
+
+#contenido-leyenda {
+    background-color: #fff; /* Fondo del contenedor de contenido */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Estilos de Tabla de Umbrales --- */
+.leyenda-tabla-umbrales th {
+    background-color: #e6f0ff; /* Azul muy claro para header de tabla */
+    color: #0056b3; /* Azul oscuro para texto */
+    border: 1px solid #d1e7ff;
+}
+
+.leyenda-tabla-umbrales td {
+    border: 1px solid #dee2e6;
+}
+
+/* --- Colores de Estado --- */
+.status-very-fast { background-color: #d4edda; color: #0f5132; }
+.status-fast { background-color: #c3e6cb; color: #155724; }
+.status-normal { background-color: #cce8ff; color: #044385; font-weight: bold; } /* AZUL PASTEL */
+.status-slow { background-color: #ffe0b2; color: #9c5a00; }
+.status-critical { background-color: #f8d7da; color: #721c24; }
+.status-risk { background-color: #e9a3af; color: #58151c; }
+.status-extreme-risk { background-color: #dc3545; color: white; font-weight: bold; } /* Rojo Fuerte */
+.status-down { background-color: #343a40; color: white; font-weight: bold; } /* Fallo Total */
+
+footer {
+    border-top: 1px solid #dee2e6;
+}
+#enlace-volver {
+    color: #007bff;
+}
+
+/* ======================================================= */
+/* NUEVOS ESTILOS PARA CÓDIGOS DE ERROR Y EXPANSIÓN */
+/* ======================================================= */
+
+/* Estilo para el título de la nueva sección */
+.leyenda-section h3 {
+    color: #007bff; /* Color primario */
+    border-bottom: 1px dashed #ccc;
+}
+
+/* Estilos de la nueva tabla de errores */
+.leyenda-tabla-errores th {
+    background-color: #e6f0ff; /* Fondo de header de tabla, igual que la tabla de umbrales */
+    color: #0056b3; 
+    border: 1px solid #d1e7ff;
+}
+
+.leyenda-tabla-errores td {
+    border: 1px solid #dee2e6;
+    background-color: #fff; /* Fondo de celda blanca */
+}
+
+/* Colores para los elementos expandibles (details/summary) */
+.leyenda-tabla-umbrales summary {
+    color: #007bff; /* Color de acento (azul) */
+}
+
+.leyenda-tabla-umbrales summary:hover {
+    color: #0056b3;
+}
+
+.leyenda-tabla-umbrales summary::before {
+    color: #007bff; /* Color de acento */
+}
+
+.leyenda-tabla-umbrales details p {
+    color: #444; /* Color de texto para el contenido expandido */
+    border-left: 2px solid #007bff; /* Línea lateral de acento */
+}

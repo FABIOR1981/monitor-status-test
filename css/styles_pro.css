@@ -1,0 +1,231 @@
+/* ======================================================= */
+/* VERSÍON PROFESIONAL Y DE ÉNFASIS (styles_pro.css) */
+/* ======================================================= */
+
+body { 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente más moderna */
+    background-color: #1e2124; /* Fondo Oscuro (Tema Dark Mode Pro) */
+    color: #f4f7f9; /* Texto claro */
+    margin: 0;
+    padding: 20px;
+}
+.container { 
+    max-width: 1000px; 
+    margin: 0 auto; 
+    background-color: #282b2f; /* Contenedor más oscuro que el fondo */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Sombra oscura para profundidad */
+    min-height: 800px; 
+}
+h1 { 
+    text-align: center; 
+    color: #7289da; /* Azul distintivo (Discord-like) */
+    margin-bottom: 5px;
+}
+
+/* --- Estilos de Información General --- */
+.info-bar {
+    text-align: center;
+    color: #99aab5; 
+    margin-bottom: 20px;
+    font-size: 0.9em;
+}
+.update-info {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+/* --- Contenedor de la tabla --- */
+.table-scroll-container {
+    overflow-x: auto; 
+    min-height: 450px; 
+}
+
+/* --- Estilos de la Tabla --- */
+#monitor-table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); 
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+#monitor-table th, #monitor-table td { 
+    padding: 12px 10px; 
+    text-align: left; 
+    border-bottom: 1px solid #36393f; /* Líneas divisorias oscuras */
+}
+#monitor-table td a {
+    color: #7289da;
+    text-decoration: none;
+    font-size: 0.9em;
+    word-break: break-all; 
+}
+
+/* Encabezados */
+#monitor-table thead th { 
+    background-color: #36393f; /* Fondo oscuro */
+    color: #ffffff; 
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Filas alternas (Cebra) */
+#monitor-table tbody tr:nth-child(odd) {
+    background-color: #2f3136; /* Fila par */
+}
+#monitor-table tbody tr:nth-child(even) {
+    background-color: #282b2f; /* Fila impar */
+}
+#monitor-table tr:hover {
+    background-color: #3e4147 !important; /* Resaltado en oscuro */
+}
+
+/* Centrar el texto en las columnas de datos (se mantiene) */
+#monitor-table td:nth-child(3),
+#monitor-table td:nth-child(4),
+#monitor-table td:nth-child(5),
+#monitor-table td:nth-child(6),
+#monitor-table td:nth-child(7),
+#monitor-table td:nth-child(8) { 
+    text-align: center;
+}
+
+/* --- Estilos del Botón de Acción (PSI) --- */
+.psi-button, .btn-primary { 
+    background-color: #43b581; /* Verde de éxito */
+    color: #23272a;
+    border: none;
+    padding: 5px 8px;
+    border-radius: 12px; /* Botón más redondeado */
+    cursor: pointer;
+    font-size: 0.8em;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+.psi-button:hover, .btn-primary:hover {
+    background-color: #57d498;
+}
+
+/* ======================================================= */
+/* --- Colores de Estado (PRO: Énfasis en el Borde Izquierdo) --- */
+/* ======================================================= */
+
+/* Reset de fondo para todos los estados (usamos el fondo de fila) */
+.status-very-fast, .status-fast, .status-normal, .status-slow, .status-critical, .status-risk, .status-extreme-risk { 
+    background-color: transparent !important; 
+    font-weight: bold;
+}
+
+/* 1. Muy Rápido (0 - 300 ms) -> VERDE */
+.status-very-fast { 
+    color: #43b581; 
+} 
+
+/* 1.5. Rápido (301 - 500 ms) -> VERDE CLARO */
+.status-fast { 
+    color: #57d498; 
+}
+
+/* 2. Normal (501 - 800 ms) -> AZUL */
+.status-normal { 
+    color: #7289da; 
+}
+
+/* 3. Lento (801 - 1500 ms) -> AMARILLO/NARANJA CLARO */
+.status-slow { 
+    color: #faa61a;
+}
+
+/* 4. CRÍTICO (1501 - 3000 ms) -> Borde y Texto NARANJA */
+.status-critical { 
+    color: #e65100;
+    border-left: 3px solid #e65100;
+}
+
+/* 5. RIESGO (3001 - 5000 ms) -> Borde y Texto ROJO */
+.status-risk { 
+    color: #dc3545; 
+    border-left: 3px solid #dc3545;
+}
+
+/* 6. RIESGO EXTREMO (> 5000 ms) -> Borde y Texto ROJO INTENSO + Animación */
+.status-extreme-risk { 
+    color: #ff0000; 
+    border-left: 3px solid #ff0000;
+    animation: pulse-border 2s infinite;
+}
+
+/* 7. Caída (Error 0, 4xx, 5xx) -> ROJO INTENSO (Mantenido el fondo oscuro) */
+.status-down { 
+    background-color: #ff0000 !important; 
+    color: white; 
+    font-weight: bold;
+    border-radius: 2px;
+}
+
+/* --- Keyframe para animación de extremo riesgo --- */
+@keyframes pulse-border {
+    0% { border-color: #ff0000; }
+    50% { border-color: rgba(255, 0, 0, 0.4); }
+    100% { border-color: #ff0000; }
+}
+
+
+/* --- Estilo para la Latencia (Métricas) --- */
+.latency-metric {
+    font-weight: bold;
+    font-size: 1em;
+    /* Sombra de texto sutil para destacar el número */
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.2); 
+    color: #ffffff; /* Asegura color blanco para el número */
+}
+
+/* --- Responsive (se mantiene) --- */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+        border-radius: 0;
+        box-shadow: none;
+    }
+    h1 {
+        font-size: 1.5em;
+    }
+    #monitor-table {
+        font-size: 0.8em;
+    }
+}
+
+/* ======================================================= */
+/* REGLAS FINALES: Control de Visibilidad de Columnas */
+/* ======================================================= */
+
+/* Oculta la columna URL (2da columna) */
+#monitor-table th:nth-child(2), 
+#monitor-table td:nth-child(2) { 
+    display: none;
+}
+
+/* Muestra la columna Status HTTP (7ma columna) en el tema pro */
+#monitor-table th:nth-child(7), 
+#monitor-table td:nth-child(7) { 
+    display: table-cell; 
+}
+
+/* Oculta la columna de Acción (8va columna) */
+#monitor-table th:nth-child(8), 
+#monitor-table td:nth-child(8) { 
+    display: none;
+}
+
+/* ======================================================= */
+/* ENLACES (mantener la legibilidad en tema oscuro) */
+/* ======================================================= */
+#monitor-table td:nth-child(1) a {
+    text-decoration: none; 
+    color: #ffffff; /* Texto blanco en la columna de servicio */
+    font-weight: bold; 
+}

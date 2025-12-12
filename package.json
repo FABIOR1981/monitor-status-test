@@ -1,0 +1,8 @@
+{
+  "name": "monitor-status",
+  "version": "1.0.0",
+  "description": "Monitor de disponibilidad web con Netlify Functions.",
+  "dependencies": {
+    "node-fetch": "^2.6.7"
+  }
+}

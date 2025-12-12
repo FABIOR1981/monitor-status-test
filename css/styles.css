@@ -1,0 +1,210 @@
+body { 
+    font-family: Arial, sans-serif; 
+    background-color: #f4f7f9; 
+    color: #333; 
+    margin: 0;
+    padding: 20px;
+}
+.container { 
+    max-width: 1000px; 
+    margin: 0 auto; 
+    background-color: #fff; 
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* CLS FIX: Reservar espacio para evitar saltos. */
+    min-height: 800px; 
+}
+h1 { 
+    text-align: center; 
+    color: #007bff;
+    margin-bottom: 5px;
+}
+
+/* --- Estilos de Información General (Fechas y Frecuencia) --- */
+.info-bar {
+    text-align: center;
+    color: #6c757d; 
+    margin-bottom: 20px;
+    font-size: 0.9em;
+}
+.update-info {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #495057;
+}
+
+/* --- Contenedor de la tabla para scroll horizontal en móvil --- */
+.table-wrapper {
+    /* Mantenemos overflow-x: auto; solo para móvil */
+    overflow-x: auto; 
+    /* CLS FIX: Reservar espacio para evitar saltos. */
+    min-height: 450px; 
+}
+
+/* --- Estilos de la Tabla (Ajuste de Filas y Columnas) --- */
+#monitor-table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); 
+    overflow: hidden; 
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+#monitor-table th, #monitor-table td { 
+    padding: 12px 10px; 
+    text-align: left; 
+    border-bottom: 1px solid #ddd;
+}
+#monitor-table td a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 0.9em;
+    word-break: break-all; 
+}
+
+/* Establecer ANCHOS FIJOS para las 7 columnas (se muestran 5 en total) */
+/* Orden: Servicio(1), URL(2), Latencia Actual(3), Estado Actual(4), Promedios(5), Estado Promedio(6), Status HTTP(7), Acción(8) */
+#monitor-table thead th:nth-child(1) { width: 15%; } 
+#monitor-table thead th:nth-child(2) { width: 30%; } 
+#monitor-table thead th:nth-child(3) { width: 10%; } 
+#monitor-table thead th:nth-child(4) { width: 15%; } 
+#monitor-table thead th:nth-child(5) { width: 10%; } 
+#monitor-table thead th:nth-child(6) { width: 15%; } 
+#monitor-table thead th:nth-child(7) { width: 5%; }  
+#monitor-table thead th:nth-child(8) { width: 5%; } 
+
+
+#monitor-table thead th { 
+    background-color: #004085; 
+    color: white; 
+    font-weight: bold;
+}
+#monitor-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Centrar el texto en las columnas de datos (3 a 8) */
+#monitor-table td:nth-child(3),
+#monitor-table td:nth-child(4),
+#monitor-table td:nth-child(5),
+#monitor-table td:nth-child(6),
+#monitor-table td:nth-child(7),
+#monitor-table td:nth-child(8) { 
+    text-align: center;
+}
+
+/* --- Estilos del Botón de Acción (PSI) --- */
+.psi-button, .btn-primary { 
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 5px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8em;
+    transition: background-color 0.2s;
+}
+.psi-button:hover, .btn-primary:hover {
+    background-color: #218838;
+}
+
+/* --- Colores de Estado según Tramos de Velocidad (5 Niveles) --- */
+
+/* 1. Muy Rápido (0 - 300 ms) 🚀 -> VERDE OSCURO */
+.status-very-fast { 
+    background-color: #c8e6c9; 
+    color: #0f420f; 
+    font-weight: bold;
+} 
+
+/* 1.5. Rápido (301 - 500 ms) ⭐ -> VERDE CLARO */
+.status-fast { 
+    background-color: #e8f5e9; 
+    color: #1a571a; 
+    font-weight: bold;
+}
+
+/* 2. Normal (501 - 800 ms) ✅ -> AZUL */
+.status-normal { 
+    background-color: #cce8ff; 
+    color: #044385; 
+    font-weight: bold;
+}
+
+/* 3. Lento (801 - 1500 ms) ⚠️ -> NARANJA */
+.status-slow { 
+    background-color: #ffe0b2; 
+    color: #854a04; 
+    font-weight: bold;
+}
+
+/* 4. Muy Lento (> 1500 ms) 🐌 -> ROJO */
+.status-very-slow { 
+    background-color: #ffcdd2; 
+    color: #571515; 
+    font-weight: bold;
+}
+
+/* 5. Caída (Error 0, 4xx, 5xx) 🔴 -> ROJO INTENSO (Mantenido) */
+.status-down { 
+    background-color: #a71d28; 
+    color: white; 
+    font-weight: bold;
+}
+
+/* --- Estilo para la Latencia (Métricas) --- */
+.latency-metric {
+    font-weight: bold;
+    font-size: 1em;
+    background-color: #fff; 
+}
+
+/* --- Responsive (Ajustes para scroll horizontal en móvil) --- */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+        border-radius: 0;
+        box-shadow: none;
+    }
+    h1 {
+        font-size: 1.5em;
+    }
+    #monitor-table {
+        font-size: 0.8em;
+    }
+}
+
+/* ======================================================= */
+/* REGLAS FINALES: Control de Visibilidad de Columnas */
+/* ======================================================= */
+
+/* Oculta la columna URL (2da columna) en el tema standard */
+#monitor-table th:nth-child(2), 
+#monitor-table td:nth-child(2) { 
+    display: none;
+}
+
+/* NUEVO: Oculta la columna Status HTTP (7ma columna) en el tema standard */
+#monitor-table th:nth-child(7), 
+#monitor-table td:nth-child(7) { 
+    display: none;
+}
+
+/* NUEVO: Oculta la columna de Acción (8va columna) en el tema standard */
+#monitor-table th:nth-child(8), 
+#monitor-table td:nth-child(8) { 
+    display: none;
+}
+
+/* ======================================================= */
+/* NUEVO: Emojis añadidos por CSS (Separación de Responsabilidades) */
+/* ======================================================= */
+
+.status-very-fast::after { content: " 🚀"; } 
+.status-fast::after { content: " ⭐"; }
+.status-normal::after { content: " ✅"; }
+.status-slow::after { content: " ⚠️"; }
+.status-very-slow::after { content: " 🐌"; }
+.status-down::after { content: " 🔴"; } /* Añadido para CAÍDA/ERROR */
