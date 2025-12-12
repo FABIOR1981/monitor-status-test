@@ -28,11 +28,11 @@
 body { background-color: var(--bg); color: var(--text); }
 h1 { color: var(--header-color); }
 
-/* info colors defined at theme level, layout moved to base */
+/* Colores de información definidos a nivel de tema; la estructura se movió a styles_base */
 .info-bar { color: var(--info-color, #6c757d); }
 .update-info { color: var(--update-info-color, #495057); }
 
-/* table-scroll-container moved to styles_base.css */
+/* table-scroll-container movido a styles_base.css */
 
 /* --- Estilos de la Tabla --- */
 #monitor-table { 
@@ -108,10 +108,10 @@ h1 { color: var(--header-color); }
 /* --- Colores de Estado (Minimalista con Corrección de Contraste) --- */
 /* ======================================================= */
 
-/* All colors now come from variables defined in :root */
+/* Todos los colores ahora provienen de variables definidas en :root */
 .status-very-fast, .status-fast, .status-normal, .status-slow, .status-critical, .status-risk, .status-extreme-risk, .status-down { font-weight: bold; }
 
-/* presentation differences are centralized in styles_base using CSS variables */
+/* Las diferencias de presentación están centralizadas en styles_base usando variables CSS */
 
 
 

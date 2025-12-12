@@ -18,11 +18,11 @@
 body { background-color: var(--bg); color: var(--text); }
 h1 { color: var(--header-color); }
 
-/* info colors defined at theme level, layout moved to base */
+/* Colores de información definidos a nivel de tema; la estructura se movió a styles_base */
 .info-bar { color: var(--info-color, #99aab5); }
 .update-info { color: var(--update-info-color, #ffffff); }
 
-/* table-scroll-container moved to styles_base.css */
+/* table-scroll-container movido a styles_base.css */
 
 /* --- Estilos de la Tabla --- */
 #monitor-table { 
@@ -94,14 +94,14 @@ h1 { color: var(--header-color); }
 /* --- Colores de Estado (PRO: Énfasis en el Borde Izquierdo) --- */
 /* ======================================================= */
 
-/* Presentation: keep status text bold, visuals (color/background) are set via variables in base/theme */
+/* Presentación: mantener el texto de estado en negrita; los visuales (color/fondo) se definen mediante variables en styles_base/tema */
 .status-very-fast, .status-fast, .status-normal, .status-slow, .status-critical, .status-risk, .status-extreme-risk { 
     font-weight: bold;
 }
-/* Background is left transparent in pro theme so the table row color is preserved; border-left indicates severity */
+/* El fondo se mantiene transparente en el tema pro para preservar el color de la fila; el borde izquierdo indica la gravedad */
 
 /* 1. Muy Rápido (0 - 300 ms) -> VERDE */
-/* Status colors assigned via variables (pro theme), keep border-left and animation where present */
+/* Colores de estado asignados mediante variables (tema pro); conservar borde izquierdo y animación cuando aplique */
 :root {
   --status-very-fast-bg: transparent; --status-very-fast-color: #43b581;
   --status-fast-bg: transparent; --status-fast-color: #57d498;
@@ -113,7 +113,7 @@ h1 { color: var(--header-color); }
   --status-down-bg: #ff0000; --status-down-color: white;
 }
 
-/* Keep border-left/animation behavior for pro theme */
+/* Conservar comportamiento de borde izquierdo/animación para el tema pro */
 .status-critical { border-left: 3px solid var(--status-critical-color); }
 .status-risk { border-left: 3px solid var(--status-risk-color); }
 .status-extreme-risk { border-left: 3px solid var(--status-extreme-risk-color); animation: pulse-border 2s infinite; }

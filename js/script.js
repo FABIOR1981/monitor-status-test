@@ -504,9 +504,9 @@ function dibujarFilasIniciales(servicios) {
         // Columna 7: Acción (Placeholder)
         row.insertCell().textContent = '';
 
-        // Accessibility: add aria-labels and role to the status placeholder cells
+        // Accesibilidad: añadir aria-label y role a las celdas de estado (placeholders)
         // (Es más robusto añadirlo aquí para que estén presentes antes de la actualización)
-        // Apply accessibility attributes to the status cells in the row
+        // Aplicar atributos de accesibilidad a las celdas de estado en la fila
         aplicarAccesibilidadEstadoEnFila(row, { actual: window.TEXTOS_ACTUAL.general.LOADING, promedio: window.TEXTOS_ACTUAL.general.LOADING });
     });
 
@@ -569,7 +569,7 @@ function actualizarFila(web, resultado) {
     row.cells[5].textContent = estadoPromedio.text;
     row.cells[5].className = estadoPromedio.className;
 
-    // Accessibility: update attributes consistently after updating text
+    // Accesibilidad: actualizar atributos de forma consistente después de actualizar el texto
     aplicarAccesibilidadEstadoEnFila(row, {actual: estadoActual.text, promedio: estadoPromedio.text});
     
     // Columna 7: Acción (índice 6)

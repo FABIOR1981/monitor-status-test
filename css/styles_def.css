@@ -11,15 +11,15 @@
     --link-color: #007bff;
 }
 
-/* Theme-specific overrides: simple usage of variables defined in base */
+/* Sobrescrituras específicas del tema: uso simple de las variables definidas en styles_base */
 body { background-color: var(--bg); color: var(--text); }
 h1 { color: var(--header-color); }
 
-/* info colors defined at theme level, layout moved to base */
+/* Colores de info definidos a nivel de tema; la estructura se movió a styles_base */
 .info-bar { color: var(--info-color, #6c757d); }
 .update-info { color: var(--update-info-color, #495057); }
 
-/* table-scroll-container moved to styles_base.css */
+/* table-scroll-container movido a styles_base.css */
 
 /* --- Estilos de la Tabla (Ajuste de Filas y Columnas) --- */
 #monitor-table { 
@@ -91,7 +91,7 @@ h1 { color: var(--header-color); }
 /* --- Colores de Estado según Tramos de Velocidad (7 Niveles) --- */
 
 /* --- Colores de Estado (NUEVA PALETA DE LATENCIA) --- */
-/* Status colors defined via variables */
+/* Colores de estado definidos mediante variables */
 :root {
   --status-very-fast-bg: #d4edda; --status-very-fast-color: #0f5132;
   --status-fast-bg: #c3e6cb; --status-fast-color: #155724;
@@ -103,7 +103,7 @@ h1 { color: var(--header-color); }
   --status-down-bg: #343a40; --status-down-color: white;
 }
 
-/* Keep font-weight and other presentation on top of base rules */
+/* Mantener el peso de fuente y otras presentaciones por encima de las reglas base */
 .status-very-fast, .status-fast, .status-normal, .status-slow, .status-critical, .status-risk, .status-extreme-risk, .status-down { font-weight: bold; }
 
 /* --- Estilo para la Latencia (Métricas) --- */
@@ -150,5 +150,5 @@ h1 { color: var(--header-color); }
     display: none;
 }
 
-/* Emoji pseudo-elements centralized in styles_base.css; no duplication here. */
+/* Pseudo-elementos Emoji centralizados en styles_base.css; no se duplican aquí. */
 /* ======================================================= */
