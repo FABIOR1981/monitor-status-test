@@ -29,7 +29,7 @@ Principales cambios recientes
 - Centralización de i18n: los textos de la leyenda fueron movidos a `js/i18n_es.js`.
 - Separación de responsabilidades: la lógica de la leyenda fue movida a `js/leyenda_script.js`.
 - Constantes: temas y leyenda temada ahora se definen en `js/config.js` como `TEMA_FILES` y `LEYENDA_TEMA_FILES`.
-- Limpieza: se removieron archivos obsoletos y se añadieron shims menores para compatibilidad.
+- Limpieza: se removieron archivos obsoletos y se archivaron; algunos archivos anteriores se respaldaron para referencia.
 
 Desarrollo y pruebas locales
 1. Clonar el repo y abrir la carpeta.

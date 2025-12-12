@@ -40,161 +40,97 @@ const TEXTOS_ES = {
     },
 };
 
-// Textos de la Leyenda (migrados desde leyenda_i18n_core.js)
+// Textos de la Leyenda (migrados desde ubicación anterior, ya centralizados en i18n) 
 TEXTOS_ES.leyenda = {
     title_browser: 'Leyenda del Monitor de Estado',
     main_header: 'Umbrales de Latencia y Justificación Operacional',
     link_volver: 'Volver a la Aplicación',
-    content_html: `
-            <div class="leyenda-section umbrales-latencia">
-                <p>Los colores y símbolos reflejan el tiempo de respuesta (latencia) medido. La justificación se basa en la **Psicología de la Interacción** y el **Significado Operacional** del rendimiento. Haz clic en el resumen para expandir la justificación completa:</p>
-                
-                <table class="leyenda-tabla-umbrales">
-                    <thead>
-                        <tr>
-                            <th>Estado / Nivel</th>
-                            <th>Umbral de Latencia (ms)</th>
-                            <th>Justificación de los Umbrales de Latencia</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="status-very-fast">🚀 MUY RÁPIDO</td>
-                            <td>&lt; 300 ms</td>
-                            <td>
-                                <details>
-                                    <summary>Rendimiento Óptimo (Instantáneo para el Usuario)</summary>
-                                    <p><strong>Estándar Dorado.</strong> El cerebro humano percibe cualquier respuesta por debajo de los 100 ms como **instantánea** (Regla de Nielsen). Mantener el umbral hasta 300 ms asegura una experiencia fluida. <strong>Significado Operacional:</strong> El sistema está operando en condiciones óptimas y con alta eficiencia.</p>
-                                </details>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="status-fast">⭐ RÁPIDO</td>
-                            <td>300 ms &le; Latencia &lt; 500 ms</td>
-                            <td>
-                                <details>
-                                    <summary>Interacción Fluida sin Molestias (Percepción Inconsciente)</summary>
-                                    <p><strong>Límite de la Percepción Inconsciente.</strong> La demora es notable pero el usuario no la percibe como una espera molesta. <strong>Significado Operacional:</strong> Rendimiento excelente, buen punto de control para procesos rápidos de backend.</p>
-                                </details>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="status-normal">✅ NORMAL</td>
-                            <td>500 ms &le; Latencia &lt; 800 ms</td>
-                            <td>
-                                <details>
-                                    <summary>Rendimiento Aceptable (El Foco se Mantiene)</summary>
-                                    <p><strong>La Distracción Comienza.</strong> A partir de 500 ms el usuario puede comenzar a desviarse, aunque puede **mantener su hilo de pensamiento**. <strong>Significado Operacional:</strong> Rendimiento aceptable, pero acercándose a donde la sensación de espera se consolida.</p>
-                                </details>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="status-slow">⚠️ LENTO</td>
-                            <td>800 ms &le; Latencia &lt; 1500 ms</td>
-                            <td>
-                                <details>
-                                    <summary>Demora Molesta (Distractor Activo / Alerta Temprana)</summary>
-                                    <p><strong>Límite del 1 Segundo.</strong> La demora se convierte en un **distractor activo**. La experiencia está notablemente degradada. <strong>Significado Operacional:</strong> **Alerta Temprana.** El servidor o la red experimentan estrés. Momento de investigar.</p>
-                                </details>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="status-critical">🐌 CRÍTICO</td>
-                            <td>1500 ms &le; Latencia &lt; 3000 ms</td>
-                            <td>
-                                <details>
-                                    <summary>Riesgo de Abandono del Usuario (3 Segundos / Fallo Inminente)</summary>
-                                    <p><strong>Pérdida de Foco y Frustración.</strong> El límite crítico (3 segundos) donde los usuarios **abandonan una página web**. <strong>Significado Operacional:</strong> **Fallo Inminente.** Indica carga extremadamente pesada o cuellos de botella severos.</p>
-                                </details>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="status-risk">🚨 RIESGO</td>
-                            <td>3000 ms &le; Latencia &lt; 5000 ms</td>
-                            <td>
-                                <details>
-                                    <summary>Fallo Funcional y Colapso (5 Segundos / Alarma)</summary>
-                                    <p><strong>Fallo Funcional.</strong> Las demoras superiores a 5 segundos son consideradas un fallo funcional en muchos sistemas. <strong>Significado Operacional:</strong> **ALARMA.** El servicio está al borde del colapso o no sirve peticiones de manera confiable.</p>
-                                </details>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="status-extreme-risk">🔥 RIESGO EXTREMO</td>
-                            <td>5000 ms &le; Latencia &lt; 99999 ms</td>
-                            <td>
-                                <details>
-                                    <summary>Latencia Inaceptable (CAOS / Abandono Asegurado)</summary>
-                                    <p><strong>CAOS/Limbo.</strong> Rango antes del *timeout* máximo. Es casi seguro que el usuario abandonó la acción. <strong>Significado Operacional:</strong> El servidor no puede procesar la solicitud en un tiempo razonable. Requiere atención INMEDIATA.</p>
-                                </details>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="status-down">❌ FALLO TOTAL</td>
-                            <td>&ge; 99999 ms</td>
-                            <td>
-                                <details>
-                                    <summary>Caída Confirmada (Timeout Excedido)</summary>
-                                    <p><strong>Caída Confirmada.</strong> El valor de **PENALIZACION_FALLO** ha sido superado. <strong>Significado Operacional:</strong> El servicio está caído, la ruta es inaccesible, o el servidor se negó a responder.</p>
-                                </details>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <small>Nota: Estos valores se basan en la constante <code>UMBRALES_LATENCIA</code>, definidos en la configuración de la aplicación principal.</small>
-            </div>
-
-            <div class="leyenda-section codigos-error-section" style="margin-top: 30px;">
-                <h3>Códigos de Estado HTTP y Fallos del Sistema</h3>
-                <p>Cuando un servicio devuelve un código de estado fuera del rango 2xx (Éxito), el monitor lo clasifica visualmente como **❌ FALLO TOTAL**, pero muestra el código real entre paréntesis (ej: ❌ Caída (404)). Los códigos comunes que se pueden observar son:</p>
-                
-                <table class="leyenda-tabla-errores">
-                    <thead>
-                        <tr>
-                            <th>Código</th>
-                            <th>Rango/Nombre Común</th>
-                            <th>Significado Operacional</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>2xx</td>
-                            <td>OK / Éxito</td>
-                            <td>La conexión y el servicio respondieron correctamente (Latencia medida).</td>
-                        </tr>
-                        <tr>
-                            <td>404</td>
-                            <td>Not Found</td>
-                            <td>El recurso solicitado (la URL que se está monitoreando) no existe en el servidor.</td>
-                        </tr>
-                        <tr>
-                            <td>429</td>
-                            <td>Too Many Requests</td>
-                            <td>Se ha superado el límite de tasa (Rate Limit) de la API/Servicio.</td>
-                        </tr>
-                        <tr>
-                            <td>500</td>
-                            <td>Internal Server Error</td>
-                            <td>Error interno genérico del servidor. Debe investigarse el log del backend.</td>
-                        </tr>
-                        <tr>
-                            <td>502</td>
-                            <td>Bad Gateway</td>
-                            <td>Un servidor intermedio (proxy, CDN) recibió una respuesta inválida del servidor de origen.</td>
-                        </tr>
-                        <tr>
-                            <td>503</td>
-                            <td>Service Unavailable</td>
-                            <td>El servidor está temporalmente sobrecargado, en mantenimiento o inactivo.</td>
-                        </tr>
-                        <tr>
-                            <td>0</td>
-                            <td>Error de Conexión</td>
-                            <td>Fallo de red, bloqueo de CORS, o no respuesta del servidor. Es el código interno <code>ESTADO_ERROR_CONEXION</code>.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        `,
+    intro: 'Los colores y símbolos reflejan el tiempo de respuesta (latencia) medido. La justificación se basa en la Psicología de la Interacción y el Significado Operacional del rendimiento.',
+    umbrales: [
+        {
+            key: 'very_fast',
+            className: 'status-very-fast',
+            emoji: '🚀',
+            label: 'MUY RÁPIDO',
+            range_text: '< 300 ms',
+            summary: 'Rendimiento Óptimo (Instantáneo para el Usuario)',
+            details: 'Estándar Dorado. El cerebro humano percibe cualquier respuesta por debajo de los 100 ms como instantánea (Regla de Nielsen). Mantener el umbral hasta 300 ms asegura una experiencia fluida. Significado Operacional: El sistema está operando en condiciones óptimas y con alta eficiencia.'
+        },
+        {
+            key: 'fast',
+            className: 'status-fast',
+            emoji: '⭐',
+            label: 'RÁPIDO',
+            range_text: '300 ms ≤ Latencia < 500 ms',
+            summary: 'Interacción Fluida sin Molestias (Percepción Inconsciente)',
+            details: 'Límite de la Percepción Inconsciente. La demora es notable pero el usuario no la percibe como una espera molesta. Significado Operacional: Rendimiento excelente, buen punto de control para procesos rápidos de backend.'
+        },
+        {
+            key: 'normal',
+            className: 'status-normal',
+            emoji: '✅',
+            label: 'NORMAL',
+            range_text: '500 ms ≤ Latencia < 800 ms',
+            summary: 'Rendimiento Aceptable (El Foco se Mantiene)',
+            details: 'La Distracción Comienza. A partir de 500 ms el usuario puede comenzar a desviarse, aunque puede mantener su hilo de pensamiento. Significado Operacional: Rendimiento aceptable, pero acercándose a donde la sensación de espera se consolida.'
+        },
+        {
+            key: 'slow',
+            className: 'status-slow',
+            emoji: '⚠️',
+            label: 'LENTO',
+            range_text: '800 ms ≤ Latencia < 1500 ms',
+            summary: 'Demora Molesta (Distractor Activo / Alerta Temprana)',
+            details: 'Límite del 1 Segundo. La demora se convierte en un distractor activo. La experiencia está notablemente degradada. Significado Operacional: Alerta Temprana. El servidor o la red experimentan estrés. Momento de investigar.'
+        },
+        {
+            key: 'critical',
+            className: 'status-critical',
+            emoji: '🐌',
+            label: 'CRÍTICO',
+            range_text: '1500 ms ≤ Latencia < 3000 ms',
+            summary: 'Riesgo de Abandono del Usuario (3 Segundos / Fallo Inminente)',
+            details: 'Pérdida de Foco y Frustración. El límite crítico (3 segundos) donde los usuarios abandonan una página web. Significado Operacional: Fallo Inminente. Indica carga extremadamente pesada o cuellos de botella severos.'
+        },
+        {
+            key: 'risk',
+            className: 'status-risk',
+            emoji: '🚨',
+            label: 'RIESGO',
+            range_text: '3000 ms ≤ Latencia < 5000 ms',
+            summary: 'Fallo Funcional y Colapso (5 Segundos / Alarma)',
+            details: 'Fallo Funcional. Las demoras superiores a 5 segundos son consideradas un fallo funcional en muchos sistemas. Significado Operacional: ALARMA. El servicio está al borde del colapso o no sirve peticiones de manera confiable.'
+        },
+        {
+            key: 'extreme_risk',
+            className: 'status-extreme-risk',
+            emoji: '🔥',
+            label: 'RIESGO EXTREMO',
+            range_text: '5000 ms ≤ Latencia < 99999 ms',
+            summary: 'Latencia Inaceptable (CAOS / Abandono Asegurado)',
+            details: 'CAOS/Limbo. Rango antes del timeout máximo. Es casi seguro que el usuario abandonó la acción. Significado Operacional: El servidor no puede procesar la solicitud en un tiempo razonable. Requiere atención INMEDIATA.'
+        },
+        {
+            key: 'down',
+            className: 'status-down',
+            emoji: '❌',
+            label: 'FALLO TOTAL',
+            range_text: '≥ 99999 ms',
+            summary: 'Caída Confirmada (Timeout Excedido)',
+            details: 'Caída Confirmada. El valor de PENALIZACION_FALLO ha sido superado. Significado Operacional: El servicio está caído, la ruta es inaccesible, o el servidor se negó a responder.'
+        }
+    ],
+    http_codes_title: 'Códigos de Estado HTTP y Fallos del Sistema',
+    http_codes_description: 'Cuando un servicio devuelve un código de estado fuera del rango 2xx (Éxito), el monitor lo clasifica visualmente como ❌ FALLO TOTAL, pero muestra el código real entre paréntesis (ej: ❌ Caída (404)).',
+    codigos_error: [
+        { code: '2xx', label: 'OK / Éxito', description: 'La conexión y el servicio respondieron correctamente (Latencia medida).' },
+        { code: '404', label: 'Not Found', description: 'El recurso solicitado (la URL que se está monitoreando) no existe en el servidor.' },
+        { code: '429', label: 'Too Many Requests', description: 'Se ha superado el límite de tasa (Rate Limit) de la API/Servicio.' },
+        { code: '500', label: 'Internal Server Error', description: 'Error interno genérico del servidor. Debe investigarse el log del backend.' },
+        { code: '502', label: 'Bad Gateway', description: 'Un servidor intermedio (proxy, CDN) recibió una respuesta inválida del servidor de origen.' },
+        { code: '503', label: 'Service Unavailable', description: 'El servidor está temporalmente sobrecargado, en mantenimiento o inactivo.' },
+        { code: '0', label: 'Error de Conexión', description: 'Fallo de red, bloqueo de CORS, o no respuesta del servidor. Es el código interno ESTADO_ERROR_CONEXION.' }
+    ]
 };
 
 // Compatibilidad para la API i18n.get() usada por las páginas de la leyenda.
