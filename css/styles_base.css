@@ -1,0 +1,110 @@
+/* Base styles & variables used by all themes */
+:root {
+  --bg: #ffffff;
+  --text: #222222;
+  --accent: #007bff;
+  --container-max-width: 1000px;
+  --container-padding: 30px;
+  --container-radius: 8px;
+  --container-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  --table-header-bg: #eeeeee;
+  --table-header-text: #222222;
+  --link-color: var(--accent);
+
+  /* Default status colors; themes should override */
+  --status-very-fast-bg: transparent;
+  --status-very-fast-color: inherit;
+  --status-fast-bg: transparent;
+  --status-fast-color: inherit;
+  --status-normal-bg: transparent;
+  --status-normal-color: inherit;
+  --status-slow-bg: transparent;
+  --status-slow-color: inherit;
+  --status-critical-bg: transparent;
+  --status-critical-color: inherit;
+  --status-risk-bg: transparent;
+  --status-risk-color: inherit;
+  --status-extreme-risk-bg: transparent;
+  --status-extreme-risk-color: inherit;
+  --status-down-bg: transparent;
+  --status-down-color: inherit;
+}
+
+/* Apply status colors using variables */
+.status-very-fast { background-color: var(--status-very-fast-bg); color: var(--status-very-fast-color); }
+.status-fast { background-color: var(--status-fast-bg); color: var(--status-fast-color); }
+.status-normal { background-color: var(--status-normal-bg); color: var(--status-normal-color); }
+.status-slow { background-color: var(--status-slow-bg); color: var(--status-slow-color); }
+.status-critical { background-color: var(--status-critical-bg); color: var(--status-critical-color); }
+.status-risk { background-color: var(--status-risk-bg); color: var(--status-risk-color); }
+.status-extreme-risk { background-color: var(--status-extreme-risk-bg); color: var(--status-extreme-risk-color); }
+.status-down { background-color: var(--status-down-bg); color: var(--status-down-color); }
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+.container {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  background-color: var(--container-bg, #fff);
+  padding: var(--container-padding);
+  border-radius: var(--container-radius);
+  box-shadow: var(--container-shadow);
+  min-height: 60vh; /* More responsive default */
+}
+
+h1 { text-align: center; margin-bottom: 5px; }
+.info-bar { text-align: center; margin-bottom: 20px; font-size: 0.9em; }
+.update-info { text-align: center; font-weight: bold; margin-bottom: 20px; }
+
+/* Shared table wrapper */
+.table-scroll-container { overflow-x: auto; min-height: 450px; }
+
+/* Shared table base */
+#monitor-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; border-radius: 8px; overflow: hidden; }
+#monitor-table th, #monitor-table td { padding: 12px 10px; text-align: left; border-bottom: 1px solid #ddd; }
+#monitor-table td a { color: var(--link-color); text-decoration: none; font-size: 0.9em; word-break: break-all; }
+
+#monitor-table thead th { background-color: var(--table-header-bg); color: var(--table-header-text); font-weight: bold; }
+#monitor-table tr:hover { background-color: rgba(0,0,0,0.03); }
+#monitor-table td:nth-child(3), #monitor-table td:nth-child(4), #monitor-table td:nth-child(5), #monitor-table td:nth-child(6), #monitor-table td:nth-child(7), #monitor-table td:nth-child(8) { text-align: center; }
+
+/* Buttons & metrics */
+.psi-button, .btn-primary { border: none; padding: 5px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8em; transition: background-color 0.2s; }
+.latency-metric { font-weight: bold; font-size: 1em; }
+
+/* Status classes base (colors set by theme) */
+.status-very-fast, .status-fast, .status-normal, .status-slow, .status-critical, .status-risk, .status-extreme-risk, .status-down { font-weight: bold; }
+
+/* Column visibility defaults (themes can override) */
+#monitor-table th:nth-child(2), #monitor-table td:nth-child(2) { display: none; }
+#monitor-table th:nth-child(7), #monitor-table td:nth-child(7) { display: none; }
+#monitor-table th:nth-child(8), #monitor-table td:nth-child(8) { display: none; }
+
+/* Emojis for quick visual status (presentational - not for screen readers) */
+.status-very-fast::after { content: " 🚀"; }
+.status-fast::after { content: " ⭐"; }
+.status-normal::after { content: " ✅"; }
+.status-slow::after { content: " ⚠️"; }
+.status-critical::after { content: " 🐌"; }
+.status-risk::after { content: " 🚨"; }
+.status-extreme-risk::after { content: " 🔥"; }
+.status-down::after { content: " ❌"; }
+
+/* Accessibility helper: screen-reader only (keeps text readable for AT) */
+.sr-only { 
+  position: absolute !important; 
+  width: 1px; 
+  height: 1px; 
+  padding: 0; 
+  margin: -1px; 
+  overflow: hidden; 
+  clip: rect(0, 0, 0, 0); 
+  white-space: nowrap; 
+  border: 0; 
+}

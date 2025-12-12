@@ -3,47 +3,36 @@
 /* (Base: Versión minimalista solicitada) */
 /* ======================================================= */
 
-body { 
-    font-family: Arial, sans-serif; 
-    background-color: #f7f7f7; /* Fondo muy claro */
-    color: #333; 
-    margin: 0;
-    padding: 20px;
-}
-.container { 
-    max-width: 1000px; 
-    margin: 0 auto; 
-    background-color: #fff; 
-    padding: 30px;
-    border-radius: 4px;
-    /* Eliminada la sombra principal */
-    min-height: 800px; 
-}
-h1 { 
-    text-align: center; 
-    color: #444; /* Color de encabezado más neutro */
-    margin-bottom: 5px;
+:root {
+    --bg: #f7f7f7;
+    --text: #333;
+    --accent: #6c757d;
+    --container-bg: #fff;
+    --container-radius: 4px;
+    --container-shadow: none;
+    --header-color: #444;
+    --link-color: #007bff;
+    --table-header-bg: #eee; 
+    --table-header-color: #444;
+
+    --status-very-fast-bg: transparent; --status-very-fast-color: #104e10;
+    --status-fast-bg: transparent; --status-fast-color: #1a571a;
+    --status-normal-bg: transparent; --status-normal-color: #004085;
+    --status-slow-bg: transparent; --status-slow-color: #D45A00;
+    --status-critical-bg: transparent; --status-critical-color: #e65100;
+    --status-risk-bg: transparent; --status-risk-color: #b71c1c;
+    --status-extreme-risk-bg: transparent; --status-extreme-risk-color: #880e4f;
+    --status-down-bg: #dc3545; --status-down-color: white;
 }
 
-/* --- Estilos de Información General --- */
-.info-bar {
-    text-align: center;
-    color: #6c757d; 
-    margin-bottom: 20px;
-    font-size: 0.9em;
-}
-.update-info {
-    text-align: center;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #495057;
-}
+body { background-color: var(--bg); color: var(--text); }
+h1 { color: var(--header-color); }
 
-/* --- Contenedor de la tabla --- */
-.table-scroll-container {
-    overflow-x: auto; 
-    min-height: 450px; 
-}
+/* info colors defined at theme level, layout moved to base */
+.info-bar { color: var(--info-color, #6c757d); }
+.update-info { color: var(--update-info-color, #495057); }
+
+/* table-scroll-container moved to styles_base.css */
 
 /* --- Estilos de la Tabla --- */
 #monitor-table { 
@@ -67,16 +56,14 @@ h1 {
 }
 
 /* Establecer ANCHOS FIJOS (Se mantiene la estructura) */
-#monitor-table thead {
-  th:nth-child(1) { width: 15%; }
-  th:nth-child(2) { width: 30%; }
-  th:nth-child(3) { width: 10%; }
-  th:nth-child(4) { width: 15%; }
-  th:nth-child(5) { width: 10%; }
-  th:nth-child(6) { width: 15%; }
-  th:nth-child(7) { width: 5%; }
-  th:nth-child(8) { width: 5%; }
-}
+#monitor-table thead th:nth-child(1) { width: 15%; }
+#monitor-table thead th:nth-child(2) { width: 30%; }
+#monitor-table thead th:nth-child(3) { width: 10%; }
+#monitor-table thead th:nth-child(4) { width: 15%; }
+#monitor-table thead th:nth-child(5) { width: 10%; }
+#monitor-table thead th:nth-child(6) { width: 15%; }
+#monitor-table thead th:nth-child(7) { width: 5%; }
+#monitor-table thead th:nth-child(8) { width: 5%; }
 
 
 #monitor-table thead th { 
@@ -121,57 +108,12 @@ h1 {
 /* --- Colores de Estado (Minimalista con Corrección de Contraste) --- */
 /* ======================================================= */
 
-/* Todos los fondos de estado son transparentes (ACTUALIZADO para 7 niveles) */
-.status-very-fast, .status-fast, .status-normal, .status-slow, .status-critical, .status-risk, .status-extreme-risk { 
-    background-color: transparent; 
-    font-weight: bold;
-}
+/* All colors now come from variables defined in :root */
+.status-very-fast, .status-fast, .status-normal, .status-slow, .status-critical, .status-risk, .status-extreme-risk, .status-down { font-weight: bold; }
 
-/* 1. Muy Rápido (0 - 300 ms) -> VERDE OSCURO */
-.status-very-fast { 
-    color: #104e10; 
-} 
+/* presentation differences are centralized in styles_base using CSS variables */
 
-/* 1.5. Rápido (301 - 500 ms) -> VERDE MEDIO */
-.status-fast { 
-    color: #1a571a; 
-}
 
-/* 2. Normal (501 - 800 ms) -> AZUL */
-.status-normal { 
-    color: #004085; 
-}
-
-/* 3. Lento (801 - 1500 ms) -> NARANJA OSCURO */
-.status-slow { 
-	color: #D45A00;
-}
-
-/* 4. CRÍTICO (1501 - 3000 ms) -> ROJO OSCURO INTERMEDIO */
-.status-critical { 
-    color: #e65100; /* Naranja oscuro más intenso que SLOW */
-    font-weight: bold;
-}
-
-/* 5. RIESGO (3001 - 5000 ms) -> ROJO INTENSO */
-.status-risk { 
-    color: #b71c1c; /* Rojo oscuro */
-    font-weight: bold;
-}
-
-/* 6. RIESGO EXTREMO (> 5000 ms) -> BURDEOS/ROJO MUY OSCURO (Por defecto) */
-.status-extreme-risk { 
-    color: #880e4f; /* Color de mayor alerta, cerca del negro o magenta oscuro */
-    font-weight: bold;
-}
-
-/* 7. Caída (Error 0, 4xx, 5xx) -> ROJO INTENSO (Mantenido el fondo solo para el estado crítico) */
-.status-down { 
-    background-color: #dc3545; 
-    color: white; /* Contraste OK (Texto blanco sobre fondo rojo) */
-    font-weight: bold;
-    border-radius: 2px;
-}
 
 /* --- Estilo para la Latencia (Métricas) --- (se mantiene) */
 .latency-metric {

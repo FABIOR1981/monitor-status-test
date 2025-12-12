@@ -35,15 +35,11 @@ header {
     background-color: #282b2f; /* Fondo de celda */
 }
 
-/* --- Colores de Estado (Alto Contraste en Fondo Oscuro) --- */
-.status-very-fast { background-color: #1d4d1d; color: #c3e6cb; }
-.status-fast { background-color: #0f5132; color: #d4edda; }
-.status-normal { background-color: #5d4d00; color: #044385; }
-.status-slow { background-color: #8a6d3b; color: #ffe0b2; }
-.status-critical { background-color: #721c24; color: #f8d7da; }
-.status-risk { background-color: #58151c; color: #e9a3af; }
-.status-extreme-risk { background-color: #ffc107; color: #343a40; font-weight: bold; } /* Amarillo Brillante para Alarma */
-.status-down { background-color: #f4f7f9; color: #121212; font-weight: bold; } /* Fallo Total (Invertido para contraste) */
+/* --- Colores de Estado (variables) --- */
+:root { --status-very-fast-bg: #1d4d1d; --status-very-fast-color: #c3e6cb; --status-fast-bg: #0f5132; --status-fast-color: #d4edda; --status-normal-bg: #5d4d00; --status-normal-color: #044385; --status-slow-bg: #8a6d3b; --status-slow-color: #ffe0b2; --status-critical-bg: #721c24; --status-critical-color: #f8d7da; --status-risk-bg: #58151c; --status-risk-color: #e9a3af; --status-extreme-risk-bg: #ffc107; --status-extreme-risk-color: #343a40; --status-down-bg: #f4f7f9; --status-down-color: #121212; }
+
+/* Keep font-weight where needed */
+.status-extreme-risk, .status-down { font-weight: bold; }
 
 footer {
     border-top: 1px solid #3e444b;

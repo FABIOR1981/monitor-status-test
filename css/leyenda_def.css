@@ -33,15 +33,12 @@ header {
     border: 1px solid #dee2e6;
 }
 
-/* --- Colores de Estado --- */
-.status-very-fast { background-color: #d4edda; color: #0f5132; }
-.status-fast { background-color: #c3e6cb; color: #155724; }
-.status-normal { background-color: #cce8ff; color: #044385; font-weight: bold; } /* AZUL PASTEL */
-.status-slow { background-color: #ffe0b2; color: #9c5a00; }
-.status-critical { background-color: #f8d7da; color: #721c24; }
-.status-risk { background-color: #e9a3af; color: #58151c; }
-.status-extreme-risk { background-color: #dc3545; color: white; font-weight: bold; } /* Rojo Fuerte */
-.status-down { background-color: #343a40; color: white; font-weight: bold; } /* Fallo Total */
+/* --- Colores de Estado (variables) --- */
+:root { --status-very-fast-bg: #d4edda; --status-very-fast-color: #0f5132; --status-fast-bg: #c3e6cb; --status-fast-color: #155724; --status-normal-bg: #cce8ff; --status-normal-color: #044385; --status-slow-bg: #ffe0b2; --status-slow-color: #9c5a00; --status-critical-bg: #f8d7da; --status-critical-color: #721c24; --status-risk-bg: #e9a3af; --status-risk-color: #58151c; --status-extreme-risk-bg: #dc3545; --status-extreme-risk-color: white; --status-down-bg: #343a40; --status-down-color: white; }
+
+/* Keep font-weight where needed */
+.status-normal { font-weight: bold; }
+.status-extreme-risk, .status-down { font-weight: bold; }
 
 footer {
     border-top: 1px solid #dee2e6;

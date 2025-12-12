@@ -481,10 +481,10 @@ function dibujarFilasIniciales(servicios) {
 
         const row = tbody.insertRow();
         // ID que nos permite encontrar la fila para la actualización asíncrona
-        row.dataset.url = web.url; 
+        row.dataset.url = web.url;
         
         // Columna 1: Servicio (AHORA CON HIPERVÍNCULO)
-        row.insertCell().innerHTML = `<a href="${web.url}" target="_blank">${web.nombre}</a>`; 
+        row.insertCell().innerHTML = `<a href="${web.url}" target="_blank">${web.nombre}</a>`;
         
         // Columna 2: URL (Oculta en styles.css)
         row.insertCell().innerHTML = `<a href="${web.url}" target="_blank">${web.url}</a>`;
@@ -502,12 +502,41 @@ function dibujarFilasIniciales(servicios) {
         row.insertCell().textContent = window.TEXTOS_ACTUAL.general.LOADING;
         
         // Columna 7: Acción (Placeholder)
-        row.insertCell().textContent = ''; 
+        row.insertCell().textContent = '';
+
+        // Accessibility: add aria-labels and role to the status placeholder cells
+        // (Es más robusto añadirlo aquí para que estén presentes antes de la actualización)
+        // Apply accessibility attributes to the status cells in the row
+        aplicarAccesibilidadEstadoEnFila(row, { actual: window.TEXTOS_ACTUAL.general.LOADING, promedio: window.TEXTOS_ACTUAL.general.LOADING });
     });
 
     // Actualizar el encabezado una vez con el historial guardado (puede ser 0/12 si está vacío)
     actualizarEncabezadoPromedio(maxValidCount);
 }
+
+/**
+ * [ACCESIBILIDAD] Añade roles y etiquetas ARIA a las celdas de estado de una fila.
+ * @param {HTMLTableRowElement} row - Fila de la tabla con celdas de estados en índices 3 y 5.
+ * @param {Object} labels - Opcional: {actual: string, promedio: string} con textos accesibles.
+ */
+function aplicarAccesibilidadEstadoEnFila(row, labels = {}) {
+    if (!row) return;
+    const statusActual = row.cells[3];
+    const statusProm = row.cells[5];
+
+    const actualText = (labels.actual !== undefined) ? labels.actual : (statusActual ? statusActual.textContent.trim() : '');
+    const promText = (labels.promedio !== undefined) ? labels.promedio : (statusProm ? statusProm.textContent.trim() : '');
+
+    if (statusActual) {
+        statusActual.setAttribute('role', 'status');
+        statusActual.setAttribute('aria-label', actualText || window.TEXTOS_ACTUAL.general.LOADING);
+    }
+    if (statusProm) {
+        statusProm.setAttribute('role', 'status');
+        statusProm.setAttribute('aria-label', promText || window.TEXTOS_ACTUAL.general.LOADING);
+    }
+}
+
 
 /**
  * Actualiza una fila específica de la tabla con los datos reales.
@@ -532,13 +561,16 @@ function actualizarFila(web, resultado) {
     // Columna 4: Estado Actual (índice 3)
     row.cells[3].textContent = estadoActual.text;
     row.cells[3].className = estadoActual.className;
-    
+
     // Columna 5: Promedio (ms) (índice 4)
     row.cells[4].textContent = `${promedio} ms`;
     
     // Columna 6: Estado Promedio (índice 5)
     row.cells[5].textContent = estadoPromedio.text;
     row.cells[5].className = estadoPromedio.className;
+
+    // Accessibility: update attributes consistently after updating text
+    aplicarAccesibilidadEstadoEnFila(row, {actual: estadoActual.text, promedio: estadoPromedio.text});
     
     // Columna 7: Acción (índice 6)
     row.cells[6].innerHTML = `<button class="psi-button" onclick="window.open('https://pagespeed.web.dev/report?url=${web.url}', '_blank')">PSI</button>`;

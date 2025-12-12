@@ -2,47 +2,27 @@
 /* VERSÍON PROFESIONAL Y DE ÉNFASIS (styles_pro.css) */
 /* ======================================================= */
 
-body { 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente más moderna */
-    background-color: #1e2124; /* Fondo Oscuro (Tema Dark Mode Pro) */
-    color: #f4f7f9; /* Texto claro */
-    margin: 0;
-    padding: 20px;
-}
-.container { 
-    max-width: 1000px; 
-    margin: 0 auto; 
-    background-color: #282b2f; /* Contenedor más oscuro que el fondo */
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Sombra oscura para profundidad */
-    min-height: 800px; 
-}
-h1 { 
-    text-align: center; 
-    color: #7289da; /* Azul distintivo (Discord-like) */
-    margin-bottom: 5px;
+:root {
+    --bg: #1e2124;
+    --text: #f4f7f9;
+    --accent: #7289da;
+    --container-bg: #282b2f;
+    --container-radius: 8px;
+    --container-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    --header-color: #7289da;
+    --link-color: #7289da;
+    --table-header-bg: #36393f;
+    --table-header-color: #ffffff;
 }
 
-/* --- Estilos de Información General --- */
-.info-bar {
-    text-align: center;
-    color: #99aab5; 
-    margin-bottom: 20px;
-    font-size: 0.9em;
-}
-.update-info {
-    text-align: center;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #ffffff;
-}
+body { background-color: var(--bg); color: var(--text); }
+h1 { color: var(--header-color); }
 
-/* --- Contenedor de la tabla --- */
-.table-scroll-container {
-    overflow-x: auto; 
-    min-height: 450px; 
-}
+/* info colors defined at theme level, layout moved to base */
+.info-bar { color: var(--info-color, #99aab5); }
+.update-info { color: var(--update-info-color, #ffffff); }
+
+/* table-scroll-container moved to styles_base.css */
 
 /* --- Estilos de la Tabla --- */
 #monitor-table { 
@@ -81,7 +61,7 @@ h1 {
     background-color: #282b2f; /* Fila impar */
 }
 #monitor-table tr:hover {
-    background-color: #3e4147 !important; /* Resaltado en oscuro */
+    background-color: #3e4147; /* Resaltado en oscuro */
 }
 
 /* Centrar el texto en las columnas de datos (se mantiene) */
@@ -114,58 +94,30 @@ h1 {
 /* --- Colores de Estado (PRO: Énfasis en el Borde Izquierdo) --- */
 /* ======================================================= */
 
-/* Reset de fondo para todos los estados (usamos el fondo de fila) */
+/* Presentation: keep status text bold, visuals (color/background) are set via variables in base/theme */
 .status-very-fast, .status-fast, .status-normal, .status-slow, .status-critical, .status-risk, .status-extreme-risk { 
-    background-color: transparent !important; 
     font-weight: bold;
 }
+/* Background is left transparent in pro theme so the table row color is preserved; border-left indicates severity */
 
 /* 1. Muy Rápido (0 - 300 ms) -> VERDE */
-.status-very-fast { 
-    color: #43b581; 
-} 
-
-/* 1.5. Rápido (301 - 500 ms) -> VERDE CLARO */
-.status-fast { 
-    color: #57d498; 
+/* Status colors assigned via variables (pro theme), keep border-left and animation where present */
+:root {
+  --status-very-fast-bg: transparent; --status-very-fast-color: #43b581;
+  --status-fast-bg: transparent; --status-fast-color: #57d498;
+  --status-normal-bg: transparent; --status-normal-color: #7289da;
+  --status-slow-bg: transparent; --status-slow-color: #faa61a;
+  --status-critical-bg: transparent; --status-critical-color: #e65100;
+  --status-risk-bg: transparent; --status-risk-color: #dc3545;
+  --status-extreme-risk-bg: transparent; --status-extreme-risk-color: #ff0000;
+  --status-down-bg: #ff0000; --status-down-color: white;
 }
 
-/* 2. Normal (501 - 800 ms) -> AZUL */
-.status-normal { 
-    color: #7289da; 
-}
-
-/* 3. Lento (801 - 1500 ms) -> AMARILLO/NARANJA CLARO */
-.status-slow { 
-    color: #faa61a;
-}
-
-/* 4. CRÍTICO (1501 - 3000 ms) -> Borde y Texto NARANJA */
-.status-critical { 
-    color: #e65100;
-    border-left: 3px solid #e65100;
-}
-
-/* 5. RIESGO (3001 - 5000 ms) -> Borde y Texto ROJO */
-.status-risk { 
-    color: #dc3545; 
-    border-left: 3px solid #dc3545;
-}
-
-/* 6. RIESGO EXTREMO (> 5000 ms) -> Borde y Texto ROJO INTENSO + Animación */
-.status-extreme-risk { 
-    color: #ff0000; 
-    border-left: 3px solid #ff0000;
-    animation: pulse-border 2s infinite;
-}
-
-/* 7. Caída (Error 0, 4xx, 5xx) -> ROJO INTENSO (Mantenido el fondo oscuro) */
-.status-down { 
-    background-color: #ff0000 !important; 
-    color: white; 
-    font-weight: bold;
-    border-radius: 2px;
-}
+/* Keep border-left/animation behavior for pro theme */
+.status-critical { border-left: 3px solid var(--status-critical-color); }
+.status-risk { border-left: 3px solid var(--status-risk-color); }
+.status-extreme-risk { border-left: 3px solid var(--status-extreme-risk-color); animation: pulse-border 2s infinite; }
+.status-down { border-radius: 2px; }
 
 /* --- Keyframe para animación de extremo riesgo --- */
 @keyframes pulse-border {
