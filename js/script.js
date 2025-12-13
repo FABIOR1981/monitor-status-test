@@ -61,6 +61,26 @@ function inicializarSelectorDuracion() {
   });
 }
 
+function reiniciarMonitoreo() {
+  // Limpiar historial
+  historialStatus = {};
+  guardarHistorial();
+
+  // Cancelar timeout pendiente si existe
+  if (window.monitorTimeout) {
+    clearTimeout(window.monitorTimeout);
+  }
+
+  // Limpiar tabla
+  const tbody = document.getElementById('status-table-body');
+  if (tbody) {
+    tbody.innerHTML = '';
+  }
+
+  // Reiniciar monitoreo
+  monitorearTodosWebsites();
+}
+
 // =======================================================
 // 2. FUNCIONES DE INTERNACIONALIZACIÓN (I18N) Y DOM
 // =======================================================
@@ -176,6 +196,10 @@ function inicializarEtiquetas() {
     const element = document.getElementById(h.id);
     if (element) element.textContent = h.text;
   });
+
+  const btnReiniciar = document.getElementById('texto-btn-reiniciar');
+  if (btnReiniciar)
+    btnReiniciar.textContent = window.TEXTOS_ACTUAL.general.BTN_REINICIAR;
 
   actualizarUltimaActualizacion(null);
 }
@@ -300,16 +324,30 @@ function guardarHistorial() {
   );
 }
 
+function historialCompleto() {
+  // Verificar si al menos un servicio alcanzó el máximo de monitoreos
+  for (const url in historialStatus) {
+    if (
+      historialStatus[url] &&
+      historialStatus[url].length >= maxHistorialActual
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
+
 function actualizarHistorial(url, time, status) {
   if (!historialStatus[url]) {
     historialStatus[url] = [];
   }
 
-  historialStatus[url].push({ time, status, timestamp: Date.now() });
-
-  if (historialStatus[url].length > maxHistorialActual) {
-    historialStatus[url].shift();
+  // No agregar si ya alcanzamos el máximo configurado
+  if (historialStatus[url].length >= maxHistorialActual) {
+    return;
   }
+
+  historialStatus[url].push({ time, status, timestamp: Date.now() });
 
   guardarHistorial();
 }
@@ -748,10 +786,18 @@ async function monitorearTodosWebsites() {
   // 5. FINALIZAR Y PROGRAMAR LA PRÓXIMA EJECUCIÓN
   actualizarEncabezadoPromedio(maxValidCount);
   actualizarUltimaActualizacion(new Date());
-  window.monitorTimeout = setTimeout(
-    monitorearTodosWebsites,
-    FRECUENCIA_MONITOREO_MS
-  );
+
+  // Solo programar el siguiente monitoreo si NO hemos alcanzado el máximo
+  if (!historialCompleto()) {
+    window.monitorTimeout = setTimeout(
+      monitorearTodosWebsites,
+      FRECUENCIA_MONITOREO_MS
+    );
+  } else {
+    console.log(
+      'Historial completo. Monitoreo pausado. Use el botón Reiniciar para continuar.'
+    );
+  }
 }
 
 // =======================================================
@@ -800,6 +846,26 @@ function inicializarTema() {
     estiloPrincipal.href = TEMA_FILES[TEMA_DEFAULT];
     temaProActivo = false;
   }
+}
+
+function reiniciarMonitoreo() {
+  // Limpiar historial
+  historialStatus = {};
+  guardarHistorial();
+
+  // Cancelar timeout pendiente si existe
+  if (window.monitorTimeout) {
+    clearTimeout(window.monitorTimeout);
+  }
+
+  // Limpiar tabla
+  const tbody = document.getElementById('status-table-body');
+  if (tbody) {
+    tbody.innerHTML = '';
+  }
+
+  // Reiniciar monitoreo
+  monitorearTodosWebsites();
 }
 
 // Punto de entrada principal al cargar el DOM

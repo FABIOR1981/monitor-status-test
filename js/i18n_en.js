@@ -15,6 +15,7 @@ const TEXTOS_EN = {
     DURACION_HORA_SINGULAR: 'hour',
     DURACION_HORA_PLURAL: 'hours',
     DURACION_MEDICIONES: 'measurements',
+    BTN_REINICIAR: 'Restart Monitoring',
   },
 
   velocidad: {
