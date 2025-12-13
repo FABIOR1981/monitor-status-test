@@ -51,4 +51,14 @@ Agregar o modificar un tema
 
 Si necesitas ayuda con tests automáticos o un `stylelint`/CI básico, puedo agregar sugerencias y configuraciones.
 
+Configuración de VS Code - Scripts
+1. Para instalar extensiones recomendadas de VS Code (desde `.vscode/extensions.json`):
+	- En PowerShell en la raíz del repo:
+	  - `./VSC_scripts/install-vscode-extensions.ps1` (Ejecutar con `-ApplyConfig` para copiar también los archivos de configuración)
+2. Para copiar las plantillas de configuración del directorio `VSC_extensions` al proyecto:
+	- `./VSC_scripts/apply-vscode-config.ps1 -Force`
 -- Fin del README --
+Maintenance: limpieza de historial
+1. Para eliminar archivos obsoletos del historial git (destructivo):
+	- Revisa el script `VSC_scripts/remove-leyenda-history.ps1` y ejecútalo si necesitas borrar `js/leyenda_i18n_core.js` de la historia del repo.
+	- IMPORTANTE: Este procedimiento reescribe la historia y requiere coordinación con colaboradores. Haz un backup antes de ejecutar.
