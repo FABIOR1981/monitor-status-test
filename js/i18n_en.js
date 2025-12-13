@@ -314,6 +314,19 @@ window.i18n = {
       if (!cur.hasOwnProperty(p)) return `[TEXT NOT FOUND: ${key}]`;
       cur = cur[p];
     }
+
+    // If cur is an object with getters, evaluate them before returning
+    // This resolves the problem of losing context with this.httpCodes
+    if (cur && typeof cur === 'object' && !Array.isArray(cur)) {
+      const evaluated = {};
+      for (const prop in cur) {
+        if (cur.hasOwnProperty(prop)) {
+          evaluated[prop] = cur[prop]; // This evaluates getters automatically
+        }
+      }
+      return evaluated;
+    }
+
     return cur;
   },
 };

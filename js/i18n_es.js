@@ -310,6 +310,19 @@ window.i18n = {
       }
       cur = cur[p];
     }
+
+    // Si cur es un objeto con getters, evaluarlos antes de devolver
+    // Esto resuelve el problema de pérdida de contexto con this.httpCodes
+    if (cur && typeof cur === 'object' && !Array.isArray(cur)) {
+      const evaluated = {};
+      for (const prop in cur) {
+        if (cur.hasOwnProperty(prop)) {
+          evaluated[prop] = cur[prop]; // Esto evalúa los getters automáticamente
+        }
+      }
+      return evaluated;
+    }
+
     return cur;
   },
 };
