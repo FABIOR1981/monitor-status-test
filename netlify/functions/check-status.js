@@ -1,6 +1,13 @@
 // Para usar 'fetch' en el entorno Node.js de Netlify.
 const fetch = require('node-fetch');
 const AbortController = require('abort-controller');
+const https = require('https');
+
+// Agente HTTPS que ignora errores de certificado SSL
+// Necesario para monitorear sitios con certificados mal configurados
+const httpsAgent = new https.Agent({
+  rejectUnauthorized: false, // Ignorar errores de certificado SSL
+});
 
 exports.handler = async (event, context) => {
   // Obtener la URL objetivo del parámetro de consulta
@@ -31,6 +38,7 @@ exports.handler = async (event, context) => {
       method: 'GET',
       signal: controller.signal,
       redirect: 'follow',
+      agent: targetUrl.startsWith('https') ? httpsAgent : undefined, // Usar agente SSL permisivo
       headers: {
         'User-Agent': 'Mozilla/5.0 (Monitor-Status-Check)',
       },
