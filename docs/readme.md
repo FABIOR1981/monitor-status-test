@@ -99,10 +99,6 @@ npx netlify-cli dev
 ### Archivos de configuración
 - `js/config.js`: constantes de configuración, umbrales `UMBRALES_LATENCIA`, `TEMA_FILES`, `LEYENDA_TEMA_FILES`, `PROXY_ENDPOINT`.
 
-## ⚙️ Configuración de VS Code (Scripts de ayuda)
-- Puedes instalar las extensiones recomendadas con: `./VSC_scripts/install-vscode-extensions.ps1` (PowerShell).
-- Para copiar las plantillas de configuración desde `VSC_extensions` al proyecto: `./VSC_scripts/apply-vscode-config.ps1 -Force`.
-
 ## 🧭 Agregar/Editar servicios a monitorear
 - Editar `webs.json` en la raíz: agregar/editar objetos con `nombre`, `url` y `grupo`.
 

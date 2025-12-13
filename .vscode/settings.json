@@ -1,23 +1,28 @@
 {
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true
-    },
-    "files.exclude": {
-        "**/node_modules": true,
-        "**/.cache": true
-    },
-    "editor.tabSize": 2,
-    "editor.detectIndentation": false,
-    "liveServer.settings.port": 5500,
-    "path-intellisense.mappings": {
-        "@assets": "${workspaceFolder}/assets"
-    },
-    "prettier.singleQuote": true,
-    "prettier.trailingComma": "es5",
-    "git.autofetch": true,
-    "github.copilot.enable": true,
-    "github.copilot.inlineSuggest.enable": true
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/.cache": true
+  },
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "liveServer.settings.port": 5500,
+  "path-intellisense.mappings": {
+    "@assets": "${workspaceFolder}/assets"
+  },
+  "prettier.singleQuote": true,
+  "prettier.trailingComma": "es5",
+  "git.autofetch": true,
+  "github.copilot.enable": true,
+  "github.copilot.inlineSuggest.enable": true
 }
