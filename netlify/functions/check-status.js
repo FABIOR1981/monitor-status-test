@@ -2,11 +2,16 @@
 const fetch = require('node-fetch');
 const AbortController = require('abort-controller');
 const https = require('https');
+const http = require('http');
 
-// Agente HTTPS que ignora errores de certificado SSL
-// Necesario para monitorear sitios con certificados mal configurados
+// Agentes HTTP/HTTPS que ignoran errores de certificado SSL
+// Necesario para monitorear sitios con certificados mal configurados o redirecciones HTTP
 const httpsAgent = new https.Agent({
   rejectUnauthorized: false, // Ignorar errores de certificado SSL
+});
+
+const httpAgent = new http.Agent({
+  keepAlive: false,
 });
 
 exports.handler = async (event, context) => {
@@ -34,11 +39,15 @@ exports.handler = async (event, context) => {
   try {
     const startTime = Date.now();
 
+    // Elegir el agente correcto según el protocolo
+    const isHttps = targetUrl.startsWith('https');
+    const agent = isHttps ? httpsAgent : httpAgent;
+
     const response = await fetch(targetUrl, {
       method: 'GET',
       signal: controller.signal,
       redirect: 'follow',
-      agent: targetUrl.startsWith('https') ? httpsAgent : undefined, // Usar agente SSL permisivo
+      agent: agent, // Usar agente según protocolo
       headers: {
         'User-Agent': 'Mozilla/5.0 (Monitor-Status-Check)',
       },
