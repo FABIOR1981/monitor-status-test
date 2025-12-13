@@ -365,7 +365,7 @@ function calcularPromedio(url) {
   }
 
   let totalTime = 0;
-  let validCount = 0;
+  let medicionesExitosas = 0;
   let fallos = 0;
   let ultimoCodigoError = 200;
 
@@ -377,19 +377,19 @@ function calcularPromedio(url) {
     if (esFallo) {
       fallos++;
       ultimoCodigoError = entry.status;
-      totalTime += UMBRALES_LATENCIA.PENALIZACION_FALLO;
     } else {
+      // Solo sumar mediciones exitosas para el promedio
       totalTime += entry.time;
+      medicionesExitosas++;
     }
-
-    validCount++;
   });
 
-  const promedioMs = validCount > 0 ? Math.round(totalTime / validCount) : 0;
+  const validCount = historial.length;
 
+  // Si más del 50% son fallos, mostrar como DOWN/ERROR
   if (fallos / validCount > 0.5 && validCount > 3) {
     return {
-      promedio: promedioMs,
+      promedio: 0,
       estadoPromedio: obtenerEstadoVisual(
         UMBRALES_LATENCIA.PENALIZACION_FALLO + 1,
         ultimoCodigoError
@@ -398,6 +398,10 @@ function calcularPromedio(url) {
       historial: historial,
     };
   }
+
+  // Calcular promedio solo de mediciones exitosas
+  const promedioMs =
+    medicionesExitosas > 0 ? Math.round(totalTime / medicionesExitosas) : 0;
 
   return {
     promedio: promedioMs,
