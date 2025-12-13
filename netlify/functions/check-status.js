@@ -1,5 +1,6 @@
 // Para usar 'fetch' en el entorno Node.js de Netlify.
 const fetch = require('node-fetch');
+const AbortController = require('abort-controller');
 
 exports.handler = async (event, context) => {
   // Obtener la URL objetivo del parámetro de consulta
@@ -20,44 +21,54 @@ exports.handler = async (event, context) => {
   };
 
   // 2. Ejecutar la petición HTTP real y medir el tiempo
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 9000); // Timeout de 9 segundos
+
   try {
     const startTime = Date.now();
 
-    // **IMPORTANTE:** Timeout de la petición a 9 segundos (9000 ms).
-    // Esto previene que la función Serverless exceda el timeout de Netlify (10s)
     const response = await fetch(targetUrl, {
-      method: 'GET', // GET en lugar de HEAD para mejor compatibilidad
-      timeout: 9000,
+      method: 'GET',
+      signal: controller.signal,
       redirect: 'follow',
       headers: {
         'User-Agent': 'Mozilla/5.0 (Monitor-Status-Check)',
       },
     });
 
+    clearTimeout(timeoutId);
     const endTime = Date.now();
-    const responseTime = endTime - startTime; // Tiempo en milisegundos
+    const responseTime = endTime - startTime;
 
-    // 3. Devolver los datos al frontend (TODOS los códigos HTTP, incluyendo 404, 500, etc.)
-    // node-fetch NO lanza error para códigos 4xx/5xx, solo devuelve la respuesta
+    // 3. IMPORTANTE: node-fetch NO lanza error para 404, 500, etc.
+    // Solo devuelve la respuesta con response.status
+    console.log(
+      `URL: ${targetUrl} - Status: ${response.status} - Time: ${responseTime}ms`
+    );
+
     return {
       statusCode: 200,
       headers,
       body: JSON.stringify({
-        status: response.status, // Código de estado (200, 404, 500, etc.)
-        time: responseTime, // Tiempo de respuesta en ms
+        status: response.status, // Todos los códigos: 200, 404, 500, etc.
+        time: responseTime,
       }),
     };
   } catch (error) {
-    // 4. Solo llega aquí si hay error de RED, DNS o TIMEOUT (no para códigos HTTP)
-    console.error(`Fallo de fetch para ${targetUrl}: ${error.message}`);
+    clearTimeout(timeoutId);
+
+    // 4. Solo errores de RED, DNS o TIMEOUT llegan aquí
+    console.error(
+      `Error de conexión para ${targetUrl}: ${error.name} - ${error.message}`
+    );
 
     return {
-      statusCode: 200, // Devolver 200 para que el frontend pueda leer el body JSON
+      statusCode: 200,
       headers,
       body: JSON.stringify({
-        status: 0, // Usamos 0 para indicar error de conexión/timeout
-        time: 99999, // Penalización alta para reflejar el fallo
-        error: `Fallo de conexión, DNS o Timeout: ${error.message}`,
+        status: 0, // Error de conexión/timeout
+        time: 99999,
+        error: `${error.name}: ${error.message}`,
       }),
     };
   }
