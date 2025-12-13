@@ -39,15 +39,19 @@ exports.handler = async (event, context) => {
   try {
     const startTime = Date.now();
 
-    // Elegir el agente correcto según el protocolo
-    const isHttps = targetUrl.startsWith('https');
-    const agent = isHttps ? httpsAgent : httpAgent;
-
     const response = await fetch(targetUrl, {
       method: 'GET',
       signal: controller.signal,
       redirect: 'follow',
-      agent: agent, // Usar agente según protocolo
+      agent: (_parsedURL) => {
+        // Función que retorna el agente correcto según el protocolo de cada request
+        // Esto maneja redirecciones de HTTPS a HTTP automáticamente
+        if (_parsedURL.protocol === 'http:') {
+          return httpAgent;
+        } else {
+          return httpsAgent;
+        }
+      },
       headers: {
         'User-Agent': 'Mozilla/5.0 (Monitor-Status-Check)',
       },
