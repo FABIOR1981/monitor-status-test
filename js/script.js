@@ -444,14 +444,20 @@ function calcularPromedio(url) {
   let fallos = 0;
 
   historial.forEach((entry) => {
-    if (
+    // Detectar si es un fallo
+    const esFallo =
       entry.status !== 200 ||
-      entry.time >= UMBRALES_LATENCIA.PENALIZACION_FALLO
-    ) {
+      entry.time >= UMBRALES_LATENCIA.PENALIZACION_FALLO;
+
+    if (esFallo) {
       fallos++;
+      // Para el cálculo del promedio, usar la penalización en lugar del tiempo real
+      totalTime += UMBRALES_LATENCIA.PENALIZACION_FALLO;
+    } else {
+      // Si no es fallo, usar el tiempo real
+      totalTime += entry.time;
     }
 
-    totalTime += entry.time;
     validCount++;
   });
 
