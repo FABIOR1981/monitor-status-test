@@ -49,7 +49,17 @@ const LEYENDA_TEMA_FILES = {
 const ESTADO_ERROR_CONEXION = 0;
 const PROXY_ENDPOINT = '/.netlify/functions/check-status';
 const FRECUENCIA_MONITOREO_MS = 5 * 60 * 1000;
-const MAX_HISTORIAL_ENTRIES = 12;
+
+// Opciones de duración del monitoreo
+const DURACION_OPCIONES = {
+  '1h': { mediciones: 12, etiqueta: '1 hora' },
+  '8h': { mediciones: 96, etiqueta: '8 horas' },
+};
+const DURACION_DEFAULT = '1h'; // Duración por defecto
+
+// MAX_HISTORIAL_ENTRIES será dinámico, pero guardamos un valor por defecto
+const MAX_HISTORIAL_ENTRIES = DURACION_OPCIONES[DURACION_DEFAULT].mediciones;
+
 const PSI_BASE_URL = 'https://pagespeed.web.dev/report?url=';
 
 // =======================================================

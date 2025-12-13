@@ -71,6 +71,29 @@
     <main>
       <div class="container">
         <h1 id="titulo-principal">Monitor de Estado de Servicios</h1>
+
+        <div style="text-align: center; margin-bottom: 15px">
+          <label
+            for="duracion-selector"
+            id="duracion-label"
+            style="font-size: 0.9em; margin-right: 8px"
+            >Duración del historial:</label
+          >
+          <select
+            id="duracion-selector"
+            style="
+              padding: 5px 10px;
+              border-radius: 4px;
+              border: 1px solid #ccc;
+              font-size: 0.9em;
+              cursor: pointer;
+            "
+          >
+            <option value="1h">1 hora (12 mediciones)</option>
+            <option value="8h">8 horas (96 mediciones)</option>
+          </select>
+        </div>
+
         <div class="info-bar" id="info-bar-msg"></div>
 
         <div style="text-align: center; margin-bottom: 10px">
