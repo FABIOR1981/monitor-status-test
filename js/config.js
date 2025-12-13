@@ -1,11 +1,3 @@
-/**
- * Archivo de configuración centralizada para el monitor de servicios.
- */
-
-// =======================================================
-// 1. UMBRALES DE LATENCIA
-// =======================================================
-
 const UMBRALES_LATENCIA = {
   MUY_RAPIDO: 300,
   RAPIDO: 500,
@@ -16,24 +8,16 @@ const UMBRALES_LATENCIA = {
   PENALIZACION_FALLO: 99999,
 };
 
-// =======================================================
-// 2. CONSTANTES DE TEMAS
-// =======================================================
-
 const TEMA_DEFAULT = 'def';
 const TEMA_PRO = 'pro';
 const TEMA_MIN = 'min';
 
-// NUEVO MAPA DE ARCHIVOS CSS POR TEMA
 const TEMA_FILES = {
   [TEMA_DEFAULT]: 'css/styles_def.css',
   [TEMA_PRO]: 'css/styles_pro.css',
   [TEMA_MIN]: 'css/styles_min.css',
 };
 
-// =======================================================
-// 2.5. CONSTANTES ESPECÍFICAS PARA LA LEYENDA
-// =======================================================
 const DEFAULT_LEYENDA_TEMA = 'def';
 const LEYENDA_TEMA_FILES = {
   default: 'css/leyenda_def.css',
@@ -42,13 +26,8 @@ const LEYENDA_TEMA_FILES = {
   min: 'css/leyenda_min.css',
 };
 
-// =======================================================
-// 3. CONSTANTES DE API Y MONITOREO
-// =======================================================
-
 const ESTADO_ERROR_CONEXION = 0;
 
-// Códigos HTTP exitosos (2xx y 3xx)
 const HTTP_STATUS_SUCCESS = {
   OK: 200,
   CREATED: 201,
@@ -58,9 +37,8 @@ const HTTP_STATUS_SUCCESS = {
   NOT_MODIFIED: 304,
 };
 
-// Códigos HTTP de error (4xx y 5xx)
 const HTTP_STATUS_ERROR = {
-  NO_CONNECTION: 0, // Código especial para error de conexión/timeout
+  NO_CONNECTION: 0,
   BAD_REQUEST: 400,
   UNAUTHORIZED: 401,
   PAYMENT_REQUIRED: 402,
@@ -83,10 +61,8 @@ const HTTP_STATUS_ERROR = {
 const PROXY_ENDPOINT = '/.netlify/functions/check-status';
 const FRECUENCIA_MONITOREO_MS = 5 * 60 * 1000;
 
-// Horas disponibles para el selector de duración
 const HORAS_DISPONIBLES = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-// Generar opciones de duración automáticamente (cada hora = 12 mediciones, ya que se monitorea cada 5 min)
 const DURACION_OPCIONES = {};
 HORAS_DISPONIBLES.forEach((horas) => {
   const key = `${horas}h`;
@@ -96,50 +72,20 @@ HORAS_DISPONIBLES.forEach((horas) => {
   };
 });
 
-const DURACION_DEFAULT = '1h'; // Duración por defecto
+const DURACION_DEFAULT = '1h';
 
-// MAX_HISTORIAL_ENTRIES será dinámico, pero guardamos un valor por defecto
 const MAX_HISTORIAL_ENTRIES = DURACION_OPCIONES[DURACION_DEFAULT].mediciones;
-
 const PSI_BASE_URL = 'https://pagespeed.web.dev/report?url=';
-
-// =======================================================
-// 4. REFERENCIAS A ARCHIVOS EXTERNOS (¡NUEVAS CONSTANTES!)
-// =======================================================
-
 const WEBSITES_FILE = 'webs.json';
 
-// Mapa de archivos de idiomas
 const I18N_FILES = {
   es: 'js/i18n_es.js',
   en: 'js/i18n_en.js',
   fr: 'js/i18n_fr.js',
 };
 
-// Idioma por defecto.
 const DEFAULT_LANG = 'es';
 
-// =======================================================
-// 5. CONSTANTES DE RESILIENCIA Y ERRORES GLOBALES (NUEVO)
-// =======================================================
-
-/**
- * Nombre del grupo de URLs considerado "CRÍTICO" dentro de webs.json
- * (ej: 'interno', 'trabajo', etc.). El fallo de 100% de este grupo
- * desencadena una alerta global, independientemente de otros grupos.
- */
-const GRUPO_CRITICO_NOMBRE = 'CRITICO'; // Define el nombre de tu grupo clave
-
-/**
- * Umbral de latencia individual (en ms) que, si es superado por la MAYORÍA
- * de los servicios, marca la corrida como FALLO GLOBAL CRÍTICO.
- * Debe ser menor que el timeout de la función serverless (10s).
- */
+const GRUPO_CRITICO_NOMBRE = 'CRITICO';
 const UMBRAL_FALLO_GLOBAL_MS = 9000;
-
-/**
- * Porcentaje mínimo de servicios que deben superar UMBRAL_FALLO_GLOBAL_MS
- * para que se considere un fallo global (Ej: 0.8 significa 80%).
- * Se usará como FALLBACK si no hay fallo en el GRUPO_CRITICO_NOMBRE.
- */
-const PORCENTAJE_FALLO_GLOBAL = 0.8; /*0.8*/
+const PORCENTAJE_FALLO_GLOBAL = 0.8;

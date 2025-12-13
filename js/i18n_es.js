@@ -1,7 +1,3 @@
-/**
- * TEXTOS_ES (Español)
- * Diccionario centralizado para todas las cadenas de texto del Frontend.
- */
 const TEXTOS_ES = {
   general: {
     PAGE_TITLE: 'Monitor de Estado de Servicios',
@@ -11,34 +7,28 @@ const TEXTOS_ES = {
       'Los datos se actualizan automáticamente cada 5 minutos usando un Proxy Serverless.',
     ADVERTENCIA_FALLO_GLOBAL_HTML:
       'Datos de monitoreo no disponibles/no confiables. Se detectó una latencia crítica generalizada, posiblemente debido a una sobrecarga del sistema de monitoreo. Por favor, espere el próximo ciclo o actualice la página.',
-
-    // 🚨 NUEVO: Textos para el detalle del Fallo Global (Modo Pro)
     MOTIVO_FALLO_PRO: 'Motivo Pro:',
     FALLO_CRITICO_GRUPO: 'Falló el 100% del grupo crítico:',
     FALLO_CRITICO_LATENCIA_PARTE1: '% de los servicios superaron el umbral de',
     FALLO_CRITICO_RED: 'No hay resultados disponibles (Fallo de red total)',
-
-    // Selector de duración
     DURACION_LABEL: 'Duración del historial:',
     DURACION_HORA_SINGULAR: 'hora',
     DURACION_HORA_PLURAL: 'horas',
     DURACION_MEDICIONES: 'mediciones',
   },
   velocidad: {
-    // <-- Grupo 2 (ACTUALIZADO)
-    VERY_FAST: 'MUY RÁPIDO', // <= 300ms
-    FAST: 'RÁPIDO', // <= 500ms
-    NORMAL: 'NORMAL', // <= 800ms
-    SLOW: 'LENTO', // <= 1500ms
-    CRITICAL: 'CRÍTICO', // <= 3000ms (NUEVO)
-    RISK: 'RIESGO', // <= 5000ms (NUEVO)
-    EXTREME_RISK: 'RIESGO EXTREMO', // > 5000ms (NUEVO - Caso por defecto)
+    VERY_FAST: 'MUY RÁPIDO',
+    FAST: 'RÁPIDO',
+    NORMAL: 'NORMAL',
+    SLOW: 'LENTO',
+    CRITICAL: 'CRÍTICO',
+    RISK: 'RIESGO',
+    EXTREME_RISK: 'RIESGO EXTREMO',
   },
   estados: {
     DOWN: 'CAÍDA',
     DOWN_ERROR: 'CAÍDA/ERROR',
   },
-  // Definición completa de códigos HTTP (fuente única de verdad)
   httpCodes: [
     {
       code: 0,
@@ -158,14 +148,12 @@ const TEXTOS_ES = {
   ],
 };
 
-// Derivar httpStatus del array httpCodes (se calcula una sola vez)
 TEXTOS_ES.httpStatus = {};
 TEXTOS_ES.httpCodes.forEach((item) => {
   TEXTOS_ES.httpStatus[item.code] = item.label;
 });
 TEXTOS_ES.httpStatus.GENERIC = 'Error HTTP';
 
-// Continuar con el resto de propiedades de TEXTOS_ES
 TEXTOS_ES.tabla = {
   HEADER_SERVICE: 'Servicio',
   HEADER_URL: 'URL',
@@ -176,7 +164,6 @@ TEXTOS_ES.tabla = {
   HEADER_ACTION: 'Acción',
 };
 
-// Textos de la Leyenda (migrados desde ubicación anterior, ya centralizados en i18n)
 TEXTOS_ES.leyenda = {
   title_browser: 'Leyenda del Monitor de Estado',
   main_header: 'Umbrales de Latencia y Justificación Operacional',
@@ -270,7 +257,6 @@ TEXTOS_ES.leyenda = {
     'Cuando un servicio devuelve un código de estado fuera del rango 2xx (Éxito), el monitor lo clasifica visualmente como ❌ FALLO TOTAL, pero muestra el código real entre paréntesis (ej: ❌ Caída (404)).',
 };
 
-// Derivar codigos_error del array httpCodes (se calcula una sola vez)
 TEXTOS_ES.leyenda.codigos_error = [
   {
     code: '2xx',
@@ -280,7 +266,6 @@ TEXTOS_ES.leyenda.codigos_error = [
   },
 ];
 
-// Agregar códigos de error (0 y 4xx/5xx) desde httpCodes
 TEXTOS_ES.httpCodes
   .filter((item) => item.code === 0 || item.code >= 400)
   .forEach((item) => {
@@ -291,7 +276,6 @@ TEXTOS_ES.httpCodes
     });
   });
 
-// Compatibilidad para la API i18n.get() usada por las páginas de la leyenda.
 window.i18n = {
   texts: TEXTOS_ES,
   get: function (key) {

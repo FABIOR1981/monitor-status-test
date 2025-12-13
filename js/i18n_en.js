@@ -1,7 +1,3 @@
-/**
- * TEXTOS_EN (English)
- * Centralized dictionary for all Frontend text strings.
- */
 const TEXTOS_EN = {
   general: {
     PAGE_TITLE: 'Service Status Monitor',
@@ -9,18 +5,12 @@ const TEXTOS_EN = {
     LOADING: 'Loading...',
     INFO_BAR:
       'Data is automatically updated every 5 minutes using a Serverless Proxy.',
-
-    // --- UPDATED/NEW Critical Failure Texts ---
     ADVERTENCIA_FALLO_GLOBAL_HTML:
       'Monitoring data unavailable/unreliable. Widespread critical latency detected, possibly due to a monitoring system overload. Please wait for the next cycle or refresh the page.',
-
-    // New: Texts for the Global Failure Detail (Pro Mode)
     MOTIVO_FALLO_PRO: 'Pro Reason:',
     FALLO_CRITICO_GRUPO: '100% of the critical group failed:',
     FALLO_CRITICO_LATENCIA_PARTE1: '% of services exceeded the threshold of',
     FALLO_CRITICO_RED: 'No results available (Total network failure)',
-
-    // Duration selector
     DURACION_LABEL: 'History duration:',
     DURACION_HORA_SINGULAR: 'hour',
     DURACION_HORA_PLURAL: 'hours',
@@ -28,21 +18,19 @@ const TEXTOS_EN = {
   },
 
   velocidad: {
-    // <-- Speed Group (7 Levels)
-    VERY_FAST: 'VERY FAST', // <= 300ms
-    FAST: 'FAST', // <= 500ms
-    NORMAL: 'NORMAL', // <= 800ms
-    SLOW: 'SLOW', // <= 1500ms
-    CRITICAL: 'CRITICAL', // <= 3000ms
-    RISK: 'RISK', // <= 5000ms
-    EXTREME_RISK: 'EXTREME RISK', // > 5000ms (Default Case)
+    VERY_FAST: 'VERY FAST',
+    FAST: 'FAST',
+    NORMAL: 'NORMAL',
+    SLOW: 'SLOW',
+    CRITICAL: 'CRITICAL',
+    RISK: 'RISK',
+    EXTREME_RISK: 'EXTREME RISK',
   },
 
   estados: {
     DOWN: 'DOWN',
     DOWN_ERROR: 'DOWN/ERROR',
   },
-  // Complete HTTP code definitions (single source of truth)
   httpCodes: [
     {
       code: 0,
@@ -178,12 +166,7 @@ TEXTOS_EN.tabla = {
   HEADER_PROMEDIO_STATUS: 'Average Status',
   HEADER_ACTION: 'Action',
 };
-};
 
-// Asignar el objeto al contexto global para ser utilizado por script.js
-window.TEXTOS_ACTUAL = TEXTOS_EN;
-
-// Leyenda (translations centralized in i18n) - translations and data
 TEXTOS_EN.leyenda = {
   title_browser: 'Status Monitor Legend',
   main_header: 'Latency Thresholds and Operational Justification',
@@ -277,7 +260,6 @@ TEXTOS_EN.leyenda = {
     'When a service returns a status code outside the 2xx range (Success), the monitor visually classifies it as ❌ DOWN, but it displays the real status code (e.g., ❌ Down (404)).',
 };
 
-// Derive codigos_error from httpCodes array (calculated once)
 TEXTOS_EN.leyenda.codigos_error = [
   {
     code: '2xx',
@@ -287,7 +269,6 @@ TEXTOS_EN.leyenda.codigos_error = [
   },
 ];
 
-// Add error codes (0 and 4xx/5xx) from httpCodes
 TEXTOS_EN.httpCodes
   .filter((item) => item.code === 0 || item.code >= 400)
   .forEach((item) => {
@@ -298,7 +279,6 @@ TEXTOS_EN.httpCodes
     });
   });
 
-// i18n get() shim for compatibility with leyenda_script.js and other code that expects i18n.get()
 window.i18n = {
   texts: TEXTOS_EN,
   get: function (key) {
@@ -313,3 +293,4 @@ window.i18n = {
   },
 };
 
+window.TEXTOS_ACTUAL = TEXTOS_EN;

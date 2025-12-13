@@ -1,21 +1,10 @@
-/**
- * js/leyenda_script.js
- * Lógica principal de la página de Leyenda.
- * - Usa las constantes definidas en `config.js` (LEYENDA_TEMA_FILES, DEFAULT_LEYENDA_TEMA)
- * - Usa la capa de i18n provista por `i18n_es.js` (i18n.get() y window.TEXTOS_ACTUAL)
- */
-
 document.addEventListener('DOMContentLoaded', async () => {
-  // Obtener parámetros de la URL
   const params = new URLSearchParams(window.location.search);
   const temaParam = params.get('tema')
     ? params.get('tema').toLowerCase()
     : DEFAULT_LEYENDA_TEMA;
   const idioma = params.get('lang') || DEFAULT_LANG;
 
-  // -----------------------------------------------------------
-  // A. Lógica de Estilos (usar constantes desde config.js)
-  // -----------------------------------------------------------
   const temaBaseLink = document.getElementById('tema-base-css');
   const rutaCssTema =
     typeof LEYENDA_TEMA_FILES !== 'undefined'
@@ -31,9 +20,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.warn("Elemento con ID 'tema-base-css' no encontrado.");
   }
 
-  // -----------------------------------------------------------
-  // B. Lógica de Internacionalización (I18n) - carga dinámica
-  // -----------------------------------------------------------
   async function loadI18n(language) {
     const file =
       typeof I18N_FILES !== 'undefined' && I18N_FILES[language]
@@ -70,15 +56,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   function renderLeyendaContent(container, leyendaData) {
     if (!container || !leyendaData) return;
 
-    // Limpiar
     container.innerHTML = '';
 
-    // Intro párrafo
     const introP = document.createElement('p');
     introP.textContent = leyendaData.intro || '';
     container.appendChild(introP);
 
-    // Tabla de umbrales
     const umbralesSection = document.createElement('div');
     umbralesSection.className = 'leyenda-section umbrales-latencia';
 
@@ -124,7 +107,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     umbralesSection.appendChild(table);
     container.appendChild(umbralesSection);
 
-    // Tabla de códigos de error
     const codesSection = document.createElement('div');
     codesSection.className = 'leyenda-section codigos-error-section';
     codesSection.style.marginTop = '30px';
@@ -177,7 +159,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (headerEl) headerEl.textContent = i18n.get('leyenda.main_header');
     if (contentEl) renderLeyendaContent(contentEl, i18n.get('leyenda'));
   } else if (typeof window.TEXTOS_ACTUAL !== 'undefined') {
-    // Fallback: usar TEXTOS_ACTUAL como antes
     document.getElementById('leyenda-titulo').textContent =
       window.TEXTOS_ACTUAL.leyenda.title_browser;
     document.getElementById('titulo-leyenda').textContent =

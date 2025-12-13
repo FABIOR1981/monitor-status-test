@@ -1,61 +1,35 @@
-// =======================================================
-// 1. CONSTANTES Y CONFIGURACIÓN GLOBAL
-// vienen de config.js
-
 let temaProActivo = false;
 let websitesData = [];
 let historialStatus = {};
-let maxHistorialActual = MAX_HISTORIAL_ENTRIES; // Límite dinámico de historial
+let maxHistorialActual = MAX_HISTORIAL_ENTRIES;
 
-//let TEXTOS_ACTUAL = null;
-
-/**
- * Configura el enlace de la leyenda para copiar los parámetros de la URL actual
- * (ej: ?tema=pro) y anexarlos a la URL de destino (leyenda.html).
- */
 function configurarEnlaceLeyenda() {
   const enlaceLeyenda = document.getElementById('enlace-leyenda');
   if (enlaceLeyenda) {
-    // Usa window.location.search para obtener los parámetros de la URL actual
-    const queryString = window.location.search;
-
-    // Adjunta los parámetros a la URL de la leyenda
-    enlaceLeyenda.href = `leyenda.html${queryString}`;
+    enlaceLeyenda.href = `leyenda.html${window.location.search}`;
   }
 }
 
-/**
- * Obtiene la duración seleccionada del localStorage o retorna el valor por defecto
- */
 function obtenerDuracionSeleccionada() {
   const guardado = localStorage.getItem('duracionMonitoreo');
   return guardado && DURACION_OPCIONES[guardado] ? guardado : DURACION_DEFAULT;
 }
 
-/**
- * Guarda la duración seleccionada en localStorage
- */
 function guardarDuracionSeleccionada(duracion) {
   localStorage.setItem('duracionMonitoreo', duracion);
 }
 
-/**
- * Inicializa el selector de duración con el valor guardado y configura el event listener
- */
 function inicializarSelectorDuracion() {
   const selector = document.getElementById('duracion-selector');
   if (!selector) return;
 
-  // Limpiar opciones existentes
   selector.innerHTML = '';
 
-  // Generar opciones dinámicamente desde DURACION_OPCIONES
   Object.keys(DURACION_OPCIONES).forEach((key) => {
     const opcion = DURACION_OPCIONES[key];
     const option = document.createElement('option');
     option.value = key;
 
-    // Usar textos i18n para construir la etiqueta
     const horas = parseInt(key);
     const textoHoras =
       horas === 1
@@ -66,28 +40,23 @@ function inicializarSelectorDuracion() {
     selector.appendChild(option);
   });
 
-  // Establecer el valor guardado
   const duracionGuardada = obtenerDuracionSeleccionada();
   selector.value = duracionGuardada;
   maxHistorialActual = DURACION_OPCIONES[duracionGuardada].mediciones;
 
-  // Aplicar el texto del label
   const label = document.getElementById('duracion-label');
   if (label && window.TEXTOS_ACTUAL) {
     label.textContent = window.TEXTOS_ACTUAL.general.DURACION_LABEL;
   }
 
-  // Event listener para cambios
   selector.addEventListener('change', (e) => {
     const nuevaDuracion = e.target.value;
     guardarDuracionSeleccionada(nuevaDuracion);
     maxHistorialActual = DURACION_OPCIONES[nuevaDuracion].mediciones;
-
-    // Limpiar historial al cambiar duración para evitar inconsistencias
+    // Limpiamos el historial al cambiar duración porque las mediciones antiguas
+    // podrían ser incompatibles con el nuevo tamaño de ventana
     historialStatus = {};
     guardarHistorial();
-
-    // Reiniciar el monitoreo con el nuevo límite
     monitorearTodosWebsites();
   });
 }
@@ -96,64 +65,41 @@ function inicializarSelectorDuracion() {
 // 2. FUNCIONES DE INTERNACIONALIZACIÓN (I18N) Y DOM
 // =======================================================
 //
-/* Carga dinámicamente el script de idioma. Intenta cargar el idioma de la URL.
- * Si falla (ej: archivo no existe), cae a DEFAULT_LANG.
- * Lanza un error solo si DEFAULT_LANG también falla.
- */
 async function cargarIdioma() {
-  // 1. Obtener el idioma que el usuario desea usar (desde URL o DEFAULT_LANG)
   const idiomaSolicitado = obtenerIdiomaSeleccionado();
   const idiomaDefault = DEFAULT_LANG;
 
-  // 2. Intentar cargar el idioma solicitado.
   try {
     await cargarIdiomaScript(idiomaSolicitado);
-    return; // Éxito, el idioma se cargó
+    return;
   } catch (errorSolicitado) {
-    // Fallo en la carga. Si el idioma solicitado NO ERA el por defecto, intentar el fallback.
     if (idiomaSolicitado !== idiomaDefault) {
-      // 3. Intento de carga del idioma de reserva (DEFAULT_LANG)
       try {
         await cargarIdiomaScript(idiomaDefault);
-        return; // Éxito con el idioma de reserva
+        return;
       } catch (errorDefault) {
-        // Si el idioma de reserva también falla, lanzamos el error crítico
         throw new Error(
           `Fallo crítico: El idioma solicitado (${idiomaSolicitado}) y el de reserva (${idiomaDefault}) fallaron en la carga.`
         );
       }
     }
 
-    // 4. Si el idioma solicitado ERA el por defecto y falló, es un fallo crítico directo.
     throw new Error(
       `Fallo crítico: No se pudo cargar el idioma por defecto (${idiomaDefault}).`
     );
   }
 }
-/**
- * [NUEVA] Determina el idioma a cargar (es, en, etc.) priorizando el parámetro 'lang'
- * de la URL. Si no es válido, usa DEFAULT_LANG (config.js).
- * @returns {string} El código de idioma a usar (ej: 'es').
- */
 function obtenerIdiomaSeleccionado() {
   const params = new URLSearchParams(window.location.search);
   const langUrl = params.get('lang');
 
-  let idiomaACargar = DEFAULT_LANG; // Valor por defecto
-
-  // Validar si el idioma de la URL es compatible (I18N_FILES desde config.js)
   if (langUrl && I18N_FILES[langUrl]) {
-    idiomaACargar = langUrl;
+    return langUrl;
   }
 
-  return idiomaACargar;
+  return DEFAULT_LANG;
 }
 
-/**
- * [NUEVA] Carga dinámicamente el script de idioma y asigna los textos a window.TEXTOS_ACTUAL
- * @param {string} idiomaACargar El código de idioma ('es', 'en', etc.).
- * @returns {Promise<void>} Una promesa que se resuelve cuando el script ha terminado de cargar.
- */
 function cargarIdiomaScript(idiomaACargar) {
   const filePath = I18N_FILES[idiomaACargar];
 
@@ -171,7 +117,6 @@ function cargarIdiomaScript(idiomaACargar) {
     script.type = 'text/javascript';
 
     script.onload = () => {
-      // Se asume que el script de idioma asigna window.TEXTOS_ACTUAL
       if (window.TEXTOS_ACTUAL) {
         resolve();
       } else {
@@ -191,31 +136,20 @@ function cargarIdiomaScript(idiomaACargar) {
   });
 }
 
-/**
- * Actualiza el texto del encabezado de la columna Promedio con el conteo del historial.
- * @param {number} count - Número de entradas recogidas.
- */
 function actualizarEncabezadoPromedio(count) {
   const elemento = document.getElementById('header-promedio-ms');
   if (elemento) {
-    // Usa el límite dinámico actual
     elemento.textContent = `${window.TEXTOS_ACTUAL.tabla.HEADER_PROMEDIO_MS} [${count}/${maxHistorialActual}]`;
   }
 }
 
-/**
- * Inicializa todas las cadenas de texto estáticas leyendo el diccionario TEXTOS_ES.
- */
 function inicializarEtiquetas() {
-  // 0. Inicializar Título Principal
   const tituloEl = document.getElementById('titulo-principal');
   if (tituloEl) tituloEl.textContent = window.TEXTOS_ACTUAL.general.PAGE_TITLE;
 
-  // 1. Inyectar mensajes generales
   const infoBar = document.getElementById('info-bar-msg');
   if (infoBar) infoBar.textContent = window.TEXTOS_ACTUAL.general.INFO_BAR;
 
-  // 2. Inyectar encabezados de la tabla (7 columnas, 1 nivel)
   const headers = [
     { id: 'header-service', text: window.TEXTOS_ACTUAL.tabla.HEADER_SERVICE },
     { id: 'header-url', text: window.TEXTOS_ACTUAL.tabla.HEADER_URL },
@@ -227,7 +161,6 @@ function inicializarEtiquetas() {
       id: 'header-status-actual',
       text: window.TEXTOS_ACTUAL.tabla.HEADER_STATUS_ACTUAL,
     },
-    // El encabezado de promedio se actualizará dinámicamente después de obtener los datos
     {
       id: 'header-promedio-ms',
       text: window.TEXTOS_ACTUAL.tabla.HEADER_PROMEDIO_MS,
@@ -241,25 +174,17 @@ function inicializarEtiquetas() {
 
   headers.forEach((h) => {
     const element = document.getElementById(h.id);
-    if (element) {
-      element.textContent = h.text;
-    }
+    if (element) element.textContent = h.text;
   });
 
-  // 3. Inicializar el mensaje de última actualización
   actualizarUltimaActualizacion(null);
 }
 
-/**
- * Actualiza el texto de la última actualización, mostrando un spinner mientras carga.
- * @param {Date | null} fecha - La fecha de la última actualización, o null si está cargando.
- */
 function actualizarUltimaActualizacion(fecha) {
   const elemento = document.getElementById('ultima-actualizacion');
   if (!elemento) return;
 
   if (fecha) {
-    // Muestra la hora de actualización
     const opciones = {
       hour: '2-digit',
       minute: '2-digit',
@@ -271,48 +196,31 @@ function actualizarUltimaActualizacion(fecha) {
     const fechaFormateada = fecha.toLocaleTimeString('es-ES', opciones);
     elemento.innerHTML = `${window.TEXTOS_ACTUAL.general.LAST_UPDATE} <strong>${fechaFormateada}</strong>`;
   } else {
-    // Muestra el spinner mientras carga (HTML COMPACTO)
     elemento.innerHTML = `
-            ${window.TEXTOS_ACTUAL.general.LAST_UPDATE} 
-            <span class="loading-text">${window.TEXTOS_ACTUAL.general.LOADING}</span><span class="spinner" title="${window.TEXTOS_ACTUAL.general.LOADING}"></span>
-        `;
+      ${window.TEXTOS_ACTUAL.general.LAST_UPDATE} 
+      <span class="loading-text">${window.TEXTOS_ACTUAL.general.LOADING}</span><span class="spinner" title="${window.TEXTOS_ACTUAL.general.LOADING}"></span>
+    `;
   }
 }
 
-// =======================================================
-// 3. LÓGICA DE CLASIFICACIÓN Y CÁLCULOS
-// =======================================================
-
-/**
- * Determina el estado visual (texto y clase CSS) basado en un tiempo de latencia dado.
- */
 function obtenerEstadoVisual(tiempo, estado = 200) {
   const tiempoNum = parseFloat(tiempo);
 
-  // 🚨 MODIFICACIÓN CLAVE: Manejar CAÍDA y ERRORES
-  // 1. Si el estado NO es 200 O la latencia es extremadamente alta (penalización por fallo)
   if (estado !== 200 || tiempoNum >= UMBRALES_LATENCIA.PENALIZACION_FALLO) {
-    let textoFallo;
-
-    // Obtener la descripción del código de error (incluye 0 = Sin conexión)
     const descripcionEstado =
       window.TEXTOS_ACTUAL.httpStatus?.[estado] ||
       window.TEXTOS_ACTUAL.httpStatus?.GENERIC;
 
-    // Mostrar código y descripción para cualquier error
-    if (estado !== 200) {
-      textoFallo = `${window.TEXTOS_ACTUAL.estados.DOWN_ERROR} (${estado} - ${descripcionEstado})`;
-    } else {
-      // Timeout extremo pero con código 200 (muy raro)
-      textoFallo = window.TEXTOS_ACTUAL.estados.DOWN_ERROR;
-    }
+    const textoFallo =
+      estado !== 200
+        ? `${window.TEXTOS_ACTUAL.estados.DOWN_ERROR} (${estado} - ${descripcionEstado})`
+        : window.TEXTOS_ACTUAL.estados.DOWN_ERROR;
 
     return {
       text: textoFallo,
       className: 'status-down',
     };
   }
-  // 2. Continuar con la clasificación normal (solo si el estado es 200)
 
   const estadosVelocidad = [
     {
@@ -339,12 +247,12 @@ function obtenerEstadoVisual(tiempo, estado = 200) {
       umbral: UMBRALES_LATENCIA.CRITICO,
       text: window.TEXTOS_ACTUAL.velocidad.CRITICAL,
       className: 'status-critical',
-    }, // Nuevo
+    },
     {
       umbral: UMBRALES_LATENCIA.RIESGO,
       text: window.TEXTOS_ACTUAL.velocidad.RISK,
       className: 'status-risk',
-    }, // Nuevo
+    },
   ];
 
   for (const estadoVelocidad of estadosVelocidad) {
@@ -361,40 +269,24 @@ function obtenerEstadoVisual(tiempo, estado = 200) {
     className: 'status-extreme-risk',
   };
 }
-// =======================================================
-// 3.5. LÓGICA DE ORDENAMIENTO PERSONALIZADO
-// =======================================================
-/**
- * Ordena la lista de servicios. Mantiene fijos aquellos con 'orden: 1'
- * y ordena el resto alfabéticamente por nombre.
- * @param {Array<Object>} servicios - Lista de servicios sin ordenar.
- * @returns {Array<Object>} Lista de servicios ordenada.
- */
 function ordenarServiciosPersonalizado(servicios) {
-  // 1. Separar los servicios: Fijos (orden: 1) y Ordenables.
+  // Los servicios con orden=1 siempre aparecen primero (servicios críticos)
+  // El resto se ordenan alfabéticamente para facilitar la búsqueda
   const fijos = servicios.filter((servicio) => servicio.orden === 1);
   const ordenables = servicios.filter((servicio) => servicio.orden !== 1);
 
-  // 2. Ordenar el grupo de servicios ordenables alfabéticamente por 'nombre'.
   ordenables.sort((a, b) => {
     const nombreA = a.nombre.toUpperCase();
     const nombreB = b.nombre.toUpperCase();
-
     if (nombreA < nombreB) return -1;
     if (nombreA > nombreB) return 1;
-    return 0; // nombres iguales
+    return 0;
   });
 
-  // 3. Combinar los arrays: Fijos primero (manteniendo su orden original), seguido de los ordenables.
   return fijos.concat(ordenables);
 }
 
-// =======================================================
-// 4. LÓGICA DE HISTORIAL Y ALMACENAMIENTO LOCAL
-// =======================================================
-
 function cargarHistorial() {
-  // USANDO sessionStorage para que los datos se borren al cerrar el navegador
   const data = sessionStorage.getItem('monitorStatusHistorial');
   if (data) {
     historialStatus = JSON.parse(data);
@@ -402,7 +294,6 @@ function cargarHistorial() {
 }
 
 function guardarHistorial() {
-  // USANDO sessionStorage para que los datos se borren al cerrar el navegador
   sessionStorage.setItem(
     'monitorStatusHistorial',
     JSON.stringify(historialStatus)
@@ -414,21 +305,15 @@ function actualizarHistorial(url, time, status) {
     historialStatus[url] = [];
   }
 
-  // El objeto guardado en el historial debe incluir 'time' y 'status'
   historialStatus[url].push({ time, status, timestamp: Date.now() });
 
-  // Limitar el historial (Lógica FIFO: usa límite dinámico)
   if (historialStatus[url].length > maxHistorialActual) {
-    historialStatus[url].shift(); // Elimina el elemento más antiguo (First-In)
+    historialStatus[url].shift();
   }
 
   guardarHistorial();
 }
 
-/**
- * Calcula el promedio histórico de latencia y el estado visual.
- * DEVUELVE: { promedio: number, estadoPromedio: object, validCount: number, historial: Array }
- */
 function calcularPromedio(url) {
   const historial = historialStatus[url] || [];
 
@@ -444,21 +329,18 @@ function calcularPromedio(url) {
   let totalTime = 0;
   let validCount = 0;
   let fallos = 0;
-  let ultimoCodigoError = 200; // Guardar el código de error más reciente
+  let ultimoCodigoError = 200;
 
   historial.forEach((entry) => {
-    // Detectar si es un fallo
     const esFallo =
       entry.status !== 200 ||
       entry.time >= UMBRALES_LATENCIA.PENALIZACION_FALLO;
 
     if (esFallo) {
       fallos++;
-      ultimoCodigoError = entry.status; // Guardar el último código de error
-      // Para el cálculo del promedio, usar la penalización en lugar del tiempo real
+      ultimoCodigoError = entry.status;
       totalTime += UMBRALES_LATENCIA.PENALIZACION_FALLO;
     } else {
-      // Si no es fallo, usar el tiempo real
       totalTime += entry.time;
     }
 
@@ -467,37 +349,26 @@ function calcularPromedio(url) {
 
   const promedioMs = validCount > 0 ? Math.round(totalTime / validCount) : 0;
 
-  // Si más del 50% de los puntos son fallos, se marca como estado crítico
   if (fallos / validCount > 0.5 && validCount > 3) {
     return {
       promedio: promedioMs,
       estadoPromedio: obtenerEstadoVisual(
         UMBRALES_LATENCIA.PENALIZACION_FALLO + 1,
-        ultimoCodigoError // Usar el código de error real, no siempre 0
+        ultimoCodigoError
       ),
       validCount: validCount,
       historial: historial,
     };
-  } else {
-    return {
-      promedio: promedioMs,
-      estadoPromedio: obtenerEstadoVisual(promedioMs, 200),
-      validCount: validCount,
-      historial: historial,
-    };
   }
+
+  return {
+    promedio: promedioMs,
+    estadoPromedio: obtenerEstadoVisual(promedioMs, 200),
+    validCount: validCount,
+    historial: historial,
+  };
 }
 
-// =======================================================
-// 4.5. LÓGICA DE RESILIENCIA Y ERRORES GLOBALES (NUEVO)
-// =======================================================
-// Requiere constantes de config.js: GRUPO_CRITICO_NOMBRE, UMBRAL_FALLO_GLOBAL_MS, PORCENTAJE_FALLO_GLOBAL
-
-/**
- * Muestra un mensaje de advertencia sobre el Fallo Global.
- * @param {boolean} esFalloCritico - Si es un fallo global.
- * @param {string} [motivoFallo=""] - El texto detallado de la razón del fallo (ej: "80% de los sitios cayeron").
- */
 function mostrarAdvertenciaGlobal(esFalloCritico, motivoFallo = '') {
   const infoBar = document.getElementById('info-bar-msg');
 
@@ -505,11 +376,7 @@ function mostrarAdvertenciaGlobal(esFalloCritico, motivoFallo = '') {
     let mensajeBase =
       window.TEXTOS_ACTUAL.general.ADVERTENCIA_FALLO_GLOBAL_HTML;
 
-    // Si el tema 'pro' está activo, inyectamos el detalle del error
     if (temaProActivo && motivoFallo) {
-      // 'temaProActivo' viene de script.js, línea 4
-      // Usamos un <small> para diferenciarlo del mensaje base
-      //mensajeBase += `<br><small class="motivo-fallo">Motivo Pro: ${motivoFallo}</small>`;
       mensajeBase += `<br><small class="motivo-fallo">${window.TEXTOS_ACTUAL.general.MOTIVO_FALLO_PRO} ${motivoFallo}</small>`;
     }
 
@@ -523,32 +390,23 @@ function mostrarAdvertenciaGlobal(esFalloCritico, motivoFallo = '') {
   }
 }
 
-/**
- * Determina si la corrida actual debe ser marcada como Fallo Global Crítico.
- * @param {Array} websitesData - Lista completa de sitios (cargada de webs.json).
- * @param {Array} resultados - Array de resultados de la API: [{url, time, status}, ...].
- * @returns {{esFallo: boolean, motivo: string}} - objeto con el resultado y la causa del fallo.
- */
 function determinarFalloGlobal(websitesData, resultados) {
-  /*if (resultados.length === 0 || websitesData.length === 0) return { esFallo: true, motivo: "No hay resultados disponibles
-	(Fallo de red)" }; */
-  if (resultados.length === 0 || websitesData.length === 0)
+  if (resultados.length === 0 || websitesData.length === 0) {
     return {
       esFallo: true,
       motivo: window.TEXTOS_ACTUAL.general.FALLO_CRITICO_RED,
     };
+  }
 
   let totalSitios = websitesData.length;
   let sitiosEnFalloCritico = 0;
   let motivoFallo = '';
 
-  // --- 1. Mapear resultados para fácil acceso ---
   const resultadosMap = resultados.reduce((map, item) => {
     map[item.url] = item;
     return map;
   }, {});
 
-  // --- 2. Analizar el Grupo Crítico (si está definido) ---
   const sitiosCriticos = websitesData.filter(
     (web) => web.grupo === GRUPO_CRITICO_NOMBRE
   );
@@ -569,13 +427,11 @@ function determinarFalloGlobal(websitesData, resultados) {
       console.warn(
         `Alerta Global: Fallo del 100% en el grupo crítico "${GRUPO_CRITICO_NOMBRE}".`
       );
-      //motivoFallo = `Falló el 100% del grupo crítico: "${GRUPO_CRITICO_NOMBRE}".`;
       motivoFallo = `${window.TEXTOS_ACTUAL.general.FALLO_CRITICO_GRUPO} "${GRUPO_CRITICO_NOMBRE}".`;
       return { esFallo: true, motivo: motivoFallo };
     }
   }
 
-  // --- 3. Analizar Fallo Global por Porcentaje (Fallback) ---
   resultados.forEach((res) => {
     if (res.time > UMBRAL_FALLO_GLOBAL_MS) {
       sitiosEnFalloCritico++;
@@ -583,7 +439,6 @@ function determinarFalloGlobal(websitesData, resultados) {
   });
 
   const porcentajeFallo = sitiosEnFalloCritico / totalSitios;
-
   const falloPorPorcentaje = porcentajeFallo >= PORCENTAJE_FALLO_GLOBAL;
 
   if (falloPorPorcentaje) {
@@ -591,7 +446,6 @@ function determinarFalloGlobal(websitesData, resultados) {
     console.warn(
       `Alerta Global: ${porcentaje}% de los servicios superaron el umbral de ${UMBRAL_FALLO_GLOBAL_MS}ms.`
     );
-    //motivoFallo = `${porcentaje}% de los servicios superaron el umbral de ${UMBRAL_FALLO_GLOBAL_MS}ms.`;
     motivoFallo = `${porcentaje}${window.TEXTOS_ACTUAL.general.FALLO_CRITICO_LATENCIA_PARTE1} ${UMBRAL_FALLO_GLOBAL_MS}ms.`;
     return { esFallo: true, motivo: motivoFallo };
   }
@@ -616,6 +470,8 @@ async function verificarEstado(url) {
       console.error(
         `${window.TEXTOS_ACTUAL.estados.DOWN_ERROR} en la función Serverless para ${url}: ${response.status}`
       );
+      // Retornamos un objeto en lugar de lanzar error para que Promise.allSettled
+      // trate todos los servicios de forma consistente
       return {
         time: UMBRALES_LATENCIA.PENALIZACION_FALLO,
         status: ESTADO_ERROR_CONEXION,
@@ -804,10 +660,10 @@ async function monitorearTodosWebsites() {
   // DIBUJAR PLACEHOLDERS y establecer 'Cargando...'
   websitesData = ordenarServiciosPersonalizado(websitesData);
   dibujarFilasIniciales(websitesData);
-  actualizarUltimaActualizacion(null); // Establecer 'Cargando...'
+  actualizarUltimaActualizacion(null);
 
-  // 2. LANZAR TODAS LAS PROMESAS Y RECOLECTAR RESULTADOS
-  // Mapear llamadas a verificarEstado()
+  // Usamos Promise.allSettled en lugar de Promise.all para que un servicio caído
+  // no interrumpa el monitoreo de los demás servicios
   const promesas = websitesData.map((web) => verificarEstado(web.url));
   const allResults = await Promise.allSettled(promesas);
 
@@ -818,9 +674,10 @@ async function monitorearTodosWebsites() {
     let res;
 
     if (result.status === 'fulfilled') {
-      res = result.value; // Resultado exitoso del proxy: {time, status}
+      res = result.value;
     } else {
-      // Error de promesa, se penaliza
+      // Penalizamos con PENALIZACION_FALLO para que los errores de red
+      // aparezcan claramente como servicios caídos en la UI
       res = {
         time: UMBRALES_LATENCIA.PENALIZACION_FALLO,
         status: ESTADO_ERROR_CONEXION,

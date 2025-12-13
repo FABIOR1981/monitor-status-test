@@ -1,13 +1,12 @@
-// Para usar 'fetch' en el entorno Node.js de Netlify.
 const fetch = require('node-fetch');
 const AbortController = require('abort-controller');
 const https = require('https');
 const http = require('http');
 
-// Agentes HTTP/HTTPS que ignoran errores de certificado SSL
-// Necesario para monitorear sitios con certificados mal configurados o redirecciones HTTP
+// Ignoramos certificados SSL inválidos porque necesitamos monitorear
+// la disponibilidad del servicio, no la validez de sus certificados
 const httpsAgent = new https.Agent({
-  rejectUnauthorized: false, // Ignorar errores de certificado SSL
+  rejectUnauthorized: false,
 });
 
 const httpAgent = new http.Agent({
@@ -15,10 +14,8 @@ const httpAgent = new http.Agent({
 });
 
 exports.handler = async (event, context) => {
-  // Obtener la URL objetivo del parámetro de consulta
   const targetUrl = event.queryStringParameters.url;
 
-  // 1. Manejo de error si falta la URL
   if (!targetUrl) {
     return {
       statusCode: 400,
@@ -26,15 +23,13 @@ exports.handler = async (event, context) => {
     };
   }
 
-  // Configuración de encabezados para permitir CORS al frontend
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Content-Type': 'application/json',
   };
 
-  // 2. Ejecutar la petición HTTP real y medir el tiempo
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 9000); // Timeout de 9 segundos
+  const timeoutId = setTimeout(() => controller.abort(), 9000);
 
   try {
     const startTime = Date.now();
@@ -43,9 +38,9 @@ exports.handler = async (event, context) => {
       method: 'GET',
       signal: controller.signal,
       redirect: 'follow',
+      // Agente dinámico: permite manejar redirecciones de HTTPS→HTTP automáticamente
+      // sin fallar por cambio de protocolo
       agent: (_parsedURL) => {
-        // Función que retorna el agente correcto según el protocolo de cada request
-        // Esto maneja redirecciones de HTTPS a HTTP automáticamente
         if (_parsedURL.protocol === 'http:') {
           return httpAgent;
         } else {
@@ -61,8 +56,6 @@ exports.handler = async (event, context) => {
     const endTime = Date.now();
     const responseTime = endTime - startTime;
 
-    // 3. IMPORTANTE: node-fetch NO lanza error para 404, 500, etc.
-    // Solo devuelve la respuesta con response.status
     console.log(
       `URL: ${targetUrl} - Status: ${response.status} - Time: ${responseTime}ms`
     );
@@ -71,23 +64,25 @@ exports.handler = async (event, context) => {
       statusCode: 200,
       headers,
       body: JSON.stringify({
-        status: response.status, // Todos los códigos: 200, 404, 500, etc.
+        status: response.status,
         time: responseTime,
       }),
     };
   } catch (error) {
     clearTimeout(timeoutId);
 
-    // 4. Solo errores de RED, DNS o TIMEOUT llegan aquí
     console.error(
       `Error de conexión para ${targetUrl}: ${error.name} - ${error.message}`
     );
 
+    // Retornamos HTTP 200 con status=0 para distinguir entre:
+    // - Fallo de la función serverless (HTTP 500)
+    // - Fallo del servicio monitoreado (status: 0)
     return {
       statusCode: 200,
       headers,
       body: JSON.stringify({
-        status: 0, // Error de conexión/timeout
+        status: 0,
         time: 99999,
         error: `${error.name}: ${error.message}`,
       }),
