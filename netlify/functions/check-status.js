@@ -35,7 +35,7 @@ exports.handler = async (event, context) => {
     const endTime = Date.now();
     const responseTime = endTime - startTime; // Tiempo en milisegundos
 
-    // 3. Devolver los datos al frontend
+    // 3. Devolver los datos al frontend (incluyendo códigos de error HTTP como 404, 500, etc.)
     return {
       statusCode: 200,
       headers,
@@ -46,7 +46,7 @@ exports.handler = async (event, context) => {
     };
   } catch (error) {
     // 4. Manejar errores de conexión, DNS o Timeout.
-    // El error 0 o 599 se utiliza en el frontend para marcar "CAÍDA".
+    // Solo llega aquí si NO hay respuesta HTTP (error de red/timeout)
 
     console.error(`Fallo de fetch para ${targetUrl}: ${error.message}`);
 
@@ -55,7 +55,7 @@ exports.handler = async (event, context) => {
       headers,
       body: JSON.stringify({
         status: 0, // Usamos 0 para indicar error de conexión/timeout
-        time: 0,
+        time: 99999, // Penalización alta para reflejar el fallo
         error: 'Fallo de conexión, DNS o Timeout (9 segundos)',
       }),
     };

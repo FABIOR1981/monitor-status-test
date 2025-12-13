@@ -48,14 +48,19 @@ const LEYENDA_TEMA_FILES = {
 
 const ESTADO_ERROR_CONEXION = 0;
 
-// Códigos HTTP comunes (para referencia y manejo)
-const HTTP_STATUS = {
+// Códigos HTTP exitosos (2xx y 3xx)
+const HTTP_STATUS_SUCCESS = {
   OK: 200,
   CREATED: 201,
   NO_CONTENT: 204,
   MOVED_PERMANENTLY: 301,
   FOUND: 302,
   NOT_MODIFIED: 304,
+};
+
+// Códigos HTTP de error (4xx y 5xx)
+const HTTP_STATUS_ERROR = {
+  NO_CONNECTION: 0, // Código especial para error de conexión/timeout
   BAD_REQUEST: 400,
   UNAUTHORIZED: 401,
   PAYMENT_REQUIRED: 402,
