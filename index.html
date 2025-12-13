@@ -1,102 +1,111 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Monitor de Servicios</title>
-    <meta name="description" content="Monitor de estado y latencia de servicios web en tiempo real.">
-    
+    <meta
+      name="description"
+      content="Monitor de estado y latencia de servicios web en tiempo real."
+    />
+
     <style>
-        body {
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 30px;
-            min-height: 60vh; 
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 5px;
-        }
-        .info-bar {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 0.9em;
-        }
-        .update-info {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        #monitor-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        #monitor-table th, 
-        #monitor-table td {
-            text-align: left;
-        }
-        #monitor-table td a {
-            text-decoration: none;
-            font-size: 0.9em;
-            word-break: break-all;
-        }
-        #monitor-table td:nth-child(n+3):nth-child(-n+8) {
-            text-align: center;
-        }
-        .psi-button, .btn-primary {
-            border: none;
-            padding: 5px 8px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.8em;
-            transition: background-color 0.2s;
-        }
-        .latency-metric {
-            font-size: 1em;
-        }
+      body {
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 30px;
+        min-height: 60vh;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 5px;
+      }
+      .info-bar {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 0.9em;
+      }
+      .update-info {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      #monitor-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+      #monitor-table th,
+      #monitor-table td {
+        text-align: left;
+      }
+      #monitor-table td a {
+        text-decoration: none;
+        font-size: 0.9em;
+        word-break: break-all;
+      }
+      #monitor-table td:nth-child(n + 3):nth-child(-n + 8) {
+        text-align: center;
+      }
+      .psi-button,
+      .btn-primary {
+        border: none;
+        padding: 5px 8px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.8em;
+        transition: background-color 0.2s;
+      }
+      .latency-metric {
+        font-size: 1em;
+      }
     </style>
-    
-    <link rel="stylesheet" href="css/styles_base.css"/>
-    <link id="estilo-principal" rel="stylesheet" href="css/styles_def.css"/>
-</head>
-<body>
+
+    <link rel="stylesheet" href="css/styles_base.css" />
+    <link id="estilo-principal" rel="stylesheet" href="css/styles_def.css" />
+  </head>
+  <body>
     <main>
-        <div class="container">
-            <h1 id="titulo-principal">Monitor de Estado de Servicios</h1>
-            <div class="info-bar" id="info-bar-msg"></div>
-			
-			<div style="text-align: center; margin-bottom: 10px;">
-				<a href="leyenda.html" id="enlace-leyenda" style="font-size: 0.9em; color: #007bff; text-decoration: none;">
-					Ver Leyenda de Latencia
-				</a>
-			</div>
-			
-            <div class="update-info" id="ultima-actualizacion"></div>
-            <div class="table-scroll-container">
-                <table id="monitor-table">
-                    <thead>
-                        <tr>
-                            <th id="header-service"></th>
-                            <th id="header-url"></th>
-                            <th id="header-latency-actual"></th>
-                            <th id="header-status-actual"></th>
-                            <th id="header-promedio-ms"></th>
-                            <th id="header-promedio-status"></th>
-                            <th id="header-action"></th>
-                        </tr>
-                    </thead>
-                    <tbody id="status-table-body"></tbody>
-                </table>
-            </div>
+      <div class="container">
+        <h1 id="titulo-principal">Monitor de Estado de Servicios</h1>
+        <div class="info-bar" id="info-bar-msg"></div>
+
+        <div style="text-align: center; margin-bottom: 10px">
+          <a
+            href="leyenda.html"
+            id="enlace-leyenda"
+            target="_blank"
+            rel="noopener noreferrer"
+            style="font-size: 0.9em; color: #007bff; text-decoration: none"
+          >
+            Ver Leyenda de Latencia
+          </a>
         </div>
+
+        <div class="update-info" id="ultima-actualizacion"></div>
+        <div class="table-scroll-container">
+          <table id="monitor-table">
+            <thead>
+              <tr>
+                <th id="header-service"></th>
+                <th id="header-url"></th>
+                <th id="header-latency-actual"></th>
+                <th id="header-status-actual"></th>
+                <th id="header-promedio-ms"></th>
+                <th id="header-promedio-status"></th>
+                <th id="header-action"></th>
+              </tr>
+            </thead>
+            <tbody id="status-table-body"></tbody>
+          </table>
+        </div>
+      </div>
     </main>
-    
+
     <script defer src="js/config.js"></script>
     <script defer src="js/script.js"></script>
-</body>
-
+  </body>
 </html>

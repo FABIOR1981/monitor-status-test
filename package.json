@@ -8,7 +8,7 @@
     "format": "prettier --write \"**/*.{js,css,html,json,md}\""
   },
   "dependencies": {
-    "node-fetch": "^2.6.7"
+    "node-fetch": "^2.7.0"
   },
   "devDependencies": {
     "eslint": "^8.43.0",

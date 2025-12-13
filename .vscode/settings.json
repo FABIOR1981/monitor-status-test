@@ -23,6 +23,8 @@
   "prettier.singleQuote": true,
   "prettier.trailingComma": "es5",
   "git.autofetch": true,
-  "github.copilot.enable": true,
+  "github.copilot.enable": {
+    "*": true
+  },
   "github.copilot.inlineSuggest.enable": true
 }
