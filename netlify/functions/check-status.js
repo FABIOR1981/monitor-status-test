@@ -25,17 +25,20 @@ exports.handler = async (event, context) => {
 
     // **IMPORTANTE:** Timeout de la petición a 9 segundos (9000 ms).
     // Esto previene que la función Serverless exceda el timeout de Netlify (10s)
-    // y devuelva un 503 al cliente si la web destino tarda mucho.
     const response = await fetch(targetUrl, {
-      method: 'HEAD', // Usamos HEAD para solo pedir los encabezados, es más rápido.
+      method: 'GET', // GET en lugar de HEAD para mejor compatibilidad
       timeout: 9000,
-      follow: 20,
+      redirect: 'follow',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Monitor-Status-Check)',
+      },
     });
 
     const endTime = Date.now();
     const responseTime = endTime - startTime; // Tiempo en milisegundos
 
-    // 3. Devolver los datos al frontend (incluyendo códigos de error HTTP como 404, 500, etc.)
+    // 3. Devolver los datos al frontend (TODOS los códigos HTTP, incluyendo 404, 500, etc.)
+    // node-fetch NO lanza error para códigos 4xx/5xx, solo devuelve la respuesta
     return {
       statusCode: 200,
       headers,
@@ -45,9 +48,7 @@ exports.handler = async (event, context) => {
       }),
     };
   } catch (error) {
-    // 4. Manejar errores de conexión, DNS o Timeout.
-    // Solo llega aquí si NO hay respuesta HTTP (error de red/timeout)
-
+    // 4. Solo llega aquí si hay error de RED, DNS o TIMEOUT (no para códigos HTTP)
     console.error(`Fallo de fetch para ${targetUrl}: ${error.message}`);
 
     return {
@@ -56,7 +57,7 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({
         status: 0, // Usamos 0 para indicar error de conexión/timeout
         time: 99999, // Penalización alta para reflejar el fallo
-        error: 'Fallo de conexión, DNS o Timeout (9 segundos)',
+        error: `Fallo de conexión, DNS o Timeout: ${error.message}`,
       }),
     };
   }
