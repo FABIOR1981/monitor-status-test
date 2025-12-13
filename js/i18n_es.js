@@ -38,31 +38,122 @@ const TEXTOS_ES = {
     DOWN: 'CAÍDA',
     DOWN_ERROR: 'CAÍDA/ERROR',
   },
-  // Descripciones de códigos HTTP
-  httpStatus: {
-    0: 'Sin conexión',
-    301: 'Redireccionamiento permanente',
-    302: 'Redireccionamiento temporal',
-    304: 'No modificado',
-    400: 'Solicitud incorrecta',
-    401: 'No autorizado',
-    402: 'Pago requerido',
-    403: 'Acceso prohibido',
-    404: 'No encontrado',
-    405: 'Método no permitido',
-    406: 'No aceptable',
-    408: 'Tiempo agotado',
-    409: 'Conflicto',
-    410: 'Ya no disponible',
-    418: 'Soy una tetera',
-    429: 'Demasiadas solicitudes',
-    500: 'Error del servidor',
-    501: 'No implementado',
-    502: 'Puerta de enlace incorrecta',
-    503: 'Servicio no disponible',
-    504: 'Tiempo agotado de puerta de enlace',
-    // Mensaje genérico para códigos no listados
-    GENERIC: 'Error HTTP',
+  // Definición completa de códigos HTTP (fuente única de verdad)
+  httpCodes: [
+    {
+      code: 0,
+      label: 'Sin conexión',
+      description: 'No se pudo establecer conexión con el servidor (timeout, DNS, red).',
+    },
+    {
+      code: 301,
+      label: 'Redireccionamiento permanente',
+      description: 'El recurso se ha movido permanentemente a una nueva URL.',
+    },
+    {
+      code: 302,
+      label: 'Redireccionamiento temporal',
+      description: 'El recurso está temporalmente en una URL diferente.',
+    },
+    {
+      code: 304,
+      label: 'No modificado',
+      description: 'El recurso no ha cambiado desde la última solicitud.',
+    },
+    {
+      code: 400,
+      label: 'Solicitud incorrecta',
+      description: 'Solicitud mal formada o inválida.',
+    },
+    {
+      code: 401,
+      label: 'No autorizado',
+      description: 'Se requiere autenticación para acceder al recurso.',
+    },
+    {
+      code: 402,
+      label: 'Pago requerido',
+      description: 'Reservado para uso futuro en sistemas de pago.',
+    },
+    {
+      code: 403,
+      label: 'Acceso prohibido',
+      description: 'Acceso prohibido, incluso con autenticación válida.',
+    },
+    {
+      code: 404,
+      label: 'No encontrado',
+      description: 'El recurso solicitado no existe en el servidor.',
+    },
+    {
+      code: 405,
+      label: 'Método no permitido',
+      description: 'El método HTTP usado no está permitido para este recurso.',
+    },
+    {
+      code: 406,
+      label: 'No aceptable',
+      description: 'El servidor no puede generar una respuesta aceptable según los headers Accept.',
+    },
+    {
+      code: 408,
+      label: 'Tiempo agotado',
+      description: 'El servidor agotó el tiempo de espera para la solicitud.',
+    },
+    {
+      code: 409,
+      label: 'Conflicto',
+      description: 'La solicitud entra en conflicto con el estado actual del servidor.',
+    },
+    {
+      code: 410,
+      label: 'Ya no disponible',
+      description: 'El recurso fue eliminado permanentemente y no tiene dirección de reenvío.',
+    },
+    {
+      code: 418,
+      label: 'Soy una tetera',
+      description: 'Código humorístico (RFC 2324). Algunos servicios lo usan para rechazar solicitudes.',
+    },
+    {
+      code: 429,
+      label: 'Demasiadas solicitudes',
+      description: 'Se ha superado el límite de tasa (Rate Limit) del servicio.',
+    },
+    {
+      code: 500,
+      label: 'Error del servidor',
+      description: 'Error interno genérico del servidor.',
+    },
+    {
+      code: 501,
+      label: 'No implementado',
+      description: 'El servidor no soporta la funcionalidad requerida para completar la solicitud.',
+    },
+    {
+      code: 502,
+      label: 'Puerta de enlace incorrecta',
+      description: 'Un proxy/gateway recibió una respuesta inválida del servidor de origen.',
+    },
+    {
+      code: 503,
+      label: 'Servicio no disponible',
+      description: 'El servidor está temporalmente sobrecargado, en mantenimiento o inactivo.',
+    },
+    {
+      code: 504,
+      label: 'Tiempo agotado de puerta de enlace',
+      description: 'Un proxy/gateway no recibió respuesta a tiempo del servidor de origen.',
+    },
+  ],
+  // Mapa de código → label (derivado de httpCodes)
+  get httpStatus() {
+    const map = {};
+    this.httpCodes.forEach(item => {
+      map[item.code] = item.label;
+    });
+    map.GENERIC = 'Error HTTP';
+    return map;
   },
   tabla: {
     HEADER_SERVICE: 'Servicio',
@@ -167,80 +258,31 @@ TEXTOS_ES.leyenda = {
   http_codes_title: 'Códigos de Estado HTTP y Fallos del Sistema',
   http_codes_description:
     'Cuando un servicio devuelve un código de estado fuera del rango 2xx (Éxito), el monitor lo clasifica visualmente como ❌ FALLO TOTAL, pero muestra el código real entre paréntesis (ej: ❌ Caída (404)).',
-  codigos_error: [
-    {
-      code: '2xx',
-      label: 'OK / Éxito',
-      description:
-        'La conexión y el servicio respondieron correctamente (Latencia medida).',
-    },
-    {
-      code: '0',
-      label: 'Error de Conexión',
-      description:
-        'Fallo de red, DNS, timeout, bloqueo de CORS, o no respuesta del servidor.',
-    },
-    {
-      code: '400',
-      label: 'Bad Request',
-      description: 'Solicitud mal formada o inválida.',
-    },
-    {
-      code: '401',
-      label: 'Unauthorized',
-      description: 'Se requiere autenticación para acceder al recurso.',
-    },
-    {
-      code: '403',
-      label: 'Forbidden',
-      description: 'Acceso prohibido, incluso con autenticación válida.',
-    },
-    {
-      code: '404',
-      label: 'Not Found',
-      description: 'El recurso solicitado no existe en el servidor.',
-    },
-    {
-      code: '408',
-      label: 'Request Timeout',
-      description: 'El servidor agotó el tiempo de espera para la solicitud.',
-    },
-    {
-      code: '418',
-      label: "I'm a teapot",
-      description:
-        'Código humorístico (RFC 2324). Algunos servicios lo usan para rechazar solicitudes.',
-    },
-    {
-      code: '429',
-      label: 'Too Many Requests',
-      description:
-        'Se ha superado el límite de tasa (Rate Limit) del servicio.',
-    },
-    {
-      code: '500',
-      label: 'Internal Server Error',
-      description: 'Error interno genérico del servidor.',
-    },
-    {
-      code: '502',
-      label: 'Bad Gateway',
-      description:
-        'Un proxy/gateway recibió una respuesta inválida del servidor de origen.',
-    },
-    {
-      code: '503',
-      label: 'Service Unavailable',
-      description:
-        'El servidor está temporalmente sobrecargado, en mantenimiento o inactivo.',
-    },
-    {
-      code: '504',
-      label: 'Gateway Timeout',
-      description:
-        'Un proxy/gateway no recibió respuesta a tiempo del servidor de origen.',
-    },
-  ],
+  // Códigos de error para la leyenda (derivados de httpCodes)
+  get codigos_error() {
+    // Primero agregamos el código 2xx que es informativo, no está en httpCodes
+    const errores = [
+      {
+        code: '2xx',
+        label: 'OK / Éxito',
+        description:
+          'La conexión y el servicio respondieron correctamente (Latencia medida).',
+      },
+    ];
+    
+    // Filtramos solo códigos de error (0 y 4xx/5xx) de httpCodes
+    const codigosError = this.httpCodes.filter(item => {
+      const code = item.code;
+      return code === 0 || code >= 400;
+    }).map(item => ({
+      code: item.code.toString(),
+      label: item.label,
+      description: item.description,
+    }));
+    
+    return errores.concat(codigosError);
+  },
+};
 };
 
 // Compatibilidad para la API i18n.get() usada por las páginas de la leyenda.
