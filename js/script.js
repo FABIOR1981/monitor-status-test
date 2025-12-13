@@ -403,6 +403,19 @@ function calcularPromedio(url) {
   const promedioMs =
     medicionesExitosas > 0 ? Math.round(totalTime / medicionesExitosas) : 0;
 
+  // Si no hay mediciones exitosas (todas fallaron), mostrar como error
+  if (medicionesExitosas === 0) {
+    return {
+      promedio: 0,
+      estadoPromedio: obtenerEstadoVisual(
+        UMBRALES_LATENCIA.PENALIZACION_FALLO + 1,
+        ultimoCodigoError
+      ),
+      validCount: validCount,
+      historial: historial,
+    };
+  }
+
   return {
     promedio: promedioMs,
     estadoPromedio: obtenerEstadoVisual(promedioMs, 200),
