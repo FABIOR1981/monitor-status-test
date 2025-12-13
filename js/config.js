@@ -47,6 +47,34 @@ const LEYENDA_TEMA_FILES = {
 // =======================================================
 
 const ESTADO_ERROR_CONEXION = 0;
+
+// Códigos HTTP comunes (para referencia y manejo)
+const HTTP_STATUS = {
+  OK: 200,
+  CREATED: 201,
+  NO_CONTENT: 204,
+  MOVED_PERMANENTLY: 301,
+  FOUND: 302,
+  NOT_MODIFIED: 304,
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
+  PAYMENT_REQUIRED: 402,
+  FORBIDDEN: 403,
+  NOT_FOUND: 404,
+  METHOD_NOT_ALLOWED: 405,
+  NOT_ACCEPTABLE: 406,
+  TIMEOUT: 408,
+  CONFLICT: 409,
+  GONE: 410,
+  IM_A_TEAPOT: 418,
+  TOO_MANY_REQUESTS: 429,
+  INTERNAL_ERROR: 500,
+  NOT_IMPLEMENTED: 501,
+  BAD_GATEWAY: 502,
+  SERVICE_UNAVAILABLE: 503,
+  GATEWAY_TIMEOUT: 504,
+};
+
 const PROXY_ENDPOINT = '/.netlify/functions/check-status';
 const FRECUENCIA_MONITOREO_MS = 5 * 60 * 1000;
 

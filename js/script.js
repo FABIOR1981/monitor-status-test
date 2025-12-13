@@ -297,7 +297,10 @@ function obtenerEstadoVisual(tiempo, estado = 200) {
     // Si hay un código HTTP válido (diferente de ESTADO_ERROR_CONEXION), mostrarlo
     if (estado !== ESTADO_ERROR_CONEXION && estado !== 200) {
       // Hay respuesta HTTP pero con código de error
-      textoFallo = `${window.TEXTOS_ACTUAL.estados.DOWN_ERROR} (${estado})`;
+      const descripcionEstado =
+        window.TEXTOS_ACTUAL.httpStatus?.[estado] ||
+        window.TEXTOS_ACTUAL.httpStatus?.GENERIC;
+      textoFallo = `${window.TEXTOS_ACTUAL.estados.DOWN_ERROR} (${estado} - ${descripcionEstado})`;
     } else {
       // Error de conexión sin respuesta HTTP o timeout extremo
       textoFallo = window.TEXTOS_ACTUAL.estados.DOWN_ERROR;
