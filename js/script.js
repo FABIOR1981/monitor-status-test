@@ -46,6 +46,26 @@ function inicializarSelectorDuracion() {
   const selector = document.getElementById('duracion-selector');
   if (!selector) return;
 
+  // Limpiar opciones existentes
+  selector.innerHTML = '';
+
+  // Generar opciones dinámicamente desde DURACION_OPCIONES
+  Object.keys(DURACION_OPCIONES).forEach((key) => {
+    const opcion = DURACION_OPCIONES[key];
+    const option = document.createElement('option');
+    option.value = key;
+
+    // Usar textos i18n para construir la etiqueta
+    const horas = parseInt(key);
+    const textoHoras =
+      horas === 1
+        ? window.TEXTOS_ACTUAL.general.DURACION_HORA_SINGULAR
+        : window.TEXTOS_ACTUAL.general.DURACION_HORA_PLURAL;
+
+    option.textContent = `${horas} ${textoHoras} (${opcion.mediciones} ${window.TEXTOS_ACTUAL.general.DURACION_MEDICIONES})`;
+    selector.appendChild(option);
+  });
+
   // Establecer el valor guardado
   const duracionGuardada = obtenerDuracionSeleccionada();
   selector.value = duracionGuardada;

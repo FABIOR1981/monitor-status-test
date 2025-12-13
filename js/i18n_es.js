@@ -20,6 +20,9 @@ const TEXTOS_ES = {
 
     // Selector de duración
     DURACION_LABEL: 'Duración del historial:',
+    DURACION_HORA_SINGULAR: 'hora',
+    DURACION_HORA_PLURAL: 'horas',
+    DURACION_MEDICIONES: 'mediciones',
   },
   velocidad: {
     // <-- Grupo 2 (ACTUALIZADO)
