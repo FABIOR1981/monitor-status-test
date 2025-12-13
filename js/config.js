@@ -50,11 +50,19 @@ const ESTADO_ERROR_CONEXION = 0;
 const PROXY_ENDPOINT = '/.netlify/functions/check-status';
 const FRECUENCIA_MONITOREO_MS = 5 * 60 * 1000;
 
-// Opciones de duración del monitoreo
-const DURACION_OPCIONES = {
-  '1h': { mediciones: 12, etiqueta: '1 hora' },
-  '8h': { mediciones: 96, etiqueta: '8 horas' },
-};
+// Horas disponibles para el selector de duración
+const HORAS_DISPONIBLES = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+// Generar opciones de duración automáticamente (cada hora = 12 mediciones, ya que se monitorea cada 5 min)
+const DURACION_OPCIONES = {};
+HORAS_DISPONIBLES.forEach((horas) => {
+  const key = `${horas}h`;
+  DURACION_OPCIONES[key] = {
+    mediciones: horas * 12,
+    etiqueta: horas === 1 ? '1 hora' : `${horas} horas`,
+  };
+});
+
 const DURACION_DEFAULT = '1h'; // Duración por defecto
 
 // MAX_HISTORIAL_ENTRIES será dinámico, pero guardamos un valor por defecto
