@@ -43,7 +43,8 @@ const TEXTOS_ES = {
     {
       code: 0,
       label: 'Sin conexión',
-      description: 'No se pudo establecer conexión con el servidor (timeout, DNS, red).',
+      description:
+        'No se pudo establecer conexión con el servidor (timeout, DNS, red).',
     },
     {
       code: 301,
@@ -93,7 +94,8 @@ const TEXTOS_ES = {
     {
       code: 406,
       label: 'No aceptable',
-      description: 'El servidor no puede generar una respuesta aceptable según los headers Accept.',
+      description:
+        'El servidor no puede generar una respuesta aceptable según los headers Accept.',
     },
     {
       code: 408,
@@ -103,22 +105,26 @@ const TEXTOS_ES = {
     {
       code: 409,
       label: 'Conflicto',
-      description: 'La solicitud entra en conflicto con el estado actual del servidor.',
+      description:
+        'La solicitud entra en conflicto con el estado actual del servidor.',
     },
     {
       code: 410,
       label: 'Ya no disponible',
-      description: 'El recurso fue eliminado permanentemente y no tiene dirección de reenvío.',
+      description:
+        'El recurso fue eliminado permanentemente y no tiene dirección de reenvío.',
     },
     {
       code: 418,
       label: 'Soy una tetera',
-      description: 'Código humorístico (RFC 2324). Algunos servicios lo usan para rechazar solicitudes.',
+      description:
+        'Código humorístico (RFC 2324). Algunos servicios lo usan para rechazar solicitudes.',
     },
     {
       code: 429,
       label: 'Demasiadas solicitudes',
-      description: 'Se ha superado el límite de tasa (Rate Limit) del servicio.',
+      description:
+        'Se ha superado el límite de tasa (Rate Limit) del servicio.',
     },
     {
       code: 500,
@@ -128,28 +134,32 @@ const TEXTOS_ES = {
     {
       code: 501,
       label: 'No implementado',
-      description: 'El servidor no soporta la funcionalidad requerida para completar la solicitud.',
+      description:
+        'El servidor no soporta la funcionalidad requerida para completar la solicitud.',
     },
     {
       code: 502,
       label: 'Puerta de enlace incorrecta',
-      description: 'Un proxy/gateway recibió una respuesta inválida del servidor de origen.',
+      description:
+        'Un proxy/gateway recibió una respuesta inválida del servidor de origen.',
     },
     {
       code: 503,
       label: 'Servicio no disponible',
-      description: 'El servidor está temporalmente sobrecargado, en mantenimiento o inactivo.',
+      description:
+        'El servidor está temporalmente sobrecargado, en mantenimiento o inactivo.',
     },
     {
       code: 504,
       label: 'Tiempo agotado de puerta de enlace',
-      description: 'Un proxy/gateway no recibió respuesta a tiempo del servidor de origen.',
+      description:
+        'Un proxy/gateway no recibió respuesta a tiempo del servidor de origen.',
     },
   ],
   // Mapa de código → label (derivado de httpCodes)
   get httpStatus() {
     const map = {};
-    this.httpCodes.forEach(item => {
+    this.httpCodes.forEach((item) => {
       map[item.code] = item.label;
     });
     map.GENERIC = 'Error HTTP';
@@ -269,20 +279,21 @@ TEXTOS_ES.leyenda = {
           'La conexión y el servicio respondieron correctamente (Latencia medida).',
       },
     ];
-    
+
     // Filtramos solo códigos de error (0 y 4xx/5xx) de httpCodes
-    const codigosError = this.httpCodes.filter(item => {
-      const code = item.code;
-      return code === 0 || code >= 400;
-    }).map(item => ({
-      code: item.code.toString(),
-      label: item.label,
-      description: item.description,
-    }));
-    
+    const codigosError = this.httpCodes
+      .filter((item) => {
+        const code = item.code;
+        return code === 0 || code >= 400;
+      })
+      .map((item) => ({
+        code: item.code.toString(),
+        label: item.label,
+        description: item.description,
+      }));
+
     return errores.concat(codigosError);
   },
-};
 };
 
 // Compatibilidad para la API i18n.get() usada por las páginas de la leyenda.
