@@ -872,6 +872,102 @@ function reiniciarMonitoreo() {
   monitorearTodosWebsites();
 }
 
+async function cargarYMostrarHistorialExistente() {
+  // Cargar lista de websites
+  let websitesData = [];
+  try {
+    const response = await fetch(WEBSITES_FILE);
+    websitesData = await response.json();
+  } catch (e) {
+    console.error('Error al cargar webs.json.', e);
+    return;
+  }
+
+  if (websitesData.length === 0) return;
+
+  websitesData = ordenarServiciosPersonalizado(websitesData);
+
+  // Dibujar filas con datos del historial existente
+  const tbody = document.getElementById('status-table-body');
+  tbody.innerHTML = '';
+
+  let maxValidCount = 0;
+
+  websitesData.forEach((web) => {
+    const row = tbody.insertRow();
+    row.setAttribute('data-url', web.url);
+
+    const cellNombre = row.insertCell();
+    cellNombre.textContent = web.nombre;
+
+    const cellUrl = row.insertCell();
+    const a = document.createElement('a');
+    a.href = web.url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.textContent = web.url;
+    cellUrl.appendChild(a);
+
+    // Obtener última medición del historial
+    const historial = historialStatus[web.url] || [];
+    const ultimaMedicion =
+      historial.length > 0 ? historial[historial.length - 1] : null;
+
+    if (ultimaMedicion) {
+      const estadoActual = obtenerEstadoVisual(
+        ultimaMedicion.time,
+        ultimaMedicion.status
+      );
+      const { promedio, estadoPromedio, validCount } = calcularPromedio(
+        web.url
+      );
+
+      maxValidCount = Math.max(maxValidCount, validCount);
+
+      row.insertCell().textContent = `${ultimaMedicion.time} ms`;
+
+      const cellEstadoActual = row.insertCell();
+      cellEstadoActual.textContent = estadoActual.text;
+      cellEstadoActual.className = estadoActual.className;
+
+      row.insertCell().textContent = `${promedio} ms`;
+
+      const cellEstadoPromedio = row.insertCell();
+      cellEstadoPromedio.textContent = estadoPromedio.text;
+      cellEstadoPromedio.className = estadoPromedio.className;
+    } else {
+      row.insertCell().textContent = '-';
+      row.insertCell().textContent = '-';
+      row.insertCell().textContent = '-';
+      row.insertCell().textContent = '-';
+    }
+
+    const cellAccion = row.insertCell();
+    cellAccion.innerHTML = `<button class="psi-button" onclick="window.open('https://pagespeed.web.dev/report?url=${web.url}', '_blank')">PSI</button>`;
+  });
+
+  actualizarEncabezadoPromedio(maxValidCount);
+
+  // NO actualizar la fecha de última actualización - mantener la guardada
+  // Buscar la última fecha en el historial
+  let ultimaFecha = null;
+  for (const url in historialStatus) {
+    const historial = historialStatus[url];
+    if (historial && historial.length > 0) {
+      const ultimaMedicion = historial[historial.length - 1];
+      if (ultimaMedicion.timestamp) {
+        if (!ultimaFecha || ultimaMedicion.timestamp > ultimaFecha) {
+          ultimaFecha = ultimaMedicion.timestamp;
+        }
+      }
+    }
+  }
+
+  if (ultimaFecha) {
+    actualizarUltimaActualizacion(new Date(ultimaFecha));
+  }
+}
+
 // Punto de entrada principal al cargar el DOM
 document.addEventListener('DOMContentLoaded', async () => {
   inicializarTema();
@@ -880,14 +976,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   try {
     // 1. Cargar dinámicamente el diccionario de idioma
-    await cargarIdioma(); // ESPERA a que el script de idioma asigne window.TEXTOS_ACTUAL
+    await cargarIdioma();
 
     // 2. Inicializar elementos estáticos AHORA que TEXTOS_ACTUAL tiene valor
     inicializarEtiquetas();
-    inicializarSelectorDuracion(); // Inicializar selector de duración
+    inicializarSelectorDuracion();
 
-    // 3. Iniciar el monitoreo
-    monitorearTodosWebsites();
+    // 3. Verificar si el historial ya está completo
+    if (historialCompleto()) {
+      // Si está completo, solo cargar y mostrar datos existentes
+      console.log(
+        'Historial completo detectado. Mostrando datos guardados sin nuevas mediciones.'
+      );
+      await cargarYMostrarHistorialExistente();
+    } else {
+      // Si no está completo, iniciar el monitoreo normal
+      monitorearTodosWebsites();
+    }
   } catch (e) {
     console.error('Fallo crítico: No se pudo cargar el idioma.', e);
     document.getElementById(
