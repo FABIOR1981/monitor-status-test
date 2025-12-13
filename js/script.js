@@ -294,15 +294,13 @@ function obtenerEstadoVisual(tiempo, estado = 200) {
   if (estado !== 200 || tiempoNum >= UMBRALES_LATENCIA.PENALIZACION_FALLO) {
     let textoFallo;
 
-    if (
-      estado === ESTADO_ERROR_CONEXION ||
-      tiempoNum >= UMBRALES_LATENCIA.PENALIZACION_FALLO
-    ) {
-      // Error de conexión o timeout (usamos el texto genérico de error)
-      textoFallo = window.TEXTOS_ACTUAL.estados.DOWN_ERROR;
+    // Si hay un código HTTP válido (diferente de ESTADO_ERROR_CONEXION), mostrarlo
+    if (estado !== ESTADO_ERROR_CONEXION && estado !== 200) {
+      // Hay respuesta HTTP pero con código de error
+      textoFallo = `${window.TEXTOS_ACTUAL.estados.DOWN_ERROR} (${estado})`;
     } else {
-      // Respuesta RÁPIDA con código NO-200
-      textoFallo = `${window.TEXTOS_ACTUAL.estados.DOWN} (${estado})`;
+      // Error de conexión sin respuesta HTTP o timeout extremo
+      textoFallo = window.TEXTOS_ACTUAL.estados.DOWN_ERROR;
     }
 
     return {
