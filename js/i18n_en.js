@@ -159,25 +159,25 @@ const TEXTOS_EN = {
         'A proxy/gateway did not receive a timely response from the origin server.',
     },
   ],
-  // Map code → label (derived from httpCodes)
-  get httpStatus() {
-    const map = {};
-    this.httpCodes.forEach((item) => {
-      map[item.code] = item.label;
-    });
-    map.GENERIC = 'HTTP Error';
-    return map;
-  },
+};
 
-  tabla: {
-    HEADER_SERVICE: 'Service',
-    HEADER_URL: 'URL',
-    HEADER_LATENCY_ACTUAL: 'Current Latency',
-    HEADER_STATUS_ACTUAL: 'Current Status',
-    HEADER_PROMEDIO_MS: 'Average',
-    HEADER_PROMEDIO_STATUS: 'Average Status',
-    HEADER_ACTION: 'Action',
-  },
+// Derive httpStatus from httpCodes array (calculated once)
+TEXTOS_EN.httpStatus = {};
+TEXTOS_EN.httpCodes.forEach((item) => {
+  TEXTOS_EN.httpStatus[item.code] = item.label;
+});
+TEXTOS_EN.httpStatus.GENERIC = 'HTTP Error';
+
+// Continue with the rest of TEXTOS_EN properties
+TEXTOS_EN.tabla = {
+  HEADER_SERVICE: 'Service',
+  HEADER_URL: 'URL',
+  HEADER_LATENCY_ACTUAL: 'Current Latency',
+  HEADER_STATUS_ACTUAL: 'Current Status',
+  HEADER_PROMEDIO_MS: 'Average',
+  HEADER_PROMEDIO_STATUS: 'Average Status',
+  HEADER_ACTION: 'Action',
+};
 };
 
 // Asignar el objeto al contexto global para ser utilizado por script.js
@@ -275,33 +275,28 @@ TEXTOS_EN.leyenda = {
   http_codes_title: 'HTTP Status Codes and System Failures',
   http_codes_description:
     'When a service returns a status code outside the 2xx range (Success), the monitor visually classifies it as ❌ DOWN, but it displays the real status code (e.g., ❌ Down (404)).',
-  // Error codes for legend (derived from httpCodes)
-  get codigos_error() {
-    // First add the informative 2xx code, not in httpCodes
-    const errors = [
-      {
-        code: '2xx',
-        label: 'OK / Success',
-        description:
-          'The connection and service responded correctly (latency measured).',
-      },
-    ];
-
-    // Filter only error codes (0 and 4xx/5xx) from httpCodes
-    const errorCodes = this.httpCodes
-      .filter((item) => {
-        const code = item.code;
-        return code === 0 || code >= 400;
-      })
-      .map((item) => ({
-        code: item.code.toString(),
-        label: item.label,
-        description: item.description,
-      }));
-
-    return errors.concat(errorCodes);
-  },
 };
+
+// Derive codigos_error from httpCodes array (calculated once)
+TEXTOS_EN.leyenda.codigos_error = [
+  {
+    code: '2xx',
+    label: 'OK / Success',
+    description:
+      'The connection and service responded correctly (latency measured).',
+  },
+];
+
+// Add error codes (0 and 4xx/5xx) from httpCodes
+TEXTOS_EN.httpCodes
+  .filter((item) => item.code === 0 || item.code >= 400)
+  .forEach((item) => {
+    TEXTOS_EN.leyenda.codigos_error.push({
+      code: item.code.toString(),
+      label: item.label,
+      description: item.description,
+    });
+  });
 
 // i18n get() shim for compatibility with leyenda_script.js and other code that expects i18n.get()
 window.i18n = {
@@ -314,19 +309,7 @@ window.i18n = {
       if (!cur.hasOwnProperty(p)) return `[TEXT NOT FOUND: ${key}]`;
       cur = cur[p];
     }
-
-    // If cur is an object with getters, evaluate them before returning
-    // This resolves the problem of losing context with this.httpCodes
-    if (cur && typeof cur === 'object' && !Array.isArray(cur)) {
-      const evaluated = {};
-      for (const prop in cur) {
-        if (cur.hasOwnProperty(prop)) {
-          evaluated[prop] = cur[prop]; // This evaluates getters automatically
-        }
-      }
-      return evaluated;
-    }
-
     return cur;
   },
 };
+

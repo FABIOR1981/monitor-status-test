@@ -156,24 +156,24 @@ const TEXTOS_ES = {
         'Un proxy/gateway no recibió respuesta a tiempo del servidor de origen.',
     },
   ],
-  // Mapa de código → label (derivado de httpCodes)
-  get httpStatus() {
-    const map = {};
-    this.httpCodes.forEach((item) => {
-      map[item.code] = item.label;
-    });
-    map.GENERIC = 'Error HTTP';
-    return map;
-  },
-  tabla: {
-    HEADER_SERVICE: 'Servicio',
-    HEADER_URL: 'URL',
-    HEADER_LATENCY_ACTUAL: 'Latencia Actual',
-    HEADER_STATUS_ACTUAL: 'Estado Actual',
-    HEADER_PROMEDIO_MS: 'Promedio ',
-    HEADER_PROMEDIO_STATUS: 'Estado Promedio',
-    HEADER_ACTION: 'Acción',
-  },
+};
+
+// Derivar httpStatus del array httpCodes (se calcula una sola vez)
+TEXTOS_ES.httpStatus = {};
+TEXTOS_ES.httpCodes.forEach((item) => {
+  TEXTOS_ES.httpStatus[item.code] = item.label;
+});
+TEXTOS_ES.httpStatus.GENERIC = 'Error HTTP';
+
+// Continuar con el resto de propiedades de TEXTOS_ES
+TEXTOS_ES.tabla = {
+  HEADER_SERVICE: 'Servicio',
+  HEADER_URL: 'URL',
+  HEADER_LATENCY_ACTUAL: 'Latencia Actual',
+  HEADER_STATUS_ACTUAL: 'Estado Actual',
+  HEADER_PROMEDIO_MS: 'Promedio ',
+  HEADER_PROMEDIO_STATUS: 'Estado Promedio',
+  HEADER_ACTION: 'Acción',
 };
 
 // Textos de la Leyenda (migrados desde ubicación anterior, ya centralizados en i18n)
@@ -268,33 +268,28 @@ TEXTOS_ES.leyenda = {
   http_codes_title: 'Códigos de Estado HTTP y Fallos del Sistema',
   http_codes_description:
     'Cuando un servicio devuelve un código de estado fuera del rango 2xx (Éxito), el monitor lo clasifica visualmente como ❌ FALLO TOTAL, pero muestra el código real entre paréntesis (ej: ❌ Caída (404)).',
-  // Códigos de error para la leyenda (derivados de httpCodes)
-  get codigos_error() {
-    // Primero agregamos el código 2xx que es informativo, no está en httpCodes
-    const errores = [
-      {
-        code: '2xx',
-        label: 'OK / Éxito',
-        description:
-          'La conexión y el servicio respondieron correctamente (Latencia medida).',
-      },
-    ];
-
-    // Filtramos solo códigos de error (0 y 4xx/5xx) de httpCodes
-    const codigosError = this.httpCodes
-      .filter((item) => {
-        const code = item.code;
-        return code === 0 || code >= 400;
-      })
-      .map((item) => ({
-        code: item.code.toString(),
-        label: item.label,
-        description: item.description,
-      }));
-
-    return errores.concat(codigosError);
-  },
 };
+
+// Derivar codigos_error del array httpCodes (se calcula una sola vez)
+TEXTOS_ES.leyenda.codigos_error = [
+  {
+    code: '2xx',
+    label: 'OK / Éxito',
+    description:
+      'La conexión y el servicio respondieron correctamente (Latencia medida).',
+  },
+];
+
+// Agregar códigos de error (0 y 4xx/5xx) desde httpCodes
+TEXTOS_ES.httpCodes
+  .filter((item) => item.code === 0 || item.code >= 400)
+  .forEach((item) => {
+    TEXTOS_ES.leyenda.codigos_error.push({
+      code: item.code.toString(),
+      label: item.label,
+      description: item.description,
+    });
+  });
 
 // Compatibilidad para la API i18n.get() usada por las páginas de la leyenda.
 window.i18n = {
@@ -310,19 +305,6 @@ window.i18n = {
       }
       cur = cur[p];
     }
-
-    // Si cur es un objeto con getters, evaluarlos antes de devolver
-    // Esto resuelve el problema de pérdida de contexto con this.httpCodes
-    if (cur && typeof cur === 'object' && !Array.isArray(cur)) {
-      const evaluated = {};
-      for (const prop in cur) {
-        if (cur.hasOwnProperty(prop)) {
-          evaluated[prop] = cur[prop]; // Esto evalúa los getters automáticamente
-        }
-      }
-      return evaluated;
-    }
-
     return cur;
   },
 };
