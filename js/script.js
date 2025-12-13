@@ -444,6 +444,7 @@ function calcularPromedio(url) {
   let totalTime = 0;
   let validCount = 0;
   let fallos = 0;
+  let ultimoCodigoError = 200; // Guardar el código de error más reciente
 
   historial.forEach((entry) => {
     // Detectar si es un fallo
@@ -453,6 +454,7 @@ function calcularPromedio(url) {
 
     if (esFallo) {
       fallos++;
+      ultimoCodigoError = entry.status; // Guardar el último código de error
       // Para el cálculo del promedio, usar la penalización en lugar del tiempo real
       totalTime += UMBRALES_LATENCIA.PENALIZACION_FALLO;
     } else {
@@ -471,17 +473,17 @@ function calcularPromedio(url) {
       promedio: promedioMs,
       estadoPromedio: obtenerEstadoVisual(
         UMBRALES_LATENCIA.PENALIZACION_FALLO + 1,
-        ESTADO_ERROR_CONEXION
+        ultimoCodigoError // Usar el código de error real, no siempre 0
       ),
       validCount: validCount,
-      historial: historial, // <-- CLAVE: Devolver el historial completo
+      historial: historial,
     };
   } else {
     return {
       promedio: promedioMs,
       estadoPromedio: obtenerEstadoVisual(promedioMs, 200),
       validCount: validCount,
-      historial: historial, // <-- CLAVE: Devolver el historial completo
+      historial: historial,
     };
   }
 }

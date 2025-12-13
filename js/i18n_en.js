@@ -16,7 +16,13 @@ const TEXTOS_EN = {
         MOTIVO_FALLO_PRO: "Pro Reason:",
         FALLO_CRITICO_GRUPO: "100% of the critical group failed:",
         FALLO_CRITICO_LATENCIA_PARTE1: "% of services exceeded the threshold of",
-        FALLO_CRITICO_RED: "No results available (Total network failure)"
+        FALLO_CRITICO_RED: "No results available (Total network failure)",
+
+        // Duration selector
+        DURACION_LABEL: 'History duration:',
+        DURACION_HORA_SINGULAR: 'hour',
+        DURACION_HORA_PLURAL: 'hours',
+        DURACION_MEDICIONES: 'measurements',
     },
     
     velocidad: { // <-- Speed Group (7 Levels)
@@ -32,6 +38,32 @@ const TEXTOS_EN = {
     estados: {
         DOWN: "DOWN",
         DOWN_ERROR: "DOWN/ERROR",
+    },
+    // HTTP Status Code Descriptions
+    httpStatus: {
+        0: 'No connection',
+        301: 'Moved permanently',
+        302: 'Moved temporarily',
+        304: 'Not modified',
+        400: 'Bad request',
+        401: 'Unauthorized',
+        402: 'Payment required',
+        403: 'Forbidden',
+        404: 'Not found',
+        405: 'Method not allowed',
+        406: 'Not acceptable',
+        408: 'Request timeout',
+        409: 'Conflict',
+        410: 'Gone',
+        418: "I'm a teapot",
+        429: 'Too many requests',
+        500: 'Server error',
+        501: 'Not implemented',
+        502: 'Bad gateway',
+        503: 'Service unavailable',
+        504: 'Gateway timeout',
+        // Generic message for unlisted codes
+        GENERIC: 'HTTP Error',
     },
     
     tabla: {
@@ -68,12 +100,18 @@ TEXTOS_EN.leyenda = {
     http_codes_description: 'When a service returns a status code outside the 2xx range (Success), the monitor visually classifies it as ❌ DOWN, but it displays the real status code (e.g., ❌ Down (404)).',
     codigos_error: [
         { code: '2xx', label: 'OK / Success', description: 'The connection and service responded correctly (latency measured).' },
-        { code: '404', label: 'Not Found', description: 'The requested resource (the URL under monitoring) does not exist on the server.' },
-        { code: '429', label: 'Too Many Requests', description: 'The API/service rate limit was exceeded.' },
-        { code: '500', label: 'Internal Server Error', description: 'Generic backend error. Check backend logs for details.' },
-        { code: '502', label: 'Bad Gateway', description: 'An intermediate server (proxy/CDN) received an invalid response from the origin server.' },
+        { code: '0', label: 'Connection Error', description: 'Network failure, DNS, timeout, CORS blocking, or server did not respond.' },
+        { code: '400', label: 'Bad Request', description: 'Malformed or invalid request.' },
+        { code: '401', label: 'Unauthorized', description: 'Authentication required to access the resource.' },
+        { code: '403', label: 'Forbidden', description: 'Access denied, even with valid authentication.' },
+        { code: '404', label: 'Not Found', description: 'The requested resource does not exist on the server.' },
+        { code: '408', label: 'Request Timeout', description: 'The server timed out waiting for the request.' },
+        { code: '418', label: "I'm a teapot", description: 'Humorous code (RFC 2324). Some services use it to reject requests.' },
+        { code: '429', label: 'Too Many Requests', description: 'The service rate limit was exceeded.' },
+        { code: '500', label: 'Internal Server Error', description: 'Generic internal server error.' },
+        { code: '502', label: 'Bad Gateway', description: 'A proxy/gateway received an invalid response from the origin server.' },
         { code: '503', label: 'Service Unavailable', description: 'The server is temporarily overloaded, under maintenance, or offline.' },
-        { code: '0', label: 'Connection Error', description: 'Network failure, CORS blocking, or server did not respond. This maps to ESTADO_ERROR_CONEXION.' }
+        { code: '504', label: 'Gateway Timeout', description: 'A proxy/gateway did not receive a timely response from the origin server.' }
     ]
 };
 

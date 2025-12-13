@@ -175,28 +175,58 @@ TEXTOS_ES.leyenda = {
         'La conexión y el servicio respondieron correctamente (Latencia medida).',
     },
     {
+      code: '0',
+      label: 'Error de Conexión',
+      description:
+        'Fallo de red, DNS, timeout, bloqueo de CORS, o no respuesta del servidor.',
+    },
+    {
+      code: '400',
+      label: 'Bad Request',
+      description: 'Solicitud mal formada o inválida.',
+    },
+    {
+      code: '401',
+      label: 'Unauthorized',
+      description: 'Se requiere autenticación para acceder al recurso.',
+    },
+    {
+      code: '403',
+      label: 'Forbidden',
+      description: 'Acceso prohibido, incluso con autenticación válida.',
+    },
+    {
       code: '404',
       label: 'Not Found',
+      description: 'El recurso solicitado no existe en el servidor.',
+    },
+    {
+      code: '408',
+      label: 'Request Timeout',
+      description: 'El servidor agotó el tiempo de espera para la solicitud.',
+    },
+    {
+      code: '418',
+      label: "I'm a teapot",
       description:
-        'El recurso solicitado (la URL que se está monitoreando) no existe en el servidor.',
+        'Código humorístico (RFC 2324). Algunos servicios lo usan para rechazar solicitudes.',
     },
     {
       code: '429',
       label: 'Too Many Requests',
       description:
-        'Se ha superado el límite de tasa (Rate Limit) de la API/Servicio.',
+        'Se ha superado el límite de tasa (Rate Limit) del servicio.',
     },
     {
       code: '500',
       label: 'Internal Server Error',
-      description:
-        'Error interno genérico del servidor. Debe investigarse el log del backend.',
+      description: 'Error interno genérico del servidor.',
     },
     {
       code: '502',
       label: 'Bad Gateway',
       description:
-        'Un servidor intermedio (proxy, CDN) recibió una respuesta inválida del servidor de origen.',
+        'Un proxy/gateway recibió una respuesta inválida del servidor de origen.',
     },
     {
       code: '503',
@@ -205,10 +235,10 @@ TEXTOS_ES.leyenda = {
         'El servidor está temporalmente sobrecargado, en mantenimiento o inactivo.',
     },
     {
-      code: '0',
-      label: 'Error de Conexión',
+      code: '504',
+      label: 'Gateway Timeout',
       description:
-        'Fallo de red, bloqueo de CORS, o no respuesta del servidor. Es el código interno ESTADO_ERROR_CONEXION.',
+        'Un proxy/gateway no recibió respuesta a tiempo del servidor de origen.',
     },
   ],
 };
