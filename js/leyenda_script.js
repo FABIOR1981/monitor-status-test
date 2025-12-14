@@ -181,21 +181,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 /**
- * Actualiza el texto y el icono del botón toggle según el tema actual
+ * Actualiza el icono del botón toggle según el tema actual
  */
 function actualizarBotonToggle(temaActual) {
   const themeIcon = document.getElementById('theme-icon');
-  const themeText = document.getElementById('theme-text');
-
-  if (!themeIcon || !themeText) return;
+  const themeBtn = document.getElementById('theme-toggle-btn');
+  
+  if (!themeIcon) return;
 
   if (temaActual === 'osc') {
     themeIcon.textContent = '☀️';
-    themeText.textContent = 'Modo Claro';
+    if (themeBtn) themeBtn.setAttribute('title', 'Cambiar a modo claro');
   } else {
     themeIcon.textContent = '🌙';
-    themeText.textContent = 'Modo Oscuro';
-  }
+    if (themeBtn) themeBtn.setAttribute('title', 'Cambiar a modo oscuro');
 }
 
 /**
