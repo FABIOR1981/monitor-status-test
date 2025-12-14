@@ -356,7 +356,7 @@ function actualizarHistorial(url, time, status) {
 
 // Calcula el promedio de latencia excluyendo errores
 // Solo se promedian las mediciones exitosas (status 200)
-// Las penalizaciones (99999ms) no afectan el resultado
+// Las penalizaciones (99999ms) no   afectan el resultado
 function calcularPromedio(url) {
   const historial = historialStatus[url] || [];
 

@@ -1,5 +1,5 @@
 // Umbrales de latencia en milisegundos
-// Estos valores clasifican el rendimiento del servicio
+// Estos valores clasifican el   rendimiento del servicio
 // Para más detalles ver docs/justificacion_rangos_latencia.md
 const UMBRALES_LATENCIA = {
   MUY_RAPIDO: 300, // Excelente: respuesta casi instantánea
