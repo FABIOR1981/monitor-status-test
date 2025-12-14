@@ -1,0 +1,8 @@
+# Directorio de cobertura
+coverage/
+
+# Resultados de tests
+test-results/
+
+# Caché de Jest
+.jest-cache/
