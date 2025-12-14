@@ -1045,7 +1045,7 @@ function inicializarTema() {
 function actualizarBotonToggle(temaActual) {
   const themeIcon = document.getElementById('theme-icon');
   const themeBtn = document.getElementById('theme-toggle-btn');
-  
+
   if (!themeIcon) return;
 
   if (temaActual === TEMA_OSC) {
@@ -1054,6 +1054,7 @@ function actualizarBotonToggle(temaActual) {
   } else {
     themeIcon.textContent = '🌙';
     if (themeBtn) themeBtn.setAttribute('title', 'Cambiar a modo oscuro');
+  }
 }
 
 /**
