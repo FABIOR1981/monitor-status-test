@@ -3,31 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#007bff" />
     <title>Monitor de Servicios</title>
-    <meta
-      name="description"
-      content="Monitor de estado y latencia de servicios web en tiempo real con análisis avanzado y exportación de datos."
-    />
-
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="/manifest.json" />
-
-    <!-- Apple Touch Icon -->
-    <link rel="apple-touch-icon" href="/assets/icon.svg" />
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/assets/icon.svg" />
-
-    <!-- Content Security Policy -->
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; 
-                   script-src 'self' 'unsafe-inline'; 
-                   style-src 'self' 'unsafe-inline'; 
-                   connect-src 'self' https://*.netlify.app https://*;
-                   img-src 'self' data: https:;"
-    />
 
     <style>
       body {
@@ -82,70 +58,29 @@
       .latency-metric {
         font-size: 1em;
       }
-      /* Mejorar táctil móvil */
-      .psi-button,
-      .btn-primary,
-      .filter-btn {
-        min-width: 44px;
-        min-height: 44px;
-        padding: 12px;
-      }
-      /* Focus indicators mejorados */
-      button:focus-visible,
-      a:focus-visible,
-      select:focus-visible,
-      input:focus-visible {
-        outline: 3px solid var(--accent, #007bff);
-        outline-offset: 2px;
-      }
-      /* Skip link para accesibilidad */
-      .skip-link {
-        position: absolute;
-        top: -40px;
-        left: 0;
-        background: #000;
-        color: #fff;
-        padding: 8px 16px;
-        text-decoration: none;
-        border-radius: 0 0 4px 0;
-      }
-      .skip-link:focus {
-        top: 0;
-        z-index: 10001;
-      }
     </style>
 
     <link rel="stylesheet" href="css/styles_base.css" />
-    <link rel="stylesheet" href="css/mejoras.css" />
     <link id="estilo-principal" rel="stylesheet" href="css/styles_def.css" />
   </head>
   <body>
-    <!-- Skip Link para Accesibilidad -->
-    <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
-
-    <main id="main-content" role="main">
+    <main>
       <!-- Botón Toggle Modo Oscuro - Esquina Superior Derecha -->
       <button
         id="theme-toggle-btn"
         class="theme-toggle-button-corner"
         onclick="toggleDarkMode()"
         title="Cambiar modo de visualización"
-        aria-label="Cambiar entre modo claro y oscuro"
       >
-        <span id="theme-icon" aria-hidden="true">🌙</span>
+        <span id="theme-icon">🌙</span>
       </button>
 
       <div class="container">
         <h1 id="titulo-principal">Monitor de Estado de Servicios</h1>
 
-        <div
-          style="text-align: center; margin-bottom: 15px"
-          role="group"
-          aria-labelledby="duracion-label"
-        >
+        <div style="text-align: center; margin-bottom: 15px">
           <label
             for="duracion-selector"
-            id="duracion-label"
             style="font-size: 0.9em; margin-right: 8px"
             >Duración del historial:</label
           >
