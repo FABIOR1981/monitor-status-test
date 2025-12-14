@@ -687,7 +687,11 @@ function toggleErroresDetalle(url) {
   if (detalleRow) {
     detalleRow.classList.remove('expanded');
     if (toggleBtn) toggleBtn.textContent = '▼';
-    setTimeout(() => detalleRow.remove(), 200); // Esperar animación
+    setTimeout(() => {
+      if (detalleRow && detalleRow.parentNode) {
+        detalleRow.remove();
+      }
+    }, 200); // Esperar animación
     return;
   }
 
@@ -695,11 +699,12 @@ function toggleErroresDetalle(url) {
   const errores = obtenerHistorialErrores(url);
   if (errores.length === 0) return;
 
-  const newRow = tbody.insertRow(row.rowIndex + 1);
+  // Crear fila usando createElement para mejor control
+  const newRow = document.createElement('tr');
   newRow.classList.add('error-detail-row');
   newRow.setAttribute('data-parent-url', url);
 
-  const cell = newRow.insertCell();
+  const cell = document.createElement('td');
   cell.colSpan = 7; // Todas las columnas
 
   const maxErrores = 10;
@@ -734,6 +739,14 @@ function toggleErroresDetalle(url) {
   html += '</div>';
 
   cell.innerHTML = html;
+  newRow.appendChild(cell);
+  
+  // Insertar la fila inmediatamente después de la fila padre
+  if (row.nextSibling) {
+    tbody.insertBefore(newRow, row.nextSibling);
+  } else {
+    tbody.appendChild(newRow);
+  }
 
   // Cambiar ícono del botón a expandido
   if (toggleBtn) toggleBtn.textContent = '▲';
