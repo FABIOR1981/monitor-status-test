@@ -14,13 +14,11 @@ const UMBRALES_LATENCIA = {
 const TEMA_DEFAULT = 'def';
 const TEMA_PRO = 'pro';
 const TEMA_MIN = 'min';
-const TEMA_ASTIGMATISMO = '3';
 
 const TEMA_FILES = {
   [TEMA_DEFAULT]: 'css/styles_def.css',
   [TEMA_PRO]: 'css/styles_pro.css',
   [TEMA_MIN]: 'css/styles_min.css',
-  [TEMA_ASTIGMATISMO]: 'css/styles_3.css',
 };
 
 const DEFAULT_LEYENDA_TEMA = 'def';
@@ -29,7 +27,6 @@ const LEYENDA_TEMA_FILES = {
   def: 'css/leyenda_def.css',
   pro: 'css/leyenda_pro.css',
   min: 'css/leyenda_min.css',
-  '3': 'css/leyenda_3.css',
 };
 
 const ESTADO_ERROR_CONEXION = 0;
