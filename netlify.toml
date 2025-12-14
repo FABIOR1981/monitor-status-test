@@ -1,5 +1,5 @@
 [build]
-  # Carpeta donde se encuentran las funciones serverless
+  # Una Carpeta donde se encuentran las funciones serverless
   functions = "netlify/functions"
   
   # Comando de build con tests opcionales
