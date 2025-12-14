@@ -11,10 +11,15 @@ Este documento unifica la documentación del repositorio y contiene toda la info
 
 ## Cambios recientes
 
-- Centralización de textos (i18n) en `lang/i18n_es.js`.
-- Separación de responsabilidades: `js/leyenda_script.js` (leyenda) y `js/script.js` (monitor principal).
-- Definición de `TEMA_FILES` y `LEYENDA_TEMA_FILES` en `js/config.js`.
-- Se eliminaron o archivaron archivos obsoletos relacionados con la leyenda.
+- **Sistema de expansión de errores**: Botón toggle (▼) que muestra historial de últimos 10 errores por servicio.
+- **Contador de errores**: Indicador visual `⚠️ 3/12` en columna promedio mostrando errores/total.
+- **Selector de duración**: Permite elegir ventana de historial (12h, 1d, 3d, 7d) con mediciones cada 5 minutos.
+- **3 temas visuales**: Default (def), Profesional (pro) y Minimalista (min) con estilos unificados.
+- **Página de leyenda**: `leyenda.html` con documentación de umbrales, códigos HTTP y funcionamiento.
+- **Centralización de textos (i18n)**: `js/i18n_es.js` y `js/i18n_en.js` con soporte multiidioma.
+- **Separación de responsabilidades**: `js/leyenda_script.js` (leyenda) y `js/script.js` (monitor principal).
+- **Configuración global**: `js/config.js` con todas las constantes (TEMA_FILES, DURACION_OPCIONES, UMBRALES_LATENCIA).
+- **Botones mejorados**: Botones PSI y toggle de errores con estética unificada (mismo tamaño, bordes redondeados).
 
 ## Descripción
 
@@ -166,17 +171,29 @@ const responseTime = endTime - startTime;
 El proyecto sigue una arquitectura de Frontend ligero que se
 apoya en una función Serverless como proxy.
 
-| Archivo/Directorio                  | Propósito                                                  |
-| :---------------------------------- | :--------------------------------------------------------- |
-| `index.html`                        | Estructura principal y contenedores del monitor.           |
-| `styles_base.css`                   | Variables y reglas base compartidas por temas.             |
-| `styles_def.css`                    | Tema estándar.                                             |
-| `styles_pro.css`                    | Tema PRO.                                                  |
-| `js/script.js`                      | Lógica de Frontend, historial, temas y llamadas al proxy.  |
-| `webs.json`                         | **Lista de URLs a monitorizar.**                           |
-| `netlify/functions/check-status.js` | Función Serverless (Proxy) para verificar estado/latencia. |
-| `JUSTIFICACION_RANGOS_LATENCIA.md`  | Documento que justifica los umbrales de rendimiento.       |
-| `ARQUITECTURA.MD`                   | Explica el flujo de datos y el rol del proxy.              |
+| Archivo/Directorio                      | Propósito                                                        |
+| :-------------------------------------- | :--------------------------------------------------------------- |
+| `index.html`                            | Estructura principal y contenedores del monitor.                 |
+| `leyenda.html`                          | Página de leyenda con documentación de umbrales y códigos HTTP.  |
+| `css/styles_base.css`                   | Variables y reglas base compartidas por temas.                   |
+| `css/styles_def.css`                    | Tema estándar (default).                                         |
+| `css/styles_pro.css`                    | Tema profesional con información avanzada.                       |
+| `css/styles_min.css`                    | Tema minimalista para dashboards.                                |
+| `css/leyenda_base.css`                  | Estilos base compartidos para la página de leyenda.              |
+| `css/leyenda_def.css`                   | Tema estándar para leyenda.                                      |
+| `css/leyenda_pro.css`                   | Tema profesional para leyenda.                                   |
+| `css/leyenda_min.css`                   | Tema minimalista para leyenda.                                   |
+| `js/config.js`                          | Configuración global (umbrales, temas, duraciones, constantes).  |
+| `js/script.js`                          | Lógica principal del monitor (historial, temas, llamadas proxy). |
+| `js/leyenda_script.js`                  | Lógica de la página de leyenda (carga de temas).                 |
+| `js/i18n_es.js`                         | Textos en español (idioma por defecto).                          |
+| `js/i18n_en.js`                         | Textos en inglés.                                                |
+| `webs.json`                             | **Lista de URLs a monitorizar.**                                 |
+| `netlify/functions/check-status.js`     | Función Serverless (Proxy) para verificar estado/latencia.       |
+| `docs/justificacion_rangos_latencia.md` | Documento que justifica los umbrales de rendimiento.             |
+| `docs/arquitectura.md`                  | Explica el flujo de datos y el rol del proxy.                    |
+| `docs/estructura.md`                    | Detalle de la estructura de archivos del proyecto.               |
+| `docs/resolución de problemas.md`       | Guía de troubleshooting y soluciones comunes.                    |
 
 ## ⚙️ Configuración, despliegue y ejecución local
 
@@ -225,11 +242,17 @@ netlify dev
 
 ## 🎨 Temas y customización visual
 
-El monitor soporta múltiples temas visuales:
+El monitor soporta múltiples temas visuales tanto para el monitor principal como para la página de leyenda:
 
-1.  **Tema Estándar (def):** Se activa por defecto (`css/styles_def.css`)
-2.  **Tema PRO (pro):** Información avanzada - columna URL visible, botón PSI, códigos de error detallados
+1.  **Tema Estándar (def):** Se activa por defecto
+    - Monitor: `css/styles_def.css`
+    - Leyenda: `css/leyenda_def.css`
+2.  **Tema Profesional (pro):** Información avanzada - columna URL visible, botón PSI, códigos de error detallados
+    - Monitor: `css/styles_pro.css`
+    - Leyenda: `css/leyenda_pro.css`
 3.  **Tema Minimalista (min):** Vista simplificada para dashboards
+    - Monitor: `css/styles_min.css`
+    - Leyenda: `css/leyenda_min.css`
 
 ### Cambiar Tema
 
@@ -238,23 +261,94 @@ Agrega el parámetro `tema` a la URL:
 ```
 https://tu-monitor.netlify.app/?tema=pro
 https://tu-monitor.netlify.app/?tema=min
+https://tu-monitor.netlify.app/leyenda.html?tema=pro
 ```
+
+### Características Visuales por Tema
+
+| Característica      | Default (def) | Profesional (pro) | Minimalista (min) |
+| ------------------- | ------------- | ----------------- | ----------------- |
+| Columna URL         | ❌ Oculta     | ✅ Visible        | ❌ Oculta         |
+| Columna Status HTTP | ❌ Oculta     | ✅ Visible        | ❌ Oculta         |
+| Botón PSI           | ✅ Visible    | ✅ Visible        | ✅ Visible        |
+| Toggle errores      | ✅ Visible    | ✅ Visible        | ✅ Visible        |
+| Emojis estado       | ✅ Visible    | ✅ Visible        | ⚠️ Limitados      |
+| Paleta de colores   | Azul claro    | Gris oscuro       | Blanco/Negro      |
+| Bordes y sombras    | ✅ Suaves     | ✅ Prominentes    | ❌ Mínimos        |
 
 ## 📊 Historial y Promedios
 
-### Duración del Historial
+### Selector de Duración del Historial
 
-El monitor permite seleccionar la duración del historial de monitoreo:
+El monitor incluye un selector dinámico que permite elegir la ventana de tiempo del historial:
 
-| Duración | Mediciones | Tiempo Total                       |
-| -------- | ---------- | ---------------------------------- |
-| 1 hora   | 12         | 60 minutos (1 medición cada 5 min) |
-| 2 horas  | 24         | 120 minutos                        |
-| 3 horas  | 36         | 180 minutos                        |
-| 4 horas  | 48         | 240 minutos                        |
-| 5 horas  | 60         | 300 minutos                        |
-| ...      | ...        | ...                                |
-| 9 horas  | 108        | 540 minutos                        |
+| Duración | Mediciones | Tiempo Total                        |
+| -------- | ---------- | ----------------------------------- |
+| 12 horas | 144        | 720 minutos (1 medición cada 5 min) |
+| 1 día    | 288        | 1440 minutos (24 horas)             |
+| 3 días   | 864        | 4320 minutos (72 horas)             |
+| 7 días   | 2016       | 10080 minutos (1 semana)            |
+
+**Uso del selector:**
+
+```html
+<select id="duracion-selector">
+  <option value="12h">Últimas 12 horas</option>
+  <option value="1d">Último día</option>
+  <option value="3d">Últimos 3 días</option>
+  <option value="7d">Últimos 7 días</option>
+</select>
+```
+
+Al cambiar la duración:
+
+1. El historial actual se **limpia automáticamente**
+2. Se ajusta el **máximo de mediciones** según la duración elegida
+3. El contador de progreso muestra `[0/288]` para 1 día, `[0/2016]` para 7 días, etc.
+
+### Contador de Errores
+
+En la columna de promedio, si hay errores detectados, se muestra un indicador:
+
+```
+⚠️ 3/12
+```
+
+- **Primer número**: Cantidad de errores detectados (status ≠ 200 o latencia ≥ 99999ms)
+- **Segundo número**: Total de mediciones realizadas
+- **Color**: Rojo (#c92a2a) para llamar la atención
+
+### Expansión de Detalles de Errores
+
+Al hacer clic en el botón **▼** (toggle), se expande una fila con los últimos 10 errores:
+
+**Información mostrada por error:**
+
+- 🕒 **Fecha y hora**: "14/12 10:45"
+- 🔢 **Código HTTP**: Con badge de color (ej: `404`)
+- 📝 **Mensaje**: Descripción del error en español
+- ⏱️ **Latencia**: Tiempo de respuesta en ms
+
+**Ejemplo visual:**
+
+```
+╔══════════════════════════════════════════════════╗
+║ 📋 Historial de Errores                         ║
+╠══════════════════════════════════════════════════╣
+║ • 14/12 10:45 | 404 | No encontrado | 250 ms   ║
+║ • 14/12 10:40 | 500 | Error del servidor | 0 ms║
+║ • 14/12 10:35 | 0 | Sin conexión | 99999 ms    ║
+╚══════════════════════════════════════════════════╝
+Mostrando últimos 10 errores (Total: 12)
+```
+
+**Características:**
+
+- Animación suave de expansión/colapso (300ms)
+- Fondo rosa claro (#fff5f5) con borde rojo
+- Fuente monoespaciada para mejor legibilidad
+- Hover cambia fondo a rosa más oscuro
+- Si hay más de 10 errores, muestra mensaje "Mostrando últimos 10 errores (Total: X)"
 
 ### Cálculo de Promedios
 
@@ -320,8 +414,52 @@ Esto ayuda a distinguir entre:
 
 ## 🔤 Internacionalización (i18n)
 
-- Los textos se encuentran en `lang/i18n_es.js` (archivo principal en Español), los demás idiomas siguen el mismo patrón (ej. `lang/i18n_en.js`).
-- Si se agreaga un idioma nuevo, incluir su entrada en `I18N_FILES` dentro de `js/config.js`.
+El sistema de traducción está centralizado en archivos por idioma:
+
+- **Español** (por defecto): `js/i18n_es.js`
+- **Inglés**: `js/i18n_en.js`
+
+### Estructura de textos
+
+```javascript
+window.TEXTOS_ES = {
+  general: {
+    LOADING: 'Cargando...',
+    DURATION_LABEL: 'Duración del historial:',
+  },
+  status: {
+    MUY_RAPIDO: 'Muy Rápido',
+    RAPIDO: 'Rápido',
+    // ... más estados
+  },
+  errors: {
+    NO_CONNECTION: 'Sin conexión',
+    NOT_FOUND: 'No encontrado',
+    // ... más errores HTTP
+  },
+};
+```
+
+### Agregar nuevo idioma
+
+1. Crear archivo `js/i18n_XX.js` (XX = código de idioma)
+2. Copiar estructura de `js/i18n_es.js`
+3. Traducir todos los textos
+4. Registrar en `js/config.js`:
+
+```javascript
+const I18N_FILES = {
+  es: 'js/i18n_es.js',
+  en: 'js/i18n_en.js',
+  fr: 'js/i18n_fr.js', // Nuevo idioma
+};
+```
+
+5. Usar parámetro URL: `?lang=fr`
+
+### Detección automática de idioma
+
+Si no se especifica idioma en la URL, se usa español por defecto. Para cambiar el idioma predeterminado, modificar `DEFAULT_IDIOMA` en `js/config.js`.
 
 ## 💻 Desarrollo y estructura
 
@@ -335,15 +473,40 @@ npx netlify-cli dev
 ### Archivos de configuración
 
 - **`js/config.js`**: Constantes de configuración del sistema
-  - `UMBRALES_LATENCIA`: Umbrales de latencia (MUY_RAPIDO: 300ms, RAPIDO: 500ms, etc.)
+  - `UMBRALES_LATENCIA`: Umbrales de latencia en milisegundos
+    - `MUY_RAPIDO: 300` - Excelente: respuesta casi instantánea
+    - `RAPIDO: 500` - Bueno: respuesta rápida perceptible
+    - `NORMAL: 800` - Aceptable: ligero retraso pero usable
+    - `LENTO: 1500` - Preocupante: retraso notable
+    - `CRITICO: 3000` - Grave: degradación significativa
+    - `RIESGO: 5000` - Muy grave: próximo a fallo
+    - `PENALIZACION_FALLO: 99999` - Marcador especial para fallos
   - `TEMA_FILES`: Mapeo de temas CSS para el monitor principal
+    - `def`: 'css/styles_def.css'
+    - `pro`: 'css/styles_pro.css'
+    - `min`: 'css/styles_min.css'
   - `LEYENDA_TEMA_FILES`: Mapeo de temas CSS para la página de leyenda
+    - `def`: 'css/leyenda_def.css'
+    - `pro`: 'css/leyenda_pro.css'
+    - `min`: 'css/leyenda_min.css'
   - `PROXY_ENDPOINT`: Ruta de la función serverless (`/.netlify/functions/check-status`)
   - `FRECUENCIA_MONITOREO_MS`: Intervalo entre mediciones (5 minutos = 300,000 ms)
-  - `DURACION_OPCIONES`: Configuración de duraciones de historial (1-9 horas)
+  - `DURACION_OPCIONES_DISPONIBLES`: Array con opciones de duración
+  - `DURACION_OPCIONES`: Configuración de duraciones de historial
+    - `'12h'`: { mediciones: 144, etiqueta: "Últimas 12 horas" }
+    - `'1d'`: { mediciones: 288, etiqueta: "Último día" }
+    - `'3d'`: { mediciones: 864, etiqueta: "Últimos 3 días" }
+    - `'7d'`: { mediciones: 2016, etiqueta: "Últimos 7 días" }
+  - `DURACION_DEFAULT`: Duración por defecto ('12h')
+  - `I18N_FILES`: Mapeo de archivos de traducción por idioma
+    - `es`: 'js/i18n_es.js'
+    - `en`: 'js/i18n_en.js'
+  - `DEFAULT_IDIOMA`: Idioma por defecto si no se especifica ninguno ('es')
   - `GRUPO_CRITICO_NOMBRE`: Nombre del grupo crítico para detección de fallos globales
   - `UMBRAL_FALLO_GLOBAL_MS`: Latencia que se considera fallo global (9000 ms)
   - `PORCENTAJE_FALLO_GLOBAL`: % de servicios que deben fallar para alerta global (80%)
+  - `HTTP_STATUS_SUCCESS`: Códigos HTTP de éxito (200, 201, 204, 301, 302, 304)
+  - `HTTP_STATUS_ERROR`: Códigos HTTP de error (0, 400, 401, 403, 404, 408, 429, 500, 502, 503, 504)
 
 ### Configuración de webs.json
 
@@ -375,12 +538,87 @@ El archivo `data/webs.json` define los servicios a monitorear:
 
 ## 🧭 Agregar/Editar servicios a monitorear
 
-- Editar `data/webs.json`: agregar/editar objetos con `nombre`, `url` y `grupo`.
+Editar `webs.json`: agregar/editar objetos con `nombre`, `url`, `grupo` y `orden`.
+
+**Ejemplo completo:**
+
+```json
+[
+  {
+    "nombre": "Google",
+    "url": "https://www.google.com",
+    "grupo": "EXTERNO",
+    "orden": 2
+  },
+  {
+    "nombre": "API Producción",
+    "url": "https://api.miempresa.com/health",
+    "grupo": "CRITICO",
+    "orden": 1
+  },
+  {
+    "nombre": "Panel Administrativo",
+    "url": "https://admin.miempresa.com",
+    "grupo": "INTERNO",
+    "orden": 3
+  }
+]
+```
+
+**Propiedades:**
+
+- `nombre`: Nombre descriptivo del servicio (aparece en la columna Nombre)
+- `url`: URL completa incluyendo protocolo (https://)
+- `grupo`: Grupo lógico (CRITICO, EXTERNO, INTERNO, etc.) - usado para detección de fallos globales
+- `orden`: Número que define la posición en la tabla (1 = primero/arriba, mayor = abajo)
+
+**Tips:**
+
+- Agrupar servicios críticos con `"grupo": "CRITICO"` para aprovechar la detección de fallos globales
+- Usar `orden` para priorizar visualmente los servicios más importantes
+- La URL debe ser accesible públicamente (el proxy de Netlify la consultará)
+- Evitar URLs que requieran autenticación compleja (OAuth, tokens dinámicos)
 
 ## 🙋 Contribuir y mantenimiento
 
-- Añadir `stylelint` o `eslint` para validar código y estilos.
-- Crear pruebas end-to-end (Playwright o Puppeteer) para asegurar que `index.html` y `leyenda.html` carguen y muestren los textos correctamente.
+### Validación de código
+
+- Añadir `stylelint` para validar CSS:
+  ```bash
+  npm install --save-dev stylelint stylelint-config-standard
+  ```
+- Añadir `eslint` para validar JavaScript:
+  ```bash
+  npm install --save-dev eslint
+  ```
+
+### Pruebas automatizadas
+
+- Crear pruebas end-to-end con Playwright o Puppeteer para:
+  - Verificar que `index.html` carga correctamente
+  - Verificar que `leyenda.html` carga con todos los temas
+  - Comprobar que los textos i18n se muestran correctamente
+  - Validar que el selector de duración funciona
+  - Probar la expansión de detalles de errores
+
+### Estructura recomendada de commits
+
+```
+feat: Agregar selector de duración de historial
+fix: Corregir expansión de errores en tema minimalista
+docs: Actualizar README con nuevas características
+style: Mejorar espaciado de botones PSI y toggle
+refactor: Extraer lógica de temas a archivo separado
+```
+
+### Checklist antes de hacer push
+
+- [ ] Probar en los 3 temas (def, pro, min)
+- [ ] Verificar que funciona en ambos idiomas (es, en)
+- [ ] Comprobar expansión de errores
+- [ ] Validar selector de duración
+- [ ] Revisar que `leyenda.html` sigue funcionando
+- [ ] Actualizar documentación si es necesario
 
 ## ❗ Notas finales y buenas prácticas
 

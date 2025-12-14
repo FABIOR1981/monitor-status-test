@@ -14,8 +14,9 @@ al verificar URLs externas de terceros.
 ---
 
 1. INICIO (script.js):
-   La función 'monitorearTodosWebsites()' lee 'data/webs.json'
-   y establece un bucle de verificación para cada URL.
+   La función 'monitorearTodosWebsites()' lee 'webs.json'
+   (ubicado en la raíz del proyecto) y establece un bucle de
+   verificación para cada URL.
 
 2. INVOCACIÓN DEL PROXY (script.js):
    El frontend llama a la función Netlify Serverless:
@@ -35,6 +36,9 @@ al verificar URLs externas de terceros.
    certificados SSL inválidos para poder monitorear
    disponibilidad del servicio independientemente de la
    validez de sus certificados.
+   e. **SEGUIMIENTO DE ERRORES:** Cada fallo se registra con
+   timestamp, código HTTP, mensaje de error y latencia para
+   análisis posterior.
 
 4. RESPUESTA SERVERLESS:
    La función siempre responde al frontend con un
@@ -43,21 +47,30 @@ al verificar URLs externas de terceros.
    -> Body: { status: [CÓDIGO_DESTINO], time: [LATENCIA_MS] }
 
 5. PROCESAMIENTO FRONTEND (script.js):
-   El frontend recibe el resultado y:
-   a. Actualiza el Estado y la Latencia Actual.
-   b. Almacena el resultado en el 'sessionStorage' (historial
-   configurable de 12 a 108 puntos / 1 a 9 horas).
-   c. Calcula el Promedio Histórico solo con mediciones exitosas
-   (status 200) y el Estado Promedio (usando los umbrales de
-   `justificacion_rangos_latencia.md`).
-   d. Dibuja la Tabla con la clasificación visual.
-   e. **CONTROL DE MÁXIMO:** Al alcanzar el límite de mediciones
-   configurado, el monitoreo se pausa automáticamente hasta
-   que el usuario presione el botón "Reiniciar Monitoreo".
+   El frontend : 12 horas [144 mediciones], 1 día [288],
+   3 días [864], o 7 días [2016]).
+   c. **REGISTRO DE ERRORES:** Si el status ≠ 200 o la latencia
 
----
+   > = 99999ms, almacena el error con timestamp, código HTTP,
+   > mensaje descriptivo y latencia.
+   > d. **CONTADOR DE ERRORES:** Muestra indicador visual "⚠️ X/Y"
+   > en la columna promedio donde X = errores, Y = total mediciones.
+   > e. **EXPANSIÓN DE DETALLES:** Botón toggle (▼) permite ver
+   > historial de últimos 10 errores con fecha/hora, código,
+   > mensaje y latencia.
+   > f. Calcula el Promedio Histórico solo con mediciones exitosas
+   > (status 200) y el Estado Promedio (usando los umbrales de
+   > `justificacion_rangos_latencia.md`).
+   > g. Dibuja la Tabla con la clasificación visual.
+   > h. **CONTROL DE MÁXIMO:** Al alcanzar el límite de mediciones
+   > configurado, el monitoreo se pausa automáticamente hasta
+   > que el usuario presione el botón "Reiniciar Monitoreo" o
+   > cambie la duración del historial
+   > e. **CONTROL DE MÁXIMO:** Al alcanzar el límite de mediciones
+   > configurado, el monitoreo se pausa automáticamente hasta
+   > que el usuario presione el botón "Reiniciar Monitoreo".
 
-2. JUSTIFICACIÓN DEL PROXY SERVERLESS (check-status.js)
+6. JUSTIFICACIÓN DEL PROXY SERVERLESS (check-status.js)
 
 ---
 
