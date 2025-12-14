@@ -1,3 +1,6 @@
+// Translation file - English
+// This file only contains English texts
+// Should not contain logic, only data
 const TEXTOS_EN = {
   general: {
     PAGE_TITLE: 'Service Status Monitor',
@@ -280,18 +283,6 @@ TEXTOS_EN.httpCodes
     });
   });
 
-window.i18n = {
-  texts: TEXTOS_EN,
-  get: function (key) {
-    if (!key) return '';
-    const parts = key.split('.');
-    let cur = this.texts;
-    for (const p of parts) {
-      if (!cur.hasOwnProperty(p)) return `[TEXT NOT FOUND: ${key}]`;
-      cur = cur[p];
-    }
-    return cur;
-  },
-};
-
+// Solo asignar los textos a la variable global
+// La lógica de carga está en i18n.js
 window.TEXTOS_ACTUAL = TEXTOS_EN;

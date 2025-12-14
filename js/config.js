@@ -81,14 +81,14 @@ const DURACION_DEFAULT = '1h';
 
 const MAX_HISTORIAL_ENTRIES = DURACION_OPCIONES[DURACION_DEFAULT].mediciones;
 const PSI_BASE_URL = 'https://pagespeed.web.dev/report?url=';
-const WEBSITES_FILE = 'webs.json';
+const WEBSITES_FILE = 'data/webs.json';
 
 // Archivos de traducción disponibles
 // Se cargan dinámicamente según el parámetro ?lang=XX en la URL
 const I18N_FILES = {
-  es: 'js/i18n_es.js',
-  en: 'js/i18n_en.js',
-  fr: 'js/i18n_fr.js',
+  es: 'lang/i18n_es.js',
+  en: 'lang/i18n_en.js',
+  fr: 'lang/i18n_fr.js',
 };
 
 const DEFAULT_LANG = 'es'; // Idioma por defecto si no se especifica ninguno

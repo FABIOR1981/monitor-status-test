@@ -14,7 +14,7 @@ al verificar URLs externas de terceros.
 ---
 
 1. INICIO (script.js):
-   La función 'monitorearTodosWebsites()' lee 'webs.json'
+   La función 'monitorearTodosWebsites()' lee 'data/webs.json'
    y establece un bucle de verificación para cada URL.
 
 2. INVOCACIÓN DEL PROXY (script.js):
@@ -68,7 +68,7 @@ La función Serverless es crucial para la estabilidad y seguridad:
   restricciones CORS del navegador no aplican.
 - **Evitar Mixed Content:** Permite al monitor, servido por
   HTTPS, verificar URLs de destino que usen HTTP (como se ve en
-  `webs.json` con `http://www.exportafacil.com.uy`) sin que el
+  `data/webs.json` con `http://www.exportafacil.com.uy`) sin que el
   navegador bloquee la petición.
 - **Control de Timeout:** El timeout de 9 segundos protege los
   límites de ejecución de Netlify (máx. 10s para funciones gratuitas).

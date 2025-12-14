@@ -58,7 +58,7 @@ aunque sé que está en línea.
 
 - **Diagnóstico:** El entorno Node.js del Serverless no pudo
   resolver el nombre de host o establecer la conexión.
-- **Solución:** Revise el archivo `webs.json` y confirme que
+- **Solución:** Revise el archivo `data/webs.json` y confirme que
   la URL esté escrita perfectamente (incluyendo `http://` o
   `https://`).
 
@@ -80,7 +80,7 @@ aunque sé que está en línea.
 - **Diagnóstico:** El `check-status.js` tiene un límite de
   seguimiento de redirecciones (`follow: 20`). Si la URL
   supera ese número de saltos, fallará.
-- **Solución:** Utilice la URL de destino final en `webs.json`.
+- **Solución:** Utilice la URL de destino final en `data/webs.json`.
 
 ### Problema 2.2: El estado de latencia siempre es 'LENTO' o 'CRÍTICO'.
 

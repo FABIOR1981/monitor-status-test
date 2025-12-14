@@ -1,3 +1,6 @@
+// Archivo de traducción - Español
+// Este archivo solo contiene los textos en español
+// No debe contener lógica, solo datos
 const TEXTOS_ES = {
   general: {
     PAGE_TITLE: 'Monitor de Estado de Servicios',
@@ -149,6 +152,8 @@ const TEXTOS_ES = {
   ],
 };
 
+// Construir el objeto httpStatus automáticamente desde el array de códigos
+// Esto evita duplicar la información y mantiene todo sincronizado
 TEXTOS_ES.httpStatus = {};
 TEXTOS_ES.httpCodes.forEach((item) => {
   TEXTOS_ES.httpStatus[item.code] = item.label;
@@ -277,21 +282,6 @@ TEXTOS_ES.httpCodes
     });
   });
 
-window.i18n = {
-  texts: TEXTOS_ES,
-  get: function (key) {
-    if (!key) return '';
-    const parts = key.split('.');
-    let cur = this.texts;
-    for (const p of parts) {
-      if (!cur.hasOwnProperty(p)) {
-        console.error(`I18n: Clave '${key}' no encontrada.`);
-        return `[TEXTO NO ENCONTRADO: ${key}]`;
-      }
-      cur = cur[p];
-    }
-    return cur;
-  },
-};
-
+// Solo asignar los textos a la variable global
+// La lógica de carga está en i18n.js
 window.TEXTOS_ACTUAL = TEXTOS_ES;

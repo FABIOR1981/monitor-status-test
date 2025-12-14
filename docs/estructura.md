@@ -5,10 +5,12 @@ ESTRUCTURA DEL PROYECTO monitor-status-test (CORREGIDA)
 monitor-status-test/
 ├── index.html <-- Frontend HTML (Estructura principal del monitor)
 ├── leyenda.html <-- Página de leyenda de umbrales
-├── webs.json <-- Datos de las URLs a monitorizar
 ├── package.json <-- Dependencias de Node (node-fetch, abort-controller)
 ├── netlify.toml <-- Configuración Netlify (funciones serverless)
 ├── README.md <-- Documentación principal del proyecto
+|
+├── data/ <-- Datos de configuración
+│ └── webs.json <-- URLs a monitorizar
 |
 ├── .vscode/ <-- Configuración de VS Code
 │ └── settings.json <-- Configuración de cSpell (diccionario español)
@@ -16,9 +18,12 @@ monitor-status-test/
 ├── js/ <-- Directorio de scripts JavaScript
 │ ├── script.js <-- Lógica principal (Monitorización, Historial, Temas)
 │ ├── config.js <-- Constantes de configuración (umbrales, temas, etc.)
-│ ├── leyenda_script.js <-- Lógica de la página de leyenda
-│ ├── i18n_es.js <-- Textos de Internacionalización (Español)
-│ └── i18n_en.js <-- Textos de Internacionalización (Inglés)
+│ ├── i18n.js <-- Lógica de internacionalización
+│ └── leyenda_script.js <-- Lógica de la página de leyenda
+|
+├── lang/ <-- Archivos de traducción
+│ ├── i18n_es.js <-- Textos en español
+│ └── i18n_en.js <-- Textos en inglés
 |
 ├── css/ <-- Directorio de estilos CSS
 │ ├── styles_base.css <-- Estilos base compartidos

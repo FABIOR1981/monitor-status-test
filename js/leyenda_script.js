@@ -156,24 +156,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     container.appendChild(codesSection);
   }
 
-  if (typeof i18n !== 'undefined' && typeof i18n.get === 'function') {
+  // Actualizar los textos de la página con las traducciones cargadas
+  if (typeof window.TEXTOS_ACTUAL !== 'undefined') {
     const titleEl = document.getElementById('leyenda-titulo');
     const headerEl = document.getElementById('titulo-leyenda');
     const contentEl = document.getElementById('contenido-leyenda');
 
-    if (titleEl) titleEl.textContent = i18n.get('leyenda.title_browser');
-    if (headerEl) headerEl.textContent = i18n.get('leyenda.main_header');
-    if (contentEl) renderLeyendaContent(contentEl, i18n.get('leyenda'));
-  } else if (typeof window.TEXTOS_ACTUAL !== 'undefined') {
-    document.getElementById('leyenda-titulo').textContent =
-      window.TEXTOS_ACTUAL.leyenda.title_browser;
-    document.getElementById('titulo-leyenda').textContent =
-      window.TEXTOS_ACTUAL.leyenda.main_header;
-    renderLeyendaContent(
-      document.getElementById('contenido-leyenda'),
-      window.TEXTOS_ACTUAL.leyenda
-    );
+    if (titleEl)
+      titleEl.textContent = window.TEXTOS_ACTUAL.leyenda.title_browser;
+    if (headerEl)
+      headerEl.textContent = window.TEXTOS_ACTUAL.leyenda.main_header;
+    if (contentEl)
+      renderLeyendaContent(contentEl, window.TEXTOS_ACTUAL.leyenda);
   } else {
-    console.error('No se encontró ninguna fuente i18n para la Leyenda.');
+    console.error('No se cargaron las traducciones para la leyenda.');
   }
 });

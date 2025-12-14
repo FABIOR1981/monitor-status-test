@@ -694,9 +694,9 @@ async function monitorearTodosWebsites() {
     window.monitorTimeout = null;
   }
 
-  // 1. Cargar la lista de websites desde webs.json y ordenar
+  // 1. Cargar la lista de websites desde data/webs.json y ordenar
   try {
-    const response = await fetch('webs.json');
+    const response = await fetch('data/webs.json');
     websitesData = await response.json();
   } catch (e) {
     console.error('Error al cargar webs.json.', e);
@@ -897,7 +897,7 @@ async function cargarYMostrarHistorialExistente() {
     const response = await fetch(WEBSITES_FILE);
     websitesData = await response.json();
   } catch (e) {
-    console.error('Error al cargar webs.json.', e);
+    console.error('Error al cargar data/webs.json.', e);
     return;
   }
 

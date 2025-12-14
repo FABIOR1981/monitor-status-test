@@ -6,12 +6,12 @@ Este documento unifica la documentación del repositorio y contiene toda la info
 
 - Monitor de servicios que verifica código de estado y latencia de una lista de URLs.
 - Utiliza una función serverless como proxy para esquivar CORS y permitir mediciones desde el navegador con seguridad.
-- i18n centralizado en `js/i18n_es.js` (y estructura para agregar más idiomas).
+- i18n centralizado en `lang/i18n_es.js` (y estructura para agregar más idiomas).
 - Lógica de la leyenda en `js/leyenda_script.js` y constantes globales en `js/config.js`.
 
 ## Cambios recientes
 
-- Centralización de textos (i18n) en `js/i18n_es.js`.
+- Centralización de textos (i18n) en `lang/i18n_es.js`.
 - Separación de responsabilidades: `js/leyenda_script.js` (leyenda) y `js/script.js` (monitor principal).
 - Definición de `TEMA_FILES` y `LEYENDA_TEMA_FILES` en `js/config.js`.
 - Se eliminaron o archivaron archivos obsoletos relacionados con la leyenda.
@@ -186,7 +186,7 @@ Solo necesita una cuenta en un repositorio Git (GitHub, GitLab, etc.) y una cuen
 
 ### 2. Configuración de URLs
 
-Edite el archivo webs.json para agregar o eliminar los servicios web que desea monitorizar.
+Edite el archivo data/webs.json para agregar o eliminar los servicios web que desea monitorizar.
 
 Puede utilizar cualquier editor de texto o IDE (como VS Code o Notepad++) para modificar este archivo JSON:
 
@@ -320,7 +320,7 @@ Esto ayuda a distinguir entre:
 
 ## 🔤 Internacionalización (i18n)
 
-- Los textos se encuentran en `js/i18n_es.js` (archivo principal en Español), los demás idiomas siguen el mismo patrón (ej. `js/i18n_en.js`).
+- Los textos se encuentran en `lang/i18n_es.js` (archivo principal en Español), los demás idiomas siguen el mismo patrón (ej. `lang/i18n_en.js`).
 - Si se agreaga un idioma nuevo, incluir su entrada en `I18N_FILES` dentro de `js/config.js`.
 
 ## 💻 Desarrollo y estructura
@@ -347,7 +347,7 @@ npx netlify-cli dev
 
 ### Configuración de webs.json
 
-El archivo `webs.json` define los servicios a monitorear:
+El archivo `data/webs.json` define los servicios a monitorear:
 
 ```json
 [
@@ -375,7 +375,7 @@ El archivo `webs.json` define los servicios a monitorear:
 
 ## 🧭 Agregar/Editar servicios a monitorear
 
-- Editar `webs.json` en la raíz: agregar/editar objetos con `nombre`, `url` y `grupo`.
+- Editar `data/webs.json`: agregar/editar objetos con `nombre`, `url` y `grupo`.
 
 ## 🙋 Contribuir y mantenimiento
 
