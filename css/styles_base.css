@@ -337,3 +337,39 @@ h1 {
   font-size: 0.9em;
   text-align: center;
 }
+
+/* === Botón Toggle Modo Oscuro === */
+.theme-toggle-button {
+  background-color: var(--container-bg, #fff);
+  border: 2px solid var(--accent, #007bff);
+  color: var(--text, #333);
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.theme-toggle-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.theme-toggle-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#theme-icon {
+  font-size: 1.2em;
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle-button:hover #theme-icon {
+  transform: rotate(20deg);
+}

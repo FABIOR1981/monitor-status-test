@@ -1000,7 +1000,7 @@ function obtenerTemaDeURL() {
 
 /**
  * Lógica de cambio de tema: Prioriza la URL. Si no hay parámetro,
- * utiliza la preferencia guardada en sessionStorage para la sesión actual.
+ * utiliza la preferencia guardada en localStorage.
  */
 function inicializarTema() {
   // Nota: TEMA_DEFAULT, TEMA_PRO, TEMA_MIN, TEMA_OSC y TEMA_FILES ahora son globales desde config.js
@@ -1010,11 +1010,17 @@ function inicializarTema() {
   // 1. Intentar obtener el tema de la URL (MÁXIMA PRIORIDAD)
   const temaUrl = obtenerTemaDeURL();
 
-  // Si hay un tema válido en la URL, lo usamos.
   if (temaUrl) {
+    // Si hay tema en URL, lo usamos y lo guardamos
     temaFinal = temaUrl;
+    localStorage.setItem('temaPreferido', temaFinal);
+  } else {
+    // Si no hay tema en URL, intentamos obtenerlo de localStorage
+    const temaGuardado = localStorage.getItem('temaPreferido');
+    if (temaGuardado && TEMA_FILES[temaGuardado]) {
+      temaFinal = temaGuardado;
+    }
   }
-  // Si no hay tema en la URL, temaFinal se mantiene como TEMA_DEFAULT.
 
   // 2. Aplicar el tema
   // Nos aseguramos de que el archivo CSS exista en el mapa TEMA_FILES.
@@ -1027,6 +1033,48 @@ function inicializarTema() {
     // Fallback de seguridad si el tema (incluso el default) falla la validación
     estiloPrincipal.href = TEMA_FILES[TEMA_DEFAULT];
     temaProActivo = false;
+  }
+
+  // 3. Actualizar el botón toggle
+  actualizarBotonToggle(temaFinal);
+}
+
+/**
+ * Actualiza el texto y el icono del botón toggle según el tema actual
+ */
+function actualizarBotonToggle(temaActual) {
+  const themeIcon = document.getElementById('theme-icon');
+  const themeText = document.getElementById('theme-text');
+
+  if (!themeIcon || !themeText) return;
+
+  if (temaActual === TEMA_OSC) {
+    themeIcon.textContent = '☀️';
+    themeText.textContent = 'Modo Claro';
+  } else {
+    themeIcon.textContent = '🌙';
+    themeText.textContent = 'Modo Oscuro';
+  }
+}
+
+/**
+ * Alterna entre modo claro (def) y modo oscuro (osc)
+ */
+function toggleDarkMode() {
+  const estiloPrincipal = document.getElementById('estilo-principal');
+  const temaActual = localStorage.getItem('temaPreferido') || TEMA_DEFAULT;
+
+  // Alternar entre DEF y OSC
+  const nuevoTema = temaActual === TEMA_OSC ? TEMA_DEFAULT : TEMA_OSC;
+
+  // Aplicar el nuevo tema
+  if (TEMA_FILES[nuevoTema]) {
+    estiloPrincipal.href = TEMA_FILES[nuevoTema];
+    localStorage.setItem('temaPreferido', nuevoTema);
+    temaProActivo = nuevoTema !== TEMA_DEFAULT;
+
+    // Actualizar el botón
+    actualizarBotonToggle(nuevoTema);
   }
 }
 

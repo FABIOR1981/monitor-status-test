@@ -3,10 +3,14 @@
 // y renderiza la tabla de umbrales dinámicamente
 document.addEventListener('DOMContentLoaded', async () => {
   const params = new URLSearchParams(window.location.search);
-  const temaParam = params.get('tema')
-    ? params.get('tema').toLowerCase()
-    : DEFAULT_LEYENDA_TEMA;
+  let temaParam = params.get('tema') ? params.get('tema').toLowerCase() : null;
   const idioma = params.get('lang') || DEFAULT_LANG;
+
+  // Si no hay tema en URL, intentar obtenerlo de localStorage
+  if (!temaParam) {
+    const temaGuardado = localStorage.getItem('temaPreferido');
+    temaParam = temaGuardado || DEFAULT_LEYENDA_TEMA;
+  }
 
   // Cargar el CSS del tema seleccionado
   const temaBaseLink = document.getElementById('tema-base-css');
@@ -23,6 +27,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   } else if (!temaBaseLink) {
     console.warn("Elemento con ID 'tema-base-css' no encontrado.");
   }
+
+  // Actualizar el botón toggle
+  actualizarBotonToggle(temaParam);
 
   // Cargar el archivo de traducción correspondiente al idioma seleccionado
   async function loadI18n(language) {
@@ -172,3 +179,45 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.error('No se cargaron las traducciones para la leyenda.');
   }
 });
+
+/**
+ * Actualiza el texto y el icono del botón toggle según el tema actual
+ */
+function actualizarBotonToggle(temaActual) {
+  const themeIcon = document.getElementById('theme-icon');
+  const themeText = document.getElementById('theme-text');
+
+  if (!themeIcon || !themeText) return;
+
+  if (temaActual === 'osc') {
+    themeIcon.textContent = '☀️';
+    themeText.textContent = 'Modo Claro';
+  } else {
+    themeIcon.textContent = '🌙';
+    themeText.textContent = 'Modo Oscuro';
+  }
+}
+
+/**
+ * Alterna entre modo claro (def) y modo oscuro (osc) en la página de leyenda
+ */
+function toggleDarkMode() {
+  const temaBaseLink = document.getElementById('tema-base-css');
+  const temaActual = localStorage.getItem('temaPreferido') || 'def';
+
+  // Alternar entre def y osc
+  const nuevoTema = temaActual === 'osc' ? 'def' : 'osc';
+
+  // Aplicar el nuevo tema
+  if (LEYENDA_TEMA_FILES[nuevoTema]) {
+    temaBaseLink.href = LEYENDA_TEMA_FILES[nuevoTema];
+    localStorage.setItem('temaPreferido', nuevoTema);
+
+    // Actualizar clases del body
+    document.body.classList.remove(`theme-${temaActual}`);
+    document.body.classList.add(`theme-${nuevoTema}`);
+
+    // Actualizar el botón
+    actualizarBotonToggle(nuevoTema);
+  }
+}
