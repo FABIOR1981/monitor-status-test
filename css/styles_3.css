@@ -1,11 +1,11 @@
 /* ======================================================= */
 /* TEMA ASTIGMATISMO - Diseño adaptado para reducir fatiga visual */
 /* Características: Alto contraste suave, bordes redondeados, */
-/* colores cálidos, espaciado generoso, sombras difusas */
+/* colores cálidos,   espaciado generoso, sombras difusas */
 /* ======================================================= */
 
 :root {
-    /* Colores base - Tonos cálidos y suaves */
+    /* Colores base  - Tonos cálidos y suaves */
     --bg: #1e1e24;
     --text: #e8e6e3;
     --accent: #6ea8fe;
