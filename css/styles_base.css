@@ -234,26 +234,19 @@ h1 {
 .toggle-errors-button {
   display: inline-block;
   border: none;
-  background: #ff6b6b;
+  background: #dc3545;
   color: white;
-  padding: 6px 12px;
+  padding: 5px 8px;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 0.85em;
+  font-size: 0.8em;
   margin-right: 8px;
-  transition: all 0.2s;
-  font-weight: bold;
+  transition: background-color 0.2s;
   vertical-align: middle;
 }
 
 .toggle-errors-button:hover {
-  background: #ff5252;
-  transform: scale(1.05);
-  box-shadow: 0 2px 4px rgba(255, 107, 107, 0.3);
-}
-
-.toggle-errors-button:active {
-  transform: scale(0.98);
+  background: #c82333;
 }
 
 /* Botón PSI */
