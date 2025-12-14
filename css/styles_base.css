@@ -225,8 +225,14 @@ h1 {
    ESTILOS PARA EXPANSIÓN DE ERRORES
    ==================================== */
 
+/* Contenedor de botones en línea */
+#monitor-table td:nth-child(7) {
+  white-space: nowrap;
+}
+
 /* Botón de toggle de errores */
 .toggle-errors-button {
+  display: inline-block;
   border: none;
   background: #ff6b6b;
   color: white;
@@ -237,6 +243,7 @@ h1 {
   margin-right: 8px;
   transition: all 0.2s;
   font-weight: bold;
+  vertical-align: middle;
 }
 
 .toggle-errors-button:hover {
@@ -247,6 +254,12 @@ h1 {
 
 .toggle-errors-button:active {
   transform: scale(0.98);
+}
+
+/* Botón PSI */
+.psi-button {
+  display: inline-block;
+  vertical-align: middle;
 }
 
 /* Fila de detalle de errores */
