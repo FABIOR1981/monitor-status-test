@@ -159,11 +159,11 @@ El proyecto sigue una arquitectura modular con separación clara de responsabili
 | `index.html`                            | Página principal del monitor                       |
 | `leyenda.html`                          | Documentación de umbrales y códigos HTTP           |
 | **CSS**                                 |                                                    |
-| `css/styles_base.css`                   | Variables y estilos compartidos                    |
-| `css/styles_def.css`                    | Tema estándar (por defecto)                        |
-| `css/styles_pro.css`                    | Tema profesional (información avanzada)            |
-| `css/styles_min.css`                    | Tema minimalista (dashboards)                      |
-| `css/styles_osc.css`                    | Tema oscuro (dark mode)                            |
+| `css/monitor_base.css`                  | Variables y estilos compartidos                    |
+| `css/monitor_def.css`                   | Tema estándar (por defecto)                        |
+| `css/monitor_pro.css`                   | Tema profesional (información avanzada)            |
+| `css/monitor_min.css`                   | Tema minimalista (dashboards)                      |
+| `css/monitor_osc.css`                   | Tema oscuro (dark mode)                            |
 | `css/leyenda_base.css`                  | Estilos base para página de leyenda                |
 | `css/leyenda_def.css`                   | Tema estándar para leyenda                         |
 | `css/leyenda_pro.css`                   | Tema profesional para leyenda                      |

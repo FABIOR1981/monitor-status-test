@@ -11,7 +11,7 @@
   --link-color: #007bff;
 }
 
-/* Sobrescrituras específicas del tema: uso simple de las variables definidas en styles_base */
+/* Sobrescrituras específicas del tema: uso simple de las variables definidas en monitor_base */
 body {
   background-color: var(--bg);
   color: var(--text);
@@ -28,7 +28,7 @@ h1 {
   color: var(--update-info-color, #495057);
 }
 
-/* table-scroll-container movido a styles_base.css */
+/* table-scroll-container movido a monitor_base.css */
 
 /* --- Estilos de la Tabla (Ajuste de Filas y Columnas) --- */
 #monitor-table {
@@ -195,5 +195,5 @@ h1 {
   display: none;
 }
 
-/* Pseudo-elementos Emoji centralizados en styles_base.css; no se duplican aquí. */
+/* Pseudo-elementos Emoji centralizados en monitor_base.css; no se duplican aquí. */
 /* ======================================================= */

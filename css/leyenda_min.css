@@ -1,50 +1,72 @@
 /* ======================================================= */
-/* LEYENDA TEMA: MINIMALISTA (styles_min.css) */
+/* LEYENDA TEMA: MINIMALISTA (monitor_min.css) */
 /* Colores: Fondo Muy Claro (#f7f7f7), Texto Oscuro (#333), Acento Neutro (#6c757d) */
 /* ======================================================= */
 
 /* --- Colores de Base --- */
 body {
-    background-color: #f7f7f7;
-    color: #333; 
+  background-color: #f7f7f7;
+  color: #333;
 }
 
 header {
-    border-bottom: 2px solid #6c757d; /* Color de acento neutro */
+  border-bottom: 2px solid #6c757d; /* Color de acento neutro */
 }
 
 #titulo-leyenda {
-    color: #495057;
+  color: #495057;
 }
 
 #contenido-leyenda {
-    background-color: #fff;
-    border: 1px solid #dee2e6;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
 }
 
 /* --- Estilos de Tabla de Umbrales --- */
 .leyenda-tabla-umbrales th {
-    background-color: #e9ecef; /* Gris claro para header de tabla */
-    color: #495057; /* Texto neutro */
-    border: 1px solid #dee2e6;
+  background-color: #e9ecef; /* Gris claro para header de tabla */
+  color: #495057; /* Texto neutro */
+  border: 1px solid #dee2e6;
 }
 
 .leyenda-tabla-umbrales td {
-    border: 1px solid #dee2e6;
+  border: 1px solid #dee2e6;
 }
 
 /* Colores de estado movidos a variables */
-:root { --status-very-fast-bg: #d4edda; --status-very-fast-color: #0f5132; --status-fast-bg: #c3e6cb; --status-fast-color: #155724; --status-normal-bg: #cce8ff; --status-normal-color: #044385; --status-slow-bg: #ffe0b2; --status-slow-color: #9c5a00; --status-critical-bg: #f8d7da; --status-critical-color: #721c24; --status-risk-bg: #e9a3af; --status-risk-color: #58151c; --status-extreme-risk-bg: #dc3545; --status-extreme-risk-color: white; --status-down-bg: #343a40; --status-down-color: white; }
+:root {
+  --status-very-fast-bg: #d4edda;
+  --status-very-fast-color: #0f5132;
+  --status-fast-bg: #c3e6cb;
+  --status-fast-color: #155724;
+  --status-normal-bg: #cce8ff;
+  --status-normal-color: #044385;
+  --status-slow-bg: #ffe0b2;
+  --status-slow-color: #9c5a00;
+  --status-critical-bg: #f8d7da;
+  --status-critical-color: #721c24;
+  --status-risk-bg: #e9a3af;
+  --status-risk-color: #58151c;
+  --status-extreme-risk-bg: #dc3545;
+  --status-extreme-risk-color: white;
+  --status-down-bg: #343a40;
+  --status-down-color: white;
+}
 
 /* Mantener peso de fuente y demás presentación */
-.status-normal { font-weight: bold; }
-.status-extreme-risk, .status-down { font-weight: bold; }
+.status-normal {
+  font-weight: bold;
+}
+.status-extreme-risk,
+.status-down {
+  font-weight: bold;
+}
 
 footer {
-    border-top: 1px solid #dee2e6;
+  border-top: 1px solid #dee2e6;
 }
 #enlace-volver {
-    color: #6c757d;
+  color: #6c757d;
 }
 
 /* ======================================================= */
@@ -53,36 +75,36 @@ footer {
 
 /* Estilo para el título de la nueva sección */
 .leyenda-section h3 {
-    color: #495057; /* Color neutro de texto */
-    border-bottom: 1px dashed #ced4da;
+  color: #495057; /* Color neutro de texto */
+  border-bottom: 1px dashed #ced4da;
 }
 
 /* Estilos de la nueva tabla de errores */
 .leyenda-tabla-errores th {
-    background-color: #e9ecef; /* Fondo de header de tabla */
-    color: #495057; /* Texto neutro */
-    border: 1px solid #dee2e6;
+  background-color: #e9ecef; /* Fondo de header de tabla */
+  color: #495057; /* Texto neutro */
+  border: 1px solid #dee2e6;
 }
 
 .leyenda-tabla-errores td {
-    border: 1px solid #dee2e6;
-    background-color: #fff; /* Fondo de celda blanca */
+  border: 1px solid #dee2e6;
+  background-color: #fff; /* Fondo de celda blanca */
 }
 
 /* Colores para los elementos expandibles (details/summary) */
 .leyenda-tabla-umbrales summary {
-    color: #6c757d; /* Color de acento (gris) */
+  color: #6c757d; /* Color de acento (gris) */
 }
 
 .leyenda-tabla-umbrales summary:hover {
-    color: #495057;
+  color: #495057;
 }
 
 .leyenda-tabla-umbrales summary::before {
-    color: #6c757d; /* Color de acento */
+  color: #6c757d; /* Color de acento */
 }
 
 .leyenda-tabla-umbrales details p {
-    color: #333; /* Color de texto para el contenido expandido */
-    border-left: 2px solid #adb5bd; /* Línea lateral de acento (gris medio) */
+  color: #333; /* Color de texto para el contenido expandido */
+  border-left: 2px solid #adb5bd; /* Línea lateral de acento (gris medio) */
 }

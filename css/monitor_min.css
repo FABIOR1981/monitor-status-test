@@ -1,5 +1,5 @@
 /* ======================================================= */
-/* VERSÍON MINIMALISTA Y NEUTRA DE styles.css */
+/* VERSÍON MINIMALISTA Y NEUTRA DE monitor.css */
 /* (Base: Versión minimalista solicitada) */
 /* ======================================================= */
 
@@ -41,7 +41,7 @@ h1 {
   color: var(--header-color);
 }
 
-/* Colores de información definidos a nivel de tema; la estructura se movió a styles_base */
+/* Colores de información definidos a nivel de tema; la estructura se movió a monitor_base */
 .info-bar {
   color: var(--info-color, #6c757d);
 }
@@ -49,7 +49,7 @@ h1 {
   color: var(--update-info-color, #495057);
 }
 
-/* table-scroll-container movido a styles_base.css */
+/* table-scroll-container movido a monitor_base.css */
 
 /* --- Estilos de la Tabla --- */
 #monitor-table {

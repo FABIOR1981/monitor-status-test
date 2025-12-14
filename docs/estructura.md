@@ -21,10 +21,10 @@ monitor-status-test/
 │ └── leyenda_script.js <-- Lógica de la página de leyenda
 |
 ├── css/ <-- Directorio de estilos CSS
-│ ├── styles_base.css <-- Estilos base compartidos
-│ ├── styles_def.css <-- Tema estándar (default)
-│ ├── styles_pro.css <-- Tema PRO (información avanzada)
-│ ├── styles_min.css <-- Tema minimalista
+│ ├── monitor_base.css <-- Estilos base compartidos
+│ ├── monitor_def.css <-- Tema estándar (default)
+│ ├── monitor_pro.css <-- Tema PRO (información avanzada)
+│ ├── monitor_min.css <-- Tema minimalista
 │ ├── leyenda_base.css <-- Estilos base de la leyenda
 │ ├── leyenda_def.css <-- Tema estándar para leyenda
 │ ├── leyenda_pro.css <-- Tema PRO para leyenda
@@ -77,7 +77,7 @@ Archivo de configuración JSON ubicado en la raíz que contiene:
 
 ## CSS Files
 
-### styles_base.css
+### monitor_base.css
 
 Estilos compartidos por todos los temas:
 
@@ -87,7 +87,7 @@ Estilos compartidos por todos los temas:
 - Sistema de expansión de errores
 - Contador de errores
 
-### styles_def.css, styles_pro.css, styles_min.css
+### monitor_def.css, monitor_pro.css, monitor_min.css
 
 Temas específicos con variaciones de:
 

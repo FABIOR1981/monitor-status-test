@@ -1,5 +1,5 @@
 /* ======================================================= */
-/* VERSÍON PROFESIONAL Y DE ÉNFASIS (styles_pro.css) */
+/* VERSÍON PROFESIONAL Y DE ÉNFASIS (monitor_pro.css) */
 /* ======================================================= */
 
 :root {
@@ -23,7 +23,7 @@ h1 {
   color: var(--header-color);
 }
 
-/* Colores de información definidos a nivel de tema; la estructura se movió a styles_base */
+/* Colores de información definidos a nivel de tema; la estructura se movió a monitor_base */
 .info-bar {
   color: var(--info-color, #99aab5);
 }
@@ -31,7 +31,7 @@ h1 {
   color: var(--update-info-color, #ffffff);
 }
 
-/* table-scroll-container movido a styles_base.css */
+/* table-scroll-container movido a monitor_base.css */
 
 /* --- Estilos de la Tabla --- */
 #monitor-table {
@@ -106,7 +106,7 @@ h1 {
 /* --- Colores de Estado (PRO: Énfasis en el Borde Izquierdo) --- */
 /* ======================================================= */
 
-/* Presentación: mantener el texto de estado en negrita; los visuales (color/fondo) se definen mediante variables en styles_base/tema */
+/* Presentación: mantener el texto de estado en negrita; los visuales (color/fondo) se definen mediante variables en monitor_base/tema */
 .status-very-fast,
 .status-fast,
 .status-normal,

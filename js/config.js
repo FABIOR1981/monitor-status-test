@@ -17,10 +17,10 @@ const TEMA_MIN = 'min';
 const TEMA_OSC = 'osc';
 
 const TEMA_FILES = {
-  [TEMA_DEFAULT]: 'css/styles_def.css',
-  [TEMA_PRO]: 'css/styles_pro.css',
-  [TEMA_MIN]: 'css/styles_min.css',
-  [TEMA_OSC]: 'css/styles_osc.css',
+  [TEMA_DEFAULT]: 'css/monitor_def.css',
+  [TEMA_PRO]: 'css/monitor_pro.css',
+  [TEMA_MIN]: 'css/monitor_min.css',
+  [TEMA_OSC]: 'css/monitor_osc.css',
 };
 
 const DEFAULT_LEYENDA_TEMA = 'def';

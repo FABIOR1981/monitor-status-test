@@ -122,7 +122,7 @@ El promedio se sigue calculando con los datos antiguos.
     Esto forzará al monitor a empezar a calcular los promedios
     desde cero en la siguiente ejecución.
 
-### Problema 3.2: El Tema PRO (`styles_pro.css`) no se aplica.
+### Problema 3.2: El Tema PRO (`monitor_pro.css`) no se aplica.
 
 **Causa:** El parámetro de la URL está mal escrito o el archivo
 no se carga.
@@ -131,7 +131,7 @@ no se carga.
 
 1.  **Verificar URL:** Asegúrese de que la URL termine exactamente
     con **`/?tema=pro`**.
-2.  **Verificar Archivo:** Confirme que el archivo `styles_pro.css`
+2.  **Verificar Archivo:** Confirme que el archivo `monitor_pro.css`
     existe en la carpeta **`css/`** del proyecto.
 3.  **Verificar config.js:** La constante `TEMA_FILES` en `js/config.js`
     debe contener el mapeo correcto de temas a archivos CSS.
@@ -156,7 +156,7 @@ HTML no existen.
     `onclick="toggleErrores('URL')"` donde URL es la dirección
     del sitio monitoreado.
 3.  **Verificar CSS:** Los estilos `.error-details` deben estar
-    definidos en `css/styles_base.css`.
+    definidos en `css/monitor_base.css`.
 4.  **Abrir Consola:** Presione F12 y busque errores JavaScript.
 
 ### Problema 4.2: El contador de errores "⚠️ X/Y" no aparece.
