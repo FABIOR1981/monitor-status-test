@@ -1,0 +1,294 @@
+/* ======================================================= */
+/* TEMA ASTIGMATISMO - Diseño adaptado para reducir fatiga visual */
+/* Características: Alto contraste suave, bordes redondeados, */
+/* colores cálidos, espaciado generoso, sombras difusas */
+/* ======================================================= */
+
+:root {
+    /* Colores base - Tonos cálidos y suaves */
+    --bg: #1e1e24;
+    --text: #e8e6e3;
+    --accent: #6ea8fe;
+    --container-bg: #2a2a32;
+    --container-radius: 16px;
+    --container-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    --header-color: #8fc5ff;
+    --table-header-bg: #3a3a45;
+    --table-header-color: #e8e6e3;
+    --link-color: #7db8ff;
+}
+
+/* Sobrescrituras específicas del tema */
+body { 
+    background-color: var(--bg); 
+    color: var(--text);
+    font-size: 16px; /* Tamaño base mayor para mejor legibilidad */
+    line-height: 1.6; /* Mayor espaciado entre líneas */
+}
+
+h1 { 
+    color: var(--header-color);
+    text-shadow: 0 2px 8px rgba(143, 197, 255, 0.3); /* Sombra suave */
+    letter-spacing: 0.5px; /* Espaciado entre letras */
+}
+
+.container {
+    background-color: var(--container-bg);
+    border-radius: var(--container-radius);
+    box-shadow: var(--container-shadow);
+    border: 1px solid rgba(110, 168, 254, 0.2); /* Borde sutil */
+}
+
+/* Info bar con contraste suave */
+.info-bar { 
+    color: #b8b6b3;
+    background: rgba(110, 168, 254, 0.08);
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.update-info { 
+    color: #c8c6c3;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px;
+    border-radius: 8px;
+}
+
+/* --- Estilos de la Tabla --- */
+#monitor-table { 
+    width: 100%; 
+    border-collapse: separate; /* Permitir bordes redondeados */
+    border-spacing: 0;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3); 
+    overflow: hidden; 
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(110, 168, 254, 0.15);
+}
+
+#monitor-table th, #monitor-table td { 
+    padding: 16px 12px; /* Mayor espaciado */
+    text-align: left; 
+    border-bottom: 1px solid rgba(110, 168, 254, 0.1);
+}
+
+#monitor-table td a {
+    color: var(--link-color);
+    text-decoration: none;
+    font-size: 0.95em;
+    word-break: break-all;
+    font-weight: 500; /* Peso medio para mejor legibilidad */
+}
+
+#monitor-table td a:hover {
+    color: #a8d8ff;
+    text-shadow: 0 0 8px rgba(168, 216, 255, 0.4);
+}
+
+/* Anchos de columnas */
+#monitor-table thead th:nth-child(1) { width: 15%; } 
+#monitor-table thead th:nth-child(2) { width: 30%; } 
+#monitor-table thead th:nth-child(3) { width: 10%; } 
+#monitor-table thead th:nth-child(4) { width: 15%; } 
+#monitor-table thead th:nth-child(5) { width: 10%; } 
+#monitor-table thead th:nth-child(6) { width: 15%; } 
+#monitor-table thead th:nth-child(7) { width: 5%; }  
+#monitor-table thead th:nth-child(8) { width: 5%; } 
+
+#monitor-table thead th { 
+    background: linear-gradient(135deg, #3a3a45 0%, #4a4a55 100%);
+    color: var(--table-header-color); 
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    letter-spacing: 1px;
+    border-bottom: 2px solid rgba(110, 168, 254, 0.3);
+}
+
+#monitor-table tr:hover {
+    background: rgba(110, 168, 254, 0.08);
+    transition: background 0.2s ease;
+}
+
+/* Centrar el texto en las columnas de datos */
+#monitor-table td:nth-child(3),
+#monitor-table td:nth-child(4),
+#monitor-table td:nth-child(5),
+#monitor-table td:nth-child(6),
+#monitor-table td:nth-child(7),
+#monitor-table td:nth-child(8) { 
+    text-align: center;
+}
+
+/* --- Estilos de Botones --- */
+.psi-button, .btn-primary { 
+    background: linear-gradient(135deg, #4a9eff 0%, #357ae8 100%);
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85em;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(74, 158, 255, 0.3);
+}
+
+.psi-button:hover, .btn-primary:hover {
+    background: linear-gradient(135deg, #5aaeff 0%, #4585f2 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(74, 158, 255, 0.5);
+}
+
+.psi-button:active, .btn-primary:active {
+    transform: translateY(0);
+}
+
+/* --- Colores de Estado (Paleta optimizada para astigmatismo) --- */
+:root {
+  /* Muy Rápido - Verde menta suave */
+  --status-very-fast-bg: rgba(80, 250, 123, 0.15);
+  --status-very-fast-color: #7effa8;
+  
+  /* Rápido - Verde azulado */
+  --status-fast-bg: rgba(80, 220, 180, 0.15);
+  --status-fast-color: #6ee7b7;
+  
+  /* Normal - Azul cielo */
+  --status-normal-bg: rgba(110, 168, 254, 0.15);
+  --status-normal-color: #7db8ff;
+  
+  /* Lento - Amarillo cálido */
+  --status-slow-bg: rgba(255, 195, 113, 0.15);
+  --status-slow-color: #ffca8a;
+  
+  /* Crítico - Naranja suave */
+  --status-critical-bg: rgba(255, 148, 92, 0.15);
+  --status-critical-color: #ffb380;
+  
+  /* Riesgo - Salmón */
+  --status-risk-bg: rgba(255, 121, 121, 0.15);
+  --status-risk-color: #ff9999;
+  
+  /* Riesgo Extremo - Rojo coral */
+  --status-extreme-risk-bg: rgba(255, 85, 85, 0.25);
+  --status-extreme-risk-color: #ff8a8a;
+  
+  /* Caído - Gris azulado */
+  --status-down-bg: rgba(150, 150, 160, 0.2);
+  --status-down-color: #b8b8c8;
+}
+
+/* Aplicar bordes redondeados y espaciado a los estados */
+.status-very-fast, .status-fast, .status-normal, 
+.status-slow, .status-critical, .status-risk, 
+.status-extreme-risk, .status-down { 
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 8px;
+    display: inline-block;
+    letter-spacing: 0.3px;
+}
+
+/* --- Estilo para la Latencia (Métricas) --- */
+.latency-metric {
+    font-weight: 600;
+    font-size: 1.05em;
+    background: rgba(110, 168, 254, 0.08);
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+/* --- Selector de duración con estilo mejorado --- */
+#duracion-selector {
+    background: #3a3a45;
+    color: #e8e6e3;
+    border: 1px solid rgba(110, 168, 254, 0.3);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#duracion-selector:hover {
+    border-color: rgba(110, 168, 254, 0.5);
+    box-shadow: 0 0 8px rgba(110, 168, 254, 0.2);
+}
+
+#duracion-selector:focus {
+    outline: none;
+    border-color: #6ea8fe;
+    box-shadow: 0 0 12px rgba(110, 168, 254, 0.4);
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .container {
+        padding: 16px;
+        border-radius: 12px;
+    }
+    h1 {
+        font-size: 1.6em;
+    }
+    #monitor-table {
+        font-size: 0.85em;
+    }
+    #monitor-table th, #monitor-table td {
+        padding: 12px 8px;
+    }
+}
+
+/* ======================================================= */
+/* CONTROL DE VISIBILIDAD DE COLUMNAS */
+/* ======================================================= */
+
+/* Ocultar columnas por defecto (como tema standard) */
+#monitor-table th:nth-child(2), 
+#monitor-table td:nth-child(2) { 
+    display: none;
+}
+
+#monitor-table th:nth-child(7), 
+#monitor-table td:nth-child(7) { 
+    display: none;
+}
+
+#monitor-table th:nth-child(8), 
+#monitor-table td:nth-child(8) { 
+    display: none;
+}
+
+/* ======================================================= */
+/* MEJORAS ESPECÍFICAS PARA ASTIGMATISMO */
+/* ======================================================= */
+
+/* Reducir "ghosting" con text-rendering optimizado */
+body {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Evitar bordes muy contrastantes que causan halos */
+* {
+    box-shadow: none !important;
+}
+
+#monitor-table,
+.container,
+.psi-button,
+.toggle-errors-button,
+.status-very-fast, .status-fast, .status-normal, 
+.status-slow, .status-critical, .status-risk, 
+.status-extreme-risk, .status-down {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Mayor contraste en enlaces al hover */
+a:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+}
