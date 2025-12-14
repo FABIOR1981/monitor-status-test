@@ -53,8 +53,8 @@ function inicializarSelectorDuracion() {
     const nuevaDuracion = e.target.value;
     guardarDuracionSeleccionada(nuevaDuracion);
     maxHistorialActual = DURACION_OPCIONES[nuevaDuracion].mediciones;
-    // Limpiamos el historial al cambiar duración porque las mediciones antiguas
-    // podrían ser incompatibles con el nuevo tamaño de ventana
+    // Limpiamos el historial porque las mediciones antiguas pueden no tener sentido
+    // con la nueva ventana de tiempo (ej: pasar de 1 hora a 9 horas)
     historialStatus = {};
     guardarHistorial();
     monitorearTodosWebsites();
@@ -293,6 +293,8 @@ function obtenerEstadoVisual(tiempo, estado = 200) {
     className: 'status-extreme-risk',
   };
 }
+// Ordena los servicios poniendo primero los críticos (orden=1)
+// y luego el resto alfabéticamente para facilitar la búsqueda
 function ordenarServiciosPersonalizado(servicios) {
   // Los servicios con orden=1 siempre aparecen primero (servicios críticos)
   // El resto se ordenan alfabéticamente para facilitar la búsqueda
@@ -352,6 +354,9 @@ function actualizarHistorial(url, time, status) {
   guardarHistorial();
 }
 
+// Calcula el promedio de latencia excluyendo errores
+// Solo se promedian las mediciones exitosas (status 200)
+// Las penalizaciones (99999ms) no afectan el resultado
 function calcularPromedio(url) {
   const historial = historialStatus[url] || [];
 
@@ -386,7 +391,7 @@ function calcularPromedio(url) {
 
   const validCount = historial.length;
 
-  // Si más del 50% son fallos, mostrar como DOWN/ERROR
+  // Si más del 50% son fallos, mostrar como caída total
   if (fallos / validCount > 0.5 && validCount > 3) {
     return {
       promedio: 0,

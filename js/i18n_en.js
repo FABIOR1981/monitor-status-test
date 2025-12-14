@@ -150,14 +150,14 @@ const TEXTOS_EN = {
   ],
 };
 
-// Derive httpStatus from httpCodes array (calculated once)
+// Construir el objeto httpStatus automáticamente desde el array de códigos
+// Esto evita duplicar la información y mantiene todo sincronizado
 TEXTOS_EN.httpStatus = {};
 TEXTOS_EN.httpCodes.forEach((item) => {
   TEXTOS_EN.httpStatus[item.code] = item.label;
 });
 TEXTOS_EN.httpStatus.GENERIC = 'HTTP Error';
 
-// Continue with the rest of TEXTOS_EN properties
 TEXTOS_EN.tabla = {
   HEADER_SERVICE: 'Service',
   HEADER_URL: 'URL',

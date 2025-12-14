@@ -1,3 +1,6 @@
+// Script para la página de leyenda (leyenda.html)
+// Carga el tema y el idioma según los parámetros de la URL
+// y renderiza la tabla de umbrales dinámicamente
 document.addEventListener('DOMContentLoaded', async () => {
   const params = new URLSearchParams(window.location.search);
   const temaParam = params.get('tema')
@@ -5,6 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     : DEFAULT_LEYENDA_TEMA;
   const idioma = params.get('lang') || DEFAULT_LANG;
 
+  // Cargar el CSS del tema seleccionado
   const temaBaseLink = document.getElementById('tema-base-css');
   const rutaCssTema =
     typeof LEYENDA_TEMA_FILES !== 'undefined'
@@ -20,6 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.warn("Elemento con ID 'tema-base-css' no encontrado.");
   }
 
+  // Cargar el archivo de traducción correspondiente al idioma seleccionado
   async function loadI18n(language) {
     const file =
       typeof I18N_FILES !== 'undefined' && I18N_FILES[language]
@@ -53,6 +58,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
   }
+  // Renderiza la tabla de umbrales de latencia con detalles desplegables
   function renderLeyendaContent(container, leyendaData) {
     if (!container || !leyendaData) return;
 
