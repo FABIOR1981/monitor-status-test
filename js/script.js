@@ -674,12 +674,15 @@ function toggleErroresDetalle(url) {
   if (!row) return;
 
   const toggleBtn = row.querySelector('.toggle-errors-button');
-  
+
   // Buscar si ya existe una fila de detalle para esta URL
   let detalleRow = null;
   let nextRow = row.nextElementSibling;
-  if (nextRow && nextRow.classList.contains('error-detail-row') && 
-      nextRow.getAttribute('data-parent-url') === url) {
+  if (
+    nextRow &&
+    nextRow.classList.contains('error-detail-row') &&
+    nextRow.getAttribute('data-parent-url') === url
+  ) {
     detalleRow = nextRow;
   }
 
@@ -740,7 +743,7 @@ function toggleErroresDetalle(url) {
 
   cell.innerHTML = html;
   newRow.appendChild(cell);
-  
+
   // Insertar la fila inmediatamente después de la fila padre
   if (row.nextSibling) {
     tbody.insertBefore(newRow, row.nextSibling);
@@ -825,7 +828,7 @@ function actualizarFila(web, resultado) {
 
   // Columna 7: Acción (índice 6)
   let actionsHTML = '';
-  
+
   // Agregar botón de toggle si hay errores (primero)
   if (errores.length > 0) {
     actionsHTML += `<button class="toggle-errors-button" onclick="toggleErroresDetalle('${web.url.replace(
@@ -833,7 +836,7 @@ function actualizarFila(web, resultado) {
       "\\'"
     )}')" title="Ver detalles de errores">▼</button> `;
   }
-  
+
   actionsHTML += `<button class="psi-button" onclick="window.open('https://pagespeed.web.dev/report?url=${web.url}', '_blank')" title="PageSpeed Insights">PSI</button>`;
 
   row.cells[6].innerHTML = actionsHTML;
@@ -991,6 +994,7 @@ function obtenerTemaDeURL() {
   const tema = params.get('tema');
   if (tema === TEMA_PRO) return TEMA_PRO;
   if (tema === TEMA_MIN) return TEMA_MIN;
+  if (tema === TEMA_OSC) return TEMA_OSC;
   return null;
 }
 
@@ -999,7 +1003,7 @@ function obtenerTemaDeURL() {
  * utiliza la preferencia guardada en sessionStorage para la sesión actual.
  */
 function inicializarTema() {
-  // Nota: TEMA_DEFAULT, TEMA_PRO, TEMA_MIN y TEMA_FILES ahora son globales desde config.js
+  // Nota: TEMA_DEFAULT, TEMA_PRO, TEMA_MIN, TEMA_OSC y TEMA_FILES ahora son globales desde config.js
   const estiloPrincipal = document.getElementById('estilo-principal');
   let temaFinal = TEMA_DEFAULT; // Inicializamos con el valor por defecto
 
@@ -1124,14 +1128,14 @@ async function cargarYMostrarHistorialExistente() {
     const cellAccion = row.insertCell();
     const errores = obtenerHistorialErrores(web.url);
     let actionsHTML = '';
-    
+
     if (errores.length > 0) {
       actionsHTML += `<button class="toggle-errors-button" onclick="toggleErroresDetalle('${web.url.replace(
         /'/g,
         "\\'"
       )}')" title="Ver detalles de errores">▼</button> `;
     }
-    
+
     actionsHTML += `<button class="psi-button" onclick="window.open('https://pagespeed.web.dev/report?url=${web.url}', '_blank')" title="PageSpeed Insights">PSI</button>`;
 
     cellAccion.innerHTML = actionsHTML;
