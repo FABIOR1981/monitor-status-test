@@ -673,11 +673,18 @@ function toggleErroresDetalle(url) {
   const row = tbody.querySelector(`tr[data-url="${CSS.escape(url)}"]`);
   if (!row) return;
 
-  const detalleRow = row.nextElementSibling;
   const toggleBtn = row.querySelector('.toggle-errors-button');
+  
+  // Buscar si ya existe una fila de detalle para esta URL
+  let detalleRow = null;
+  let nextRow = row.nextElementSibling;
+  if (nextRow && nextRow.classList.contains('error-detail-row') && 
+      nextRow.getAttribute('data-parent-url') === url) {
+    detalleRow = nextRow;
+  }
 
   // Si ya existe la fila de detalle, colapsar
-  if (detalleRow && detalleRow.classList.contains('error-detail-row')) {
+  if (detalleRow) {
     detalleRow.classList.remove('expanded');
     if (toggleBtn) toggleBtn.textContent = '▼';
     setTimeout(() => detalleRow.remove(), 200); // Esperar animación
