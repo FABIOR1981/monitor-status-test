@@ -643,6 +643,122 @@ function aplicarAccesibilidadEstadoEnFila(row, labels = {}) {
 }
 
 /**
+ * Obtiene lista de errores del historial para una URL
+ */
+function obtenerHistorialErrores(url) {
+  const historial = historialStatus[url] || [];
+  return historial.filter(
+    (entry) =>
+      entry.status !== 200 || entry.time >= UMBRALES_LATENCIA.PENALIZACION_FALLO
+  );
+}
+
+/**
+ * Formatea timestamp a formato legible: "14/12 10:45"
+ */
+function formatearFecha(timestamp) {
+  const fecha = new Date(timestamp);
+  const dia = String(fecha.getDate()).padStart(2, '0');
+  const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+  const hora = String(fecha.getHours()).padStart(2, '0');
+  const min = String(fecha.getMinutes()).padStart(2, '0');
+  return `${dia}/${mes} ${hora}:${min}`;
+}
+
+/**
+ * Alterna la expansión de errores en una fila
+ */
+function toggleErroresDetalle(url) {
+  const tbody = document.getElementById('status-table-body');
+  const row = tbody.querySelector(`tr[data-url="${CSS.escape(url)}"]`);
+  if (!row) return;
+
+  const detalleRow = row.nextElementSibling;
+
+  // Si ya existe la fila de detalle, alternar
+  if (detalleRow && detalleRow.classList.contains('error-detail-row')) {
+    if (detalleRow.classList.contains('expanded')) {
+      detalleRow.classList.remove('expanded');
+      setTimeout(() => detalleRow.remove(), 200); // Esperar animación
+    }
+    return;
+  }
+
+  // Crear nueva fila de detalle
+  const errores = obtenerHistorialErrores(url);
+  if (errores.length === 0) return;
+
+  const newRow = tbody.insertRow(row.rowIndex + 1);
+  newRow.classList.add('error-detail-row');
+  newRow.setAttribute('data-parent-url', url);
+
+  const cell = newRow.insertCell();
+  cell.colSpan = 7; // Todas las columnas
+
+  const maxErrores = 10;
+  const erroresLimitados = errores.slice(-maxErrores);
+  const hayMas = errores.length > maxErrores;
+
+  let html = '<div class="error-detail-container">';
+  html += `<div class="error-detail-header">⚠️ Errores detectados (${errores.length} de ${historialStatus[url].length} mediciones):</div>`;
+  html += '<ul class="error-detail-list">';
+
+  erroresLimitados.reverse().forEach((error) => {
+    const fecha = formatearFecha(error.timestamp);
+    const codigo = error.status;
+    const latencia = error.time;
+    const mensaje = codigo === 200 ? 'Timeout' : obtenerMensajeError(codigo);
+
+    html += `<li>`;
+    html += `<span class="error-time">${fecha}</span>`;
+    html += ` → `;
+    html += `<span class="error-code">${codigo}</span> `;
+    html += `<span class="error-msg">${mensaje}</span> `;
+    html += `<span class="error-latency">(${latencia}ms)</span>`;
+    html += `</li>`;
+  });
+
+  html += '</ul>';
+
+  if (hayMas) {
+    html += `<div class="error-detail-footer">...mostrando últimos ${maxErrores} errores</div>`;
+  }
+
+  html += '</div>';
+
+  cell.innerHTML = html;
+
+  // Trigger animación
+  setTimeout(() => newRow.classList.add('expanded'), 10);
+}
+
+// Hacer función accesible globalmente
+window.toggleErroresDetalle = toggleErroresDetalle;
+
+/**
+ * Obtiene mensaje descriptivo para código de error
+ */
+function obtenerMensajeError(codigo) {
+  const mensajes = {
+    0: 'Sin conexión',
+    301: 'Redireccionamiento',
+    302: 'Redireccionamiento',
+    400: 'Solicitud incorrecta',
+    401: 'No autorizado',
+    403: 'Prohibido',
+    404: 'No encontrado',
+    408: 'Timeout',
+    418: 'Tetera',
+    429: 'Demasiadas solicitudes',
+    500: 'Error servidor',
+    502: 'Gateway error',
+    503: 'No disponible',
+    504: 'Gateway timeout',
+  };
+  return mensajes[codigo] || `Error ${codigo}`;
+}
+
+/**
  * Actualiza una fila específica de la tabla con los datos reales.
  */
 function actualizarFila(web, resultado) {
@@ -667,7 +783,12 @@ function actualizarFila(web, resultado) {
   row.cells[3].className = estadoActual.className;
 
   // Columna 5: Promedio (ms) (índice 4)
-  row.cells[4].textContent = `${promedio} ms`;
+  // Agregar contador de errores si existen
+  const errores = obtenerHistorialErrores(web.url);
+  const totalMediciones = (historialStatus[web.url] || []).length;
+  const contadorErrores =
+    errores.length > 0 ? ` ⚠️ ${errores.length}/${totalMediciones}` : '';
+  row.cells[4].textContent = `${promedio} ms${contadorErrores}`;
 
   // Columna 6: Estado Promedio (índice 5)
   row.cells[5].textContent = estadoPromedio.text;
@@ -680,7 +801,17 @@ function actualizarFila(web, resultado) {
   });
 
   // Columna 7: Acción (índice 6)
-  row.cells[6].innerHTML = `<button class="psi-button" onclick="window.open('https://pagespeed.web.dev/report?url=${web.url}', '_blank')">PSI</button>`;
+  let actionsHTML = `<button class="psi-button" onclick="window.open('https://pagespeed.web.dev/report?url=${web.url}', '_blank')">PSI</button>`;
+
+  // Agregar botón de toggle si hay errores
+  if (errores.length > 0) {
+    actionsHTML += ` <button class="toggle-errors-button" onclick="toggleErroresDetalle('${web.url.replace(
+      /'/g,
+      "\\'"
+    )}')">▼</button>`;
+  }
+
+  row.cells[6].innerHTML = actionsHTML;
 }
 
 /**
@@ -948,7 +1079,12 @@ async function cargarYMostrarHistorialExistente() {
       cellEstadoActual.textContent = estadoActual.text;
       cellEstadoActual.className = estadoActual.className;
 
-      row.insertCell().textContent = `${promedio} ms`;
+      // Agregar contador de errores si existen
+      const errores = obtenerHistorialErrores(web.url);
+      const totalMediciones = historial.length;
+      const contadorErrores =
+        errores.length > 0 ? ` ⚠️ ${errores.length}/${totalMediciones}` : '';
+      row.insertCell().textContent = `${promedio} ms${contadorErrores}`;
 
       const cellEstadoPromedio = row.insertCell();
       cellEstadoPromedio.textContent = estadoPromedio.text;
@@ -961,7 +1097,17 @@ async function cargarYMostrarHistorialExistente() {
     }
 
     const cellAccion = row.insertCell();
-    cellAccion.innerHTML = `<button class="psi-button" onclick="window.open('https://pagespeed.web.dev/report?url=${web.url}', '_blank')">PSI</button>`;
+    const errores = obtenerHistorialErrores(web.url);
+    let actionsHTML = `<button class="psi-button" onclick="window.open('https://pagespeed.web.dev/report?url=${web.url}', '_blank')">PSI</button>`;
+
+    if (errores.length > 0) {
+      actionsHTML += ` <button class="toggle-errors-button" onclick="toggleErroresDetalle('${web.url.replace(
+        /'/g,
+        "\\'"
+      )}')">▼</button>`;
+    }
+
+    cellAccion.innerHTML = actionsHTML;
   });
 
   actualizarEncabezadoPromedio(maxValidCount);
