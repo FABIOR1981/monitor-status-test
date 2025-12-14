@@ -3,28 +3,40 @@ ESTRUCTURA DEL PROYECTO monitor-status-test (CORREGIDA)
 ======================================================
 
 monitor-status-test/
-├── index.html                      <-- Frontend HTML (Estructura principal)
-├── webs.json                       <-- Datos de las URLs a monitorizar
-├── package.json                    <-- Dependencias de Node
-├── netlify.toml                    <-- Configuración Netlify (funciones)
+├── index.html <-- Frontend HTML (Estructura principal del monitor)
+├── leyenda.html <-- Página de leyenda de umbrales
+├── webs.json <-- Datos de las URLs a monitorizar
+├── package.json <-- Dependencias de Node (node-fetch, abort-controller)
+├── netlify.toml <-- Configuración Netlify (funciones serverless)
+├── README.md <-- Documentación principal del proyecto
 |
-├── js/                             <-- Directorio de scripts JavaScript
-│   ├── script.js                   <-- Lógica del Frontend (Monitorización, Historial, Temas)
-│   ├── i18n_in.js                  <-- Textos de Internacionalización (Ingles)
-│   └── i18n_es.js                  <-- Textos de Internacionalización (Español)
+├── .vscode/ <-- Configuración de VS Code
+│ └── settings.json <-- Configuración de cSpell (diccionario español)
 |
-├── css/                            <-- Directorio de estilos CSS
-│   ├── styles.css                  <-- Estilos Base del Frontend (Tema Estándar)
-│   ├── styles_pro.css              <-- Estilos para el Tema PRO
-│   └── styles_min.css              <-- Estilos para el Tema Minimalista
+├── js/ <-- Directorio de scripts JavaScript
+│ ├── script.js <-- Lógica principal (Monitorización, Historial, Temas)
+│ ├── config.js <-- Constantes de configuración (umbrales, temas, etc.)
+│ ├── leyenda_script.js <-- Lógica de la página de leyenda
+│ ├── i18n_es.js <-- Textos de Internacionalización (Español)
+│ └── i18n_en.js <-- Textos de Internacionalización (Inglés)
 |
-├── netlify/                        <-- Carpeta de configuración de Netlify
-│   └── functions/
-│       └── check-status.js         <-- Función Serverless (Proxy HTTP para verificación)
+├── css/ <-- Directorio de estilos CSS
+│ ├── styles_base.css <-- Estilos base compartidos
+│ ├── styles_def.css <-- Tema estándar (default)
+│ ├── styles_pro.css <-- Tema PRO (información avanzada)
+│ ├── styles_min.css <-- Tema minimalista
+│ ├── leyenda_base.css <-- Estilos base de la leyenda
+│ ├── leyenda_def.css <-- Tema estándar para leyenda
+│ ├── leyenda_pro.css <-- Tema PRO para leyenda
+│ └── leyenda_min.css <-- Tema minimalista para leyenda
 |
-└── docs/                           <-- Directorio de documentación
-    ├── README.md                   <-- Índice principal
-    ├── ARQUITECTURA.MD
-    ├── ESTRUCTURA.md
-    ├── JUSTIFICACION_RANGOS_LATENCIA.md
-    └── Resolución de Problemas.md
+├── netlify/ <-- Carpeta de configuración de Netlify
+│ └── functions/
+│ └── check-status.js <-- Función Serverless (Proxy HTTP para verificación)
+|
+└── docs/ <-- Directorio de documentación
+├── readme.md <-- Índice principal de documentación
+├── arquitectura.md <-- Flujo de datos y arquitectura del sistema
+├── estructura.md <-- Este archivo - estructura del proyecto
+├── justificacion_rangos_latencia.md <-- Justificación de umbrales
+└── resolución de problemas.md <-- Guía de troubleshooting
