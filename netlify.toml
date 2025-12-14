@@ -2,8 +2,11 @@
   # Carpeta donde se encuentran las funciones serverless
   functions = "netlify/functions"
   
-  # Comando de build (ejecuta tests antes de desplegar)
-  command = "npm run test:ci"
+  # Comando de build con tests opcionales
+  # Si SKIP_TESTS=true, no ejecuta tests
+  # test:ci = solo unitarios (RÁPIDO: ~30 seg)
+  # test:ci:full = unitarios + integración (LENTO: ~2 min)
+  command = "if [ \"$SKIP_TESTS\" = \"true\" ]; then echo 'Tests omitidos'; else npm run test:ci; fi"
   
   # Directorio público (archivos estáticos)
   publish = "."
@@ -12,3 +15,17 @@
 [build.environment]
   NODE_VERSION = "18"
   NPM_FLAGS = "--legacy-peer-deps"
+  # Cambia a "true" para deshabilitar tests globalmente
+  SKIP_TESTS = "true"
+
+# Contexto de producción - SIEMPRE ejecuta tests
+[context.production]
+  command = "npm run test:ci"
+
+# Contexto de desarrollo - tests opcionales
+[context.branch-deploy]
+  command = "echo 'Deploy de rama - tests omitidos'"
+
+# Deploy previews (PRs) - ejecuta tests
+[context.deploy-preview]
+  command = "npm run test:ci"
