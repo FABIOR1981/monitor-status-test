@@ -3,10 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#007bff" />
     <title>Monitor de Servicios</title>
     <meta
       name="description"
-      content="Monitor de estado y latencia de servicios web en tiempo real."
+      content="Monitor de estado y latencia de servicios web en tiempo real con análisis avanzado y exportación de datos."
+    />
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="/assets/icon-192.png" />
+
+    <!-- Content Security Policy -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; 
+                   script-src 'self' 'unsafe-inline'; 
+                   style-src 'self' 'unsafe-inline'; 
+                   connect-src 'self' https://*.netlify.app https://*;
+                   img-src 'self' data: https:;"
     />
 
     <style>
@@ -62,27 +79,67 @@
       .latency-metric {
         font-size: 1em;
       }
+      /* Mejorar táctil móvil */
+      .psi-button,
+      .btn-primary,
+      .filter-btn {
+        min-width: 44px;
+        min-height: 44px;
+        padding: 12px;
+      }
+      /* Focus indicators mejorados */
+      button:focus-visible,
+      a:focus-visible,
+      select:focus-visible,
+      input:focus-visible {
+        outline: 3px solid var(--accent, #007bff);
+        outline-offset: 2px;
+      }
+      /* Skip link para accesibilidad */
+      .skip-link {
+        position: absolute;
+        top: -40px;
+        left: 0;
+        background: #000;
+        color: #fff;
+        padding: 8px 16px;
+        text-decoration: none;
+        border-radius: 0 0 4px 0;
+      }
+      .skip-link:focus {
+        top: 0;
+        z-index: 10001;
+      }
     </style>
 
     <link rel="stylesheet" href="css/styles_base.css" />
+    <link rel="stylesheet" href="css/mejoras.css" />
     <link id="estilo-principal" rel="stylesheet" href="css/styles_def.css" />
   </head>
   <body>
-    <main>
+    <!-- Skip Link para Accesibilidad -->
+    <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+
+    <main id="main-content" role="main">
       <!-- Botón Toggle Modo Oscuro - Esquina Superior Derecha -->
       <button
         id="theme-toggle-btn"
         class="theme-toggle-button-corner"
         onclick="toggleDarkMode()"
         title="Cambiar modo de visualización"
+        aria-label="Cambiar entre modo claro y oscuro"
       >
-        <span id="theme-icon">🌙</span>
+        <span id="theme-icon" aria-hidden="true">🌙</span>
       </button>
 
       <div class="container">
         <h1 id="titulo-principal">Monitor de Estado de Servicios</h1>
 
-        <div style="text-align: center; margin-bottom: 15px">
+        <div
+          style="text-align: center; margin-bottom: 15px"
+          role="group"
+          aria-labelledby="duracion-label"
+        >
           <label
             for="duracion-selector"
             id="duracion-label"
@@ -98,18 +155,26 @@
               font-size: 0.9em;
               cursor: pointer;
             "
+            aria-label="Seleccionar duración del historial"
           ></select>
           <button
             id="btn-reiniciar"
             class="btn-primary"
             style="margin-left: 15px; padding: 5px 15px; font-size: 0.9em"
             onclick="reiniciarMonitoreo()"
+            aria-label="Reiniciar monitoreo de servicios"
           >
-            🔄 <span id="texto-btn-reiniciar">Reiniciar Monitoreo</span>
+            <span aria-hidden="true">🔄</span>
+            <span id="texto-btn-reiniciar">Reiniciar Monitoreo</span>
           </button>
         </div>
 
-        <div class="info-bar" id="info-bar-msg"></div>
+        <div
+          class="info-bar"
+          id="info-bar-msg"
+          role="status"
+          aria-live="polite"
+        ></div>
 
         <div style="text-align: center; margin-bottom: 10px">
           <a
@@ -123,18 +188,30 @@
           </a>
         </div>
 
-        <div class="update-info" id="ultima-actualizacion"></div>
+        <div
+          class="update-info"
+          id="ultima-actualizacion"
+          role="status"
+          aria-live="polite"
+        ></div>
+
+        <!-- Los filtros se insertarán aquí dinámicamente -->
+
         <div class="table-scroll-container">
-          <table id="monitor-table">
+          <table
+            id="monitor-table"
+            role="table"
+            aria-label="Tabla de monitoreo de servicios"
+          >
             <thead>
               <tr>
-                <th id="header-service"></th>
-                <th id="header-url"></th>
-                <th id="header-latency-actual"></th>
-                <th id="header-status-actual"></th>
-                <th id="header-promedio-ms"></th>
-                <th id="header-promedio-status"></th>
-                <th id="header-action"></th>
+                <th id="header-service" scope="col"></th>
+                <th id="header-url" scope="col"></th>
+                <th id="header-latency-actual" scope="col"></th>
+                <th id="header-status-actual" scope="col"></th>
+                <th id="header-promedio-ms" scope="col"></th>
+                <th id="header-promedio-status" scope="col"></th>
+                <th id="header-action" scope="col"></th>
               </tr>
             </thead>
             <tbody id="status-table-body"></tbody>
@@ -143,8 +220,14 @@
       </div>
     </main>
 
+    <!-- Contenedor de notificaciones (se crea dinámicamente) -->
+
     <script defer src="js/config.js"></script>
     <script defer src="js/i18n.js"></script>
     <script defer src="js/script.js"></script>
+
+    <!-- Scripts de módulos (si usas ES6 modules, descomentar y ajustar)
+    <script type="module" src="js/app.js"></script>
+    -->
   </body>
 </html>
