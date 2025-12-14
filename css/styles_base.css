@@ -236,13 +236,14 @@ h1 {
   border: none;
   background: #dc3545;
   color: white;
-  padding: 5px 8px;
-  border-radius: 4px;
+  padding: 5px 10px;
+  border-radius: 12px;
   cursor: pointer;
   font-size: 0.8em;
   margin-right: 8px;
   transition: background-color 0.2s;
   vertical-align: middle;
+  font-weight: 500;
 }
 
 .toggle-errors-button:hover {
