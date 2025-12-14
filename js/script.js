@@ -674,13 +674,13 @@ function toggleErroresDetalle(url) {
   if (!row) return;
 
   const detalleRow = row.nextElementSibling;
+  const toggleBtn = row.querySelector('.toggle-errors-button');
 
-  // Si ya existe la fila de detalle, alternar
+  // Si ya existe la fila de detalle, colapsar
   if (detalleRow && detalleRow.classList.contains('error-detail-row')) {
-    if (detalleRow.classList.contains('expanded')) {
-      detalleRow.classList.remove('expanded');
-      setTimeout(() => detalleRow.remove(), 200); // Esperar animación
-    }
+    detalleRow.classList.remove('expanded');
+    if (toggleBtn) toggleBtn.textContent = '▼';
+    setTimeout(() => detalleRow.remove(), 200); // Esperar animación
     return;
   }
 
@@ -727,6 +727,9 @@ function toggleErroresDetalle(url) {
   html += '</div>';
 
   cell.innerHTML = html;
+
+  // Cambiar ícono del botón a expandido
+  if (toggleBtn) toggleBtn.textContent = '▲';
 
   // Trigger animación
   setTimeout(() => newRow.classList.add('expanded'), 10);
@@ -801,15 +804,17 @@ function actualizarFila(web, resultado) {
   });
 
   // Columna 7: Acción (índice 6)
-  let actionsHTML = `<button class="psi-button" onclick="window.open('https://pagespeed.web.dev/report?url=${web.url}', '_blank')">PSI</button>`;
-
-  // Agregar botón de toggle si hay errores
+  let actionsHTML = '';
+  
+  // Agregar botón de toggle si hay errores (primero)
   if (errores.length > 0) {
-    actionsHTML += ` <button class="toggle-errors-button" onclick="toggleErroresDetalle('${web.url.replace(
+    actionsHTML += `<button class="toggle-errors-button" onclick="toggleErroresDetalle('${web.url.replace(
       /'/g,
       "\\'"
-    )}')">▼</button>`;
+    )}')" title="Ver detalles de errores">▼</button> `;
   }
+  
+  actionsHTML += `<button class="psi-button" onclick="window.open('https://pagespeed.web.dev/report?url=${web.url}', '_blank')" title="PageSpeed Insights">PSI</button>`;
 
   row.cells[6].innerHTML = actionsHTML;
 }
@@ -1098,14 +1103,16 @@ async function cargarYMostrarHistorialExistente() {
 
     const cellAccion = row.insertCell();
     const errores = obtenerHistorialErrores(web.url);
-    let actionsHTML = `<button class="psi-button" onclick="window.open('https://pagespeed.web.dev/report?url=${web.url}', '_blank')">PSI</button>`;
-
+    let actionsHTML = '';
+    
     if (errores.length > 0) {
-      actionsHTML += ` <button class="toggle-errors-button" onclick="toggleErroresDetalle('${web.url.replace(
+      actionsHTML += `<button class="toggle-errors-button" onclick="toggleErroresDetalle('${web.url.replace(
         /'/g,
         "\\'"
-      )}')">▼</button>`;
+      )}')" title="Ver detalles de errores">▼</button> `;
     }
+    
+    actionsHTML += `<button class="psi-button" onclick="window.open('https://pagespeed.web.dev/report?url=${web.url}', '_blank')" title="PageSpeed Insights">PSI</button>`;
 
     cellAccion.innerHTML = actionsHTML;
   });

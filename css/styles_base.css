@@ -230,17 +230,23 @@ h1 {
   border: none;
   background: #ff6b6b;
   color: white;
-  padding: 5px 10px;
+  padding: 6px 12px;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 0.9em;
-  margin-left: 5px;
+  font-size: 0.85em;
+  margin-right: 8px;
   transition: all 0.2s;
+  font-weight: bold;
 }
 
 .toggle-errors-button:hover {
   background: #ff5252;
   transform: scale(1.05);
+  box-shadow: 0 2px 4px rgba(255, 107, 107, 0.3);
+}
+
+.toggle-errors-button:active {
+  transform: scale(0.98);
 }
 
 /* Fila de detalle de errores */
