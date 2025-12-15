@@ -748,11 +748,11 @@ function toggleErroresDetalle(url) {
   if (row.nextSibling) {
     tbody.insertBefore(newRow, row.nextSibling);
   } else {
-    tCambiar ícono del botón a expandido
-  if (toggleBtn) toggleBtn.textContent = '▲';
-
-  // body.appendChild(newRow);
+    tbody.appendChild(newRow);
   }
+
+  // Cambiar ícono del botón a expandido
+  if (toggleBtn) toggleBtn.textContent = '▲';
 
   // Trigger animación
   setTimeout(() => newRow.classList.add('expanded'), 10);
