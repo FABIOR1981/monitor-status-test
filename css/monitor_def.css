@@ -41,15 +41,21 @@ h1 {
 }
 #monitor-table th,
 #monitor-table td {
-  padding: 12px 10px;
+  padding: 16px 12px;
   text-align: left;
   border-bottom: 1px solid #ddd;
+  transition: all 0.2s ease;
 }
 #monitor-table td a {
   color: #007bff;
   text-decoration: none;
   font-size: 0.9em;
   word-break: break-all;
+  transition: color 0.2s ease;
+}
+#monitor-table td a:hover {
+  color: #0056b3;
+  text-decoration: underline;
 }
 
 /* Establecer ANCHOS FIJOS para las 7 columnas (se muestran 5 en total) */
@@ -84,8 +90,13 @@ h1 {
   color: white;
   font-weight: bold;
 }
-#monitor-table tr:hover {
-  background-color: #f1f1f1;
+#monitor-table tbody tr {
+  cursor: pointer;
+}
+#monitor-table tbody tr:hover {
+  background-color: #e8f4f8;
+  transform: scale(1.002);
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.15);
 }
 
 /* Centrar el texto en las columnas de datos (3 a 8) */
@@ -149,6 +160,33 @@ h1 {
 .status-extreme-risk,
 .status-down {
   font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+/* Destacar estados críticos - TOP 2: Jerarquía Visual */
+.status-critical,
+.status-risk,
+.status-extreme-risk {
+  border: 2px solid #dc3545;
+  box-shadow: 0 0 8px rgba(220, 53, 69, 0.3);
+}
+
+/* Servicios caídos con animación de alerta */
+.status-down {
+  border: 2px solid #721c24;
+  animation: pulse-alert 2s ease-in-out infinite;
+}
+
+@keyframes pulse-alert {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(220, 53, 69, 0);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(220, 53, 69, 0.6);
+  }
 }
 
 /* --- Estilo para la Latencia (Métricas) --- */
