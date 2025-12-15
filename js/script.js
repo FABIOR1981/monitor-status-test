@@ -1028,34 +1028,32 @@ function obtenerTemaDeURL() {
 }
 
 /**
- * Lógica de cambio de tema: Prioriza la URL. Si no hay parámetro,
- * usa TEMA_DEFAULT.
+ * Lógica de cambio de tema: Prioriza localStorage, luego URL para compatibilidad.
  */
 function inicializarTema() {
-  // Nota: TEMA_DEFAULT, TEMA_PRO, TEMA_MIN, TEMA_OSC y TEMA_FILES ahora son globales desde config.js
   const estiloPrincipal = document.getElementById('estilo-principal');
-  let temaFinal = TEMA_DEFAULT; // Inicializamos con el valor por defecto
+  let temaFinal = TEMA_DEFAULT;
 
-  // 1. Intentar obtener el tema de la URL (MÁXIMA PRIORIDAD)
+  // 1. Intentar obtener el tema de localStorage (MÁXIMA PRIORIDAD)
+  const temaGuardado = localStorage.getItem('temaPreferido');
+  
+  // 2. Si no hay en localStorage, intentar obtener de URL (compatibilidad)
   const temaUrl = obtenerTemaDeURL();
 
-  if (temaUrl) {
-    // Si hay tema en URL, lo usamos
+  if (temaGuardado && TEMA_FILES[temaGuardado]) {
+    temaFinal = temaGuardado;
+  } else if (temaUrl && TEMA_FILES[temaUrl]) {
     temaFinal = temaUrl;
-  } else {
-    // Si no hay tema en URL, usamos TEMA_DEFAULT y limpiamos localStorage
-    localStorage.removeItem('temaPreferido');
+    // Guardar en localStorage para futuras visitas
+    localStorage.setItem('temaPreferido', temaUrl);
   }
 
-  // 2. Aplicar el tema
-  // Nos aseguramos de que el archivo CSS exista en el mapa TEMA_FILES.
+  // 3. Aplicar el tema
   if (TEMA_FILES[temaFinal]) {
     estiloPrincipal.href = TEMA_FILES[temaFinal];
-    // La variable temaProActivo se usa para lógica JS, no CSS
-    // Asignamos 'true' solo si no estamos en el tema por defecto.
     temaProActivo = temaFinal !== TEMA_DEFAULT;
   } else {
-    // Fallback de seguridad si el tema (incluso el default) falla la validación
+    // Fallback de seguridad
     estiloPrincipal.href = TEMA_FILES[TEMA_DEFAULT];
     temaProActivo = false;
   }
@@ -1113,11 +1111,12 @@ function actualizarBotonToggle(temaActual) {
  */
 function toggleDarkMode() {
   const estiloPrincipal = document.getElementById('estilo-principal');
+  
+  // Obtener tema actual desde localStorage o URL (por compatibilidad)
+  let temaActual = localStorage.getItem('temaPreferido') || TEMA_DEFAULT;
   const params = new URLSearchParams(window.location.search);
   const temaUrl = params.get('tema');
-
-  // Determinar tema actual: priorizar URL, luego tomar el default
-  let temaActual = TEMA_DEFAULT;
+  
   if (temaUrl && TEMA_FILES[temaUrl]) {
     temaActual = temaUrl;
   }
@@ -1133,10 +1132,8 @@ function toggleDarkMode() {
     estiloPrincipal.href = TEMA_FILES[nuevoTema];
     temaProActivo = nuevoTema !== TEMA_DEFAULT;
 
-    // Actualizar la URL con el nuevo tema
-    params.set('tema', nuevoTema);
-    const nuevaUrl = `${window.location.pathname}?${params.toString()}`;
-    window.history.replaceState({}, '', nuevaUrl);
+    // Guardar en localStorage en lugar de URL
+    localStorage.setItem('temaPreferido', nuevoTema);
 
     // Actualizar el botón
     actualizarBotonToggle(nuevoTema);
@@ -1155,10 +1152,11 @@ function actualizarVisibilidadABM() {
 
   const params = new URLSearchParams(window.location.search);
   const temaUrl = params.get('tema');
-
-  let temaActual = TEMA_DEFAULT;
-  if (temaUrl && TEMA_FILES[temaUrl]) {
-    temaActual = temaUrl;
+// Obtener tema desde localStorage o URL
+  let temaActual = localStorage.getItem('temaPreferido') || TEMA_DEFAULT;
+  const params = new URLSearchParams(window.location.search);
+  const temaUrl = params.get('tema');
+  
   }
 
   // Ocultar solo en temas básicos: def y osc
