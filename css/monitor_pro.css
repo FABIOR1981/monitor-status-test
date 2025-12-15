@@ -96,11 +96,31 @@ h1 {
   cursor: pointer;
   font-size: 0.8em;
   font-weight: 500;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
 }
 .psi-button:hover,
 .btn-primary:hover {
   background-color: #57d498;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(67, 181, 129, 0.3);
+}
+
+.error-button {
+  background-color: #f04747; /* Rojo Discord */
+  color: #ffffff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.8em;
+  font-weight: 500;
+  transition: all 0.2s;
+  margin-right: 5px;
+}
+.error-button:hover {
+  background-color: #d84040;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(240, 71, 71, 0.3);
 }
 
 /* ======================================================= */

@@ -232,15 +232,45 @@ a:hover {
 }
 
 /* --- PSI Button --- */
-.psi-btn {
+.psi-button,
+.btn-primary {
   background-color: #1f3a5f;
   color: #ffffff;
   border: 1px solid #4a9eff;
+  padding: 5px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.8em;
+  font-weight: 500;
+  transition: all 0.2s;
 }
 
-.psi-btn:hover {
+.psi-button:hover,
+.btn-primary:hover {
   background-color: #2a4a7f;
   border-color: #6bb3ff;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(74, 158, 255, 0.3);
+}
+
+.error-button {
+  background-color: #8b0000;
+  color: #ffffff;
+  border: 1px solid #ff4444;
+  padding: 5px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.8em;
+  font-weight: 500;
+  transition: all 0.2s;
+  margin-right: 5px;
+}
+
+.error-button:hover {
+  background-color: #a00000;
+  border-color: #ff6666;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(255, 68, 68, 0.3);
 }
 
 /* --- Reiniciar Monitoreo Button --- */
