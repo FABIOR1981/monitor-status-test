@@ -34,11 +34,5 @@
   {
     "nombre": "Notas",
     "url": "https://notas.correo.com.uy/notas"
-  },
-  {
-    "nombre": "MontevideoCOMM",
-    "url": "https://www.montevideo.com.uy/",
-    "orden": 1,
-    "grupo": "CRITICO"
   }
 ]
