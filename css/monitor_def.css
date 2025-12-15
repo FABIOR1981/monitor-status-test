@@ -109,12 +109,15 @@ h1 {
   text-align: center;
 }
 
-/* Centrar badges de estado (columnas 4 y 6) usando flexbox */
+/* Centrar badges de estado (columnas 4 y 6) usando flexbox con overflow permitido */
 #monitor-table td:nth-child(4),
 #monitor-table td:nth-child(6) {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  overflow: visible;
+  padding: 16px 0;
 }
 
 /* --- Estilos del Botón de Acción (PSI) --- */
