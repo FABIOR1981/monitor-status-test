@@ -259,6 +259,19 @@ h1 {
    ESTILOS PARA EXPANSIÓN DE ERRORES
    ==================================== */
 
+/* Efecto hover para badges clickeables */
+.status-very-fast[style*='cursor: pointer']:hover,
+.status-fast[style*='cursor: pointer']:hover,
+.status-normal[style*='cursor: pointer']:hover,
+.status-slow[style*='cursor: pointer']:hover,
+.status-critical[style*='cursor: pointer']:hover,
+.status-risk[style*='cursor: pointer']:hover,
+.status-extreme-risk[style*='cursor: pointer']:hover,
+.status-down[style*='cursor: pointer']:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
 /* Botón PSI */
 .psi-button {
   display: inline-block;

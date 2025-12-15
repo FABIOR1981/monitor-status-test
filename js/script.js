@@ -1189,6 +1189,13 @@ async function cargarYMostrarHistorialExistente() {
       cellEstadoActual.textContent = estadoActual.text;
       cellEstadoActual.className = estadoActual.className;
 
+      // Hacer clickeable el badge si hay errores y el tema lo permite
+      if (errores.length > 0 && permiteExpansion) {
+        cellEstadoActual.style.cursor = 'pointer';
+        cellEstadoActual.title = 'Click para ver detalles de errores';
+        cellEstadoActual.onclick = () => toggleErroresDetalle(web.url);
+      }
+
       // Agregar contador de errores si existen y el tema lo permite
       const totalMediciones = historial.length;
 
@@ -1202,17 +1209,19 @@ async function cargarYMostrarHistorialExistente() {
       const cellEstadoPromedio = row.insertCell();
       cellEstadoPromedio.textContent = estadoPromedio.text;
       cellEstadoPromedio.className = estadoPromedio.className;
+
+      // Hacer clickeable el badge promedio si hay errores y el tema lo permite
+      if (errores.length > 0 && permiteExpansion) {
+        cellEstadoPromedio.style.cursor = 'pointer';
+        cellEstadoPromedio.title = 'Click para ver detalles de errores';
+        cellEstadoPromedio.onclick = () => toggleErroresDetalle(web.url);
+      }
     } else {
       row.insertCell().textContent = '-';
       row.insertCell().textContent = '-';
       row.insertCell().textContent = '-';
       row.insertCell().textContent = '-';
     }
-
-    const cellAccion = row.insertCell();
-    let actionsHTML = '';
-
-    // Botón PSI
     actionsHTML += `<button class="psi-button" onclick="window.open('https://pagespeed.web.dev/report?url=${web.url}', '_blank')" title="PageSpeed Insights">PSI</button>`;
 
     // Botón de errores (solo en temas PRO/MIN y si hay errores)
