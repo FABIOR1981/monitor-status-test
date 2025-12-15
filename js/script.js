@@ -1116,6 +1116,9 @@ function toggleDarkMode() {
 
     // Actualizar visibilidad de columna acción
     actualizarVisibilidadColumnaAccion();
+
+    // Actualizar enlace de leyenda con nuevo tema
+    configurarEnlaceLeyenda();
   }
 }
 
