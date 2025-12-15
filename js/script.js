@@ -1036,7 +1036,7 @@ function inicializarTema() {
 
   // 1. Intentar obtener el tema de localStorage (MÁXIMA PRIORIDAD)
   const temaGuardado = localStorage.getItem('temaPreferido');
-  
+
   // 2. Si no hay en localStorage, intentar obtener de URL (compatibilidad)
   const temaUrl = obtenerTemaDeURL();
 
@@ -1111,12 +1111,12 @@ function actualizarBotonToggle(temaActual) {
  */
 function toggleDarkMode() {
   const estiloPrincipal = document.getElementById('estilo-principal');
-  
+
   // Obtener tema actual desde localStorage o URL (por compatibilidad)
   let temaActual = localStorage.getItem('temaPreferido') || TEMA_DEFAULT;
   const params = new URLSearchParams(window.location.search);
   const temaUrl = params.get('tema');
-  
+
   if (temaUrl && TEMA_FILES[temaUrl]) {
     temaActual = temaUrl;
   }
@@ -1150,13 +1150,12 @@ function actualizarVisibilidadABM() {
   const enlaceABM = document.getElementById('enlace-abm');
   if (!enlaceABM) return;
 
-  const params = new URLSearchParams(window.location.search);
-  const temaUrl = params.get('tema');
-// Obtener tema desde localStorage o URL
+  // Obtener tema desde localStorage o URL
   let temaActual = localStorage.getItem('temaPreferido') || TEMA_DEFAULT;
-  const params = new URLSearchParams(window.location.search);
-  const temaUrl = params.get('tema');
-  
+  const temaUrl = new URLSearchParams(window.location.search).get('tema');
+
+  if (temaUrl && TEMA_FILES[temaUrl]) {
+    temaActual = temaUrl;
   }
 
   // Ocultar solo en temas básicos: def y osc
