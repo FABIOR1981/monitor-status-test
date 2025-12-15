@@ -30,6 +30,8 @@ const TEMA_FILES = {
 const TEMA_TOGGLE_PAIRS = {
   [TEMA_DEFAULT]: TEMA_OSC, // def alterna con osc
   [TEMA_OSC]: TEMA_DEFAULT, // osc alterna con def
+  [TEMA_PRO]: TEMA_PRO2,
+  [TEMA_PRO2]: TEMA_PRO,
   // pro y min no tienen pareja, entonces el botón se oculta
 };
 
