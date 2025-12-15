@@ -61,26 +61,6 @@ function inicializarSelectorDuracion() {
   });
 }
 
-function reiniciarMonitoreo() {
-  // Limpiar historial
-  historialStatus = {};
-  guardarHistorial();
-
-  // Cancelar timeout pendiente si existe
-  if (window.monitorTimeout) {
-    clearTimeout(window.monitorTimeout);
-  }
-
-  // Limpiar tabla
-  const tbody = document.getElementById('status-table-body');
-  if (tbody) {
-    tbody.innerHTML = '';
-  }
-
-  // Reiniciar monitoreo
-  monitorearTodosWebsites();
-}
-
 // =======================================================
 // 2. FUNCIONES DE INTERNACIONALIZACIÓN (I18N) Y DOM
 // =======================================================
@@ -1146,78 +1126,14 @@ function actualizarVisibilidadABM() {
   const enlaceABM = document.getElementById('enlace-abm');
   if (!enlaceABM) return;
 
-  // Obtener tema desde localStorage o URL
-  let temaActual = localStorage.getItem('temaPreferido');
-  const temaUrl = new URLSearchParams(window.location.search).get('tema');
-
-  // Prioridad: URL > localStorage > DEFAULT
-  if (temaUrl && TEMA_FILES[temaUrl]) {
-    temaActual = temaUrl;
-  } else if (!temaActual || !TEMA_FILES[temaActual]) {
-    temaActual = TEMA_DEFAULT;
-  }
-
-  console.log('ABM Visibility - Tema actual:', temaActual);
+  const params = new URLSearchParams(window.location.search);
+  const temaActual = params.get('tema') || TEMA_DEFAULT;
 
   // Ocultar solo en temas básicos: def y osc
   if (temaActual === TEMA_DEFAULT || temaActual === TEMA_OSC) {
     enlaceABM.style.display = 'none';
-    console.log('ABM ocultado para tema:', temaActual);
   } else {
     enlaceABM.style.display = 'inline-flex';
-    console.log('ABM visible para tema:', temaActual);
-    /**
-     * Muestra u oculta la columna de acción según el tema activo
-     */
-    function actualizarVisibilidadColumnaAccion() {
-      // Obtener tema desde localStorage o URL
-      let temaActual = localStorage.getItem('temaPreferido');
-      const temaUrl = new URLSearchParams(window.location.search).get('tema');
-
-      // Prioridad: URL > localStorage > DEFAULT
-      if (temaUrl && TEMA_FILES[temaUrl]) {
-        temaActual = temaUrl;
-      } else if (!temaActual || !TEMA_FILES[temaActual]) {
-        temaActual = TEMA_DEFAULT;
-      }
-
-      const headerAccion = document.getElementById('header-action');
-      const tabla = document.getElementById('monitor-table');
-
-      // Ocultar columna en temas básicos: def y osc
-      if (temaActual === TEMA_DEFAULT || temaActual === TEMA_OSC) {
-        // Ocultar header
-        if (headerAccion) {
-          headerAccion.style.display = 'none';
-        }
-
-        // Ocultar todas las celdas de acción (7ma columna)
-        if (tabla) {
-          const rows = tabla.querySelectorAll('tr');
-          rows.forEach((row) => {
-            const cells = row.children;
-            if (cells.length >= 7) {
-              cells[6].style.display = 'none'; // índice 6 = 7ma columna
-            }
-          });
-        }
-      } else {
-        // Mostrar columna en temas avanzados
-        if (headerAccion) {
-          headerAccion.style.display = '';
-        }
-
-        if (tabla) {
-          const rows = tabla.querySelectorAll('tr');
-          rows.forEach((row) => {
-            const cells = row.children;
-            if (cells.length >= 7) {
-              cells[6].style.display = '';
-            }
-          });
-        }
-      }
-    }
   }
 }
 
