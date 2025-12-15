@@ -3,6 +3,25 @@
 **Fecha:** 14 de diciembre de 2025
 **Archivos modificados:** `css/monitor_def.css`, `css/monitor_osc.css`
 
+---
+
+## 🔧 CORRECCIÓN TÉCNICA (14/12/2025 - 15:30)
+
+### ⚠️ Problema Detectado: Estilos Incorrectos para Badges de Estado
+
+**Contexto:** Las clases `.status-*` se aplicaban directamente a las celdas `<td>`, no a elementos `<span>` dentro de ellas. Propiedades como `width: 140px` y `display: inline-block` no funcionaban correctamente en celdas de tabla.
+
+**Solución:** Eliminadas propiedades incompatibles:
+
+- ❌ Removido: `display: inline-block`
+- ❌ Removido: `width: 140px`
+- ❌ Removido: `text-align: center` (redundante - ya existe en las celdas)
+- ❌ Removido: `width: auto` y `min-width: 140px` en `.status-down`
+
+**Resultado:** Las celdas ya tienen `text-align: center` aplicado en las columnas 3-8, por lo que el texto se centra correctamente. Los badges (aplicados a `<td>`) mantienen padding, border-radius, font-weight y las propiedades de desbordamiento.
+
+---
+
 ## 📋 Resumen de Mejoras Implementadas
 
 ### ✅ TOP 1: Feedback Visual Mejorado

@@ -107,17 +107,7 @@ h1 {
 #monitor-table td:nth-child(7),
 #monitor-table td:nth-child(8) {
   text-align: center;
-}
-
-/* Centrar badges de estado (columnas 4 y 6) usando flexbox con overflow permitido */
-#monitor-table td:nth-child(4),
-#monitor-table td:nth-child(6) {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  overflow: visible;
-  padding: 16px 0;
+  vertical-align: middle;
 }
 
 /* --- Estilos del Botón de Acción (PSI) --- */
@@ -173,9 +163,6 @@ h1 {
   font-weight: bold;
   padding: 6px 12px;
   border-radius: 4px;
-  display: inline-block;
-  width: 140px;
-  text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -183,8 +170,6 @@ h1 {
 
 /* Excepción: CAÍDA/ERROR puede tener ancho variable para mostrar todo */
 .status-down {
-  width: auto;
-  min-width: 140px;
   white-space: normal;
   overflow: visible;
   text-overflow: clip;
