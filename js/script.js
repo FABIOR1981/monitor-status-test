@@ -1222,12 +1222,12 @@ async function cargarYMostrarHistorialExistente() {
       row.insertCell().textContent = '-';
       row.insertCell().textContent = '-';
     }
-    actionsHTML += `<button class="psi-button" onclick="window.open('https://pagespeed.web.dev/report?url=${web.url}', '_blank')" title="PageSpeed Insights">PSI</button>`;
 
-    // Botón de errores (solo en temas PRO/MIN y si hay errores)
-    if (errores.length > 0 && permiteExpansion) {
-      actionsHTML += ` <button class="error-button" onclick="toggleErroresDetalle('${web.url}')" title="Ver detalles de ${errores.length} errores">ERR</button>`;
-    }
+    const cellAccion = row.insertCell();
+    let actionsHTML = '';
+
+    // Botón PSI
+    actionsHTML += `<button class="psi-button" onclick="window.open('https://pagespeed.web.dev/report?url=${web.url}', '_blank')" title="PageSpeed Insights">PSI</button>`;
 
     cellAccion.innerHTML = actionsHTML;
   });
