@@ -1001,7 +1001,7 @@ function obtenerTemaDeURL() {
 
 /**
  * Lógica de cambio de tema: Prioriza la URL. Si no hay parámetro,
- * utiliza la preferencia guardada en localStorage.
+ * usa TEMA_DEFAULT.
  */
 function inicializarTema() {
   // Nota: TEMA_DEFAULT, TEMA_PRO, TEMA_MIN, TEMA_OSC y TEMA_FILES ahora son globales desde config.js
@@ -1012,15 +1012,11 @@ function inicializarTema() {
   const temaUrl = obtenerTemaDeURL();
 
   if (temaUrl) {
-    // Si hay tema en URL, lo usamos y lo guardamos
+    // Si hay tema en URL, lo usamos
     temaFinal = temaUrl;
-    localStorage.setItem('temaPreferido', temaFinal);
   } else {
-    // Si no hay tema en URL, intentamos obtenerlo de localStorage
-    const temaGuardado = localStorage.getItem('temaPreferido');
-    if (temaGuardado && TEMA_FILES[temaGuardado]) {
-      temaFinal = temaGuardado;
-    }
+    // Si no hay tema en URL, usamos TEMA_DEFAULT y limpiamos localStorage
+    localStorage.removeItem('temaPreferido');
   }
 
   // 2. Aplicar el tema
