@@ -3,21 +3,32 @@
 // Requiere que se llame a window.registrarErrorSitio(nombre, url, latencia, codigo, descripcion) cuando se detecta un error
 (function () {
   // Guarda el último error notificado por sitio y hora (en memoria, por sesión)
-  const erroresNotificados = {};
-
-  // Devuelve la clave de hora actual (ej: 2025-12-15-14)
-  function horaActualClave() {
-    const ahora = new Date();
-    return (
-      ahora.getFullYear() +
-      '-' +
-      (ahora.getMonth() + 1) +
-      '-' +
-      ahora.getDate() +
-      '-' +
-      ahora.getHours()
-    );
+  // Usa localStorage para persistir los errores notificados por sitio y hora
+  // (Eliminada función duplicada getErroresNotificados)
+  function getErroresNotificados() {
+    try {
+      return (
+        JSON.parse(localStorage.getItem('erroresNotificadosMonitor')) || {}
+      );
+    } catch (e) {
+      return {};
+    }
   }
+  function setErroresNotificados(obj) {
+    try {
+      localStorage.setItem('erroresNotificadosMonitor', JSON.stringify(obj));
+    } catch (e) {}
+  }
+
+  // Función para limpiar el registro de error de un sitio (cuando se recupera)
+  window.limpiarErrorSitio = function (nombre) {
+    const erroresNotificados = getErroresNotificados();
+    if (erroresNotificados[nombre]) {
+      delete erroresNotificados[nombre];
+      setErroresNotificados(erroresNotificados);
+    }
+  };
+  // (Eliminado código suelto de ciclo y contador)
 
   // Función global para registrar un error y mostrar alert si corresponde
   window.registrarErrorSitio = function (
@@ -27,9 +38,11 @@
     codigo,
     descripcion
   ) {
-    const clave = nombre + '|' + horaActualClave();
-    if (erroresNotificados[clave]) return; // Ya se notificó este sitio en esta hora
+    const clave = nombre;
+    const erroresNotificados = getErroresNotificados();
+    if (erroresNotificados[clave]) return; // Ya se notificó este sitio hasta que se recupere
     erroresNotificados[clave] = true;
+    setErroresNotificados(erroresNotificados);
     let label = '',
       desc = '';
     if (

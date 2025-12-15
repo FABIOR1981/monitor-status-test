@@ -788,7 +788,7 @@ function actualizarFila(web, resultado) {
   // Nota: calcularPromedio() obtiene los datos del historial que ACABA de ser actualizado
   const { promedio, estadoPromedio } = calcularPromedio(web.url);
 
-  // ALERTA: Si hay un error (status 0 o >=400), mostrar alerta solo la primera vez en la hora
+  // ALERTA: Si hay un error (status 0 o >=400), mostrar alerta solo la primera vez
   if (resultado && (resultado.status === 0 || resultado.status >= 400)) {
     window.registrarErrorSitio &&
       window.registrarErrorSitio(
@@ -798,6 +798,9 @@ function actualizarFila(web, resultado) {
         resultado.status,
         resultado.error || ''
       );
+  } else if (resultado && resultado.status === 200) {
+    // Si el sitio se recupera, limpiar el registro para permitir futuras alertas
+    window.limpiarErrorSitio && window.limpiarErrorSitio(web.nombre || web.url);
   }
 
   // --- Actualización de celdas (Columnas 3 a 7) ---
