@@ -6,10 +6,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   let temaParam = params.get('tema') ? params.get('tema').toLowerCase() : null;
   const idioma = params.get('lang') || DEFAULT_LANG;
 
-  // Si no hay tema en URL, intentar obtenerlo de localStorage
+  // Si no hay tema en URL, usar el tema por defecto
   if (!temaParam) {
-    const temaGuardado = localStorage.getItem('temaPreferido');
-    temaParam = temaGuardado || DEFAULT_LEYENDA_TEMA;
+    temaParam = DEFAULT_LEYENDA_TEMA;
   }
 
   // Cargar el CSS del tema seleccionado
@@ -234,13 +233,10 @@ function toggleDarkMode() {
   const params = new URLSearchParams(window.location.search);
   const temaUrl = params.get('tema');
 
-  // Determinar tema actual: priorizar URL, luego localStorage, luego default
-  let temaActual = 'def';
+  // Determinar tema actual desde URL o usar default
+  let temaActual = DEFAULT_LEYENDA_TEMA;
   if (temaUrl && LEYENDA_TEMA_FILES[temaUrl]) {
     temaActual = temaUrl;
-  } else {
-    const temaGuardado = localStorage.getItem('temaPreferido');
-    temaActual = temaGuardado || 'def';
   }
 
   // Obtener la pareja del tema actual desde TEMA_TOGGLE_PAIRS
@@ -256,14 +252,11 @@ function toggleDarkMode() {
   if (LEYENDA_TEMA_FILES[nuevoTema]) {
     temaBaseLink.href = LEYENDA_TEMA_FILES[nuevoTema];
 
-    // Guardar en localStorage
-    localStorage.setItem('temaPreferido', nuevoTema);
-
     // Actualizar clases del body
     document.body.classList.remove(`theme-${temaActual}`);
     document.body.classList.add(`theme-${nuevoTema}`);
 
-    // Actualizar la URL (consistente con script.js)
+    // Actualizar la URL
     params.set('tema', nuevoTema);
     const nuevaUrl = `${window.location.pathname}?${params.toString()}`;
     window.history.replaceState({}, '', nuevaUrl);
