@@ -27,16 +27,17 @@ const TEMA_FILES = {
 
 // Configuración de pares de temas alternables con el botón toggle
 // Si un tema no tiene pareja, el botón no aparecerá
+// Orden: primero temas claros → oscuros, luego oscuros → claros
 const TEMA_TOGGLE_PAIRS = {
-  [TEMA_DEFAULT]: TEMA_OSC, // def alterna con osc
-  [TEMA_OSC]: TEMA_DEFAULT, // osc alterna con def
-  [TEMA_PRO]: TEMA_PRO2,
-  [TEMA_PRO2]: TEMA_PRO,
-  // pro y min no tienen pareja, entonces el botón se oculta
+  [TEMA_DEFAULT]: TEMA_OSC, // def (claro) → osc (oscuro)
+  [TEMA_OSC]: TEMA_DEFAULT, // osc (oscuro) → def (claro)
+  [TEMA_PRO2]: TEMA_PRO, // pro2 (claro) → pro (oscuro)
+  [TEMA_PRO]: TEMA_PRO2, // pro (oscuro) → pro2 (claro)
+  // min no tiene pareja, entonces el botón se oculta
 };
 
 // Temas básicos que NO tienen funcionalidades avanzadas (sin expansión de errores, sin PSI)
-const TEMAS_BASICOS = [TEMA_DEFAULT, TEMA_OSC];
+const TEMAS_BASICOS = [TEMA_DEFAULT];
 
 const DEFAULT_LEYENDA_TEMA = 'def';
 const LEYENDA_TEMA_FILES = {

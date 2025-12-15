@@ -1088,10 +1088,20 @@ function actualizarBotonToggle(temaActual) {
   // Actualizar icono según el tema actual
   if (temaActual === TEMA_OSC) {
     themeIcon.textContent = '☀️';
-    themeBtn.setAttribute('title', 'Cambiar a modo claro');
-  } else {
+    themeBtn.setAttribute('title', 'Cambiar a modo claro (DEF)');
+  } else if (temaActual === TEMA_DEFAULT) {
     themeIcon.textContent = '🌙';
-    themeBtn.setAttribute('title', 'Cambiar a modo oscuro');
+    themeBtn.setAttribute('title', 'Cambiar a modo oscuro (OSC)');
+  } else if (temaActual === TEMA_PRO) {
+    themeIcon.textContent = '☀️';
+    themeBtn.setAttribute('title', 'Cambiar a modo claro (PRO2)');
+  } else if (temaActual === TEMA_PRO2) {
+    themeIcon.textContent = '🌙';
+    themeBtn.setAttribute('title', 'Cambiar a modo oscuro (PRO)');
+  } else {
+    // Tema sin icono específico
+    themeIcon.textContent = '🔄';
+    themeBtn.setAttribute('title', 'Alternar tema');
   }
 }
 
