@@ -1,17 +1,17 @@
 // Script para la página de leyenda (leyenda.html)
 // Carga el tema y el idioma según los parámetros de la URL
-// y renderiza la tabla de umbrales dinámicamente
+// y muestra la tabla de umbrales de forma dinámica
 document.addEventListener('DOMContentLoaded', async () => {
   const params = new URLSearchParams(window.location.search);
   let temaParam = params.get('tema') ? params.get('tema').toLowerCase() : null;
   const idioma = params.get('lang') || DEFAULT_LANG;
 
-  // Si no hay tema en URL o el tema no existe, usar el tema por defecto
+  // Si no hay tema en la URL o el tema no existe, usamos el tema por defecto
   if (!temaParam || !LEYENDA_TEMA_FILES[temaParam]) {
     temaParam = DEFAULT_LEYENDA_TEMA;
   }
 
-  // Cargar el CSS del tema seleccionado
+  // Cargamos el CSS del tema elegido
   const temaBaseLink = document.getElementById('tema-base-css');
   const rutaCssTema =
     typeof LEYENDA_TEMA_FILES !== 'undefined'
@@ -20,17 +20,17 @@ document.addEventListener('DOMContentLoaded', async () => {
       : null;
 
   if (temaBaseLink && rutaCssTema) {
-    // Evitar cache añadiendo timestamp único
+    // Le ponemos un número único para que el navegador no use el cache
     temaBaseLink.href = `${rutaCssTema}?v=2025121501`;
     document.body.classList.add(`theme-${temaParam}`);
   } else if (!temaBaseLink) {
     console.warn("Elemento con ID 'tema-base-css' no encontrado.");
   }
 
-  // Actualizar el botón toggle
+  // Actualizamos el botón para cambiar de tema
   actualizarBotonToggle(temaParam);
 
-  // Cargar el archivo de traducción correspondiente al idioma seleccionado
+  // Cargamos el archivo de traducción del idioma elegido
   async function loadI18n(language) {
     const file =
       typeof I18N_FILES !== 'undefined' && I18N_FILES[language]
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
   }
-  // Renderiza la tabla de umbrales de latencia con detalles desplegables
+  // Muestra la tabla de umbrales de latencia con detalles que se pueden desplegar
   function renderLeyendaContent(container, leyendaData) {
     if (!container || !leyendaData) return;
 
@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     container.appendChild(codesSection);
   }
 
-  // Actualizar los textos de la página con las traducciones cargadas
+  // Cambiamos los textos de la página con las traducciones cargadas
   if (typeof window.TEXTOS_ACTUAL !== 'undefined') {
     const titleEl = document.getElementById('leyenda-titulo');
     const headerEl = document.getElementById('titulo-leyenda');
@@ -189,23 +189,23 @@ function actualizarBotonToggle(temaActual) {
 
   if (!themeBtn) return;
 
-  // Verificar si el tema actual tiene pareja de alternancia
+  // Revisar si el tema actual tiene una pareja para alternar
   const tieneParejaToggle =
     typeof TEMA_TOGGLE_PAIRS !== 'undefined' &&
     TEMA_TOGGLE_PAIRS.hasOwnProperty(temaActual);
 
   if (!tieneParejaToggle) {
-    // Ocultar el botón si no hay pareja
+    // Si no hay pareja, ocultamos el botón
     themeBtn.style.display = 'none';
     return;
   }
 
-  // Mostrar el botón si hay pareja
+  // Si hay pareja, mostramos el botón
   themeBtn.style.display = 'block';
 
   if (!themeIcon) return;
 
-  // Actualizar icono según el tema actual (consistente con script.js)
+  // Cambiamos el ícono según el tema actual (igual que en script.js)
   if (temaActual === 'osc') {
     themeIcon.textContent = '☀️';
     themeBtn.setAttribute('title', 'Cambiar a modo claro (DEF)');
@@ -219,7 +219,7 @@ function actualizarBotonToggle(temaActual) {
     themeIcon.textContent = '🌙';
     themeBtn.setAttribute('title', 'Cambiar a modo oscuro (PRO)');
   } else {
-    // Tema desconocido con pareja
+    // Si el tema no se reconoce pero tiene pareja
     themeIcon.textContent = '🔄';
     themeBtn.setAttribute('title', 'Alternar tema');
   }
@@ -233,35 +233,35 @@ function toggleDarkMode() {
   const params = new URLSearchParams(window.location.search);
   const temaUrl = params.get('tema');
 
-  // Determinar tema actual desde URL o usar default
+  // Vemos el tema actual desde la URL o usamos el default
   let temaActual = DEFAULT_LEYENDA_TEMA;
   if (temaUrl && LEYENDA_TEMA_FILES[temaUrl]) {
     temaActual = temaUrl;
   }
 
-  // Obtener la pareja del tema actual desde TEMA_TOGGLE_PAIRS
+  // Buscamos la pareja del tema actual en TEMA_TOGGLE_PAIRS
   const nuevoTema =
     typeof TEMA_TOGGLE_PAIRS !== 'undefined'
       ? TEMA_TOGGLE_PAIRS[temaActual]
       : null;
 
-  // Si no hay pareja configurada, no hacer nada
+  // Si no hay pareja, no hacemos nada
   if (!nuevoTema) return;
 
-  // Aplicar el nuevo tema
+  // Cambiamos al nuevo tema
   if (LEYENDA_TEMA_FILES[nuevoTema]) {
     temaBaseLink.href = LEYENDA_TEMA_FILES[nuevoTema];
 
-    // Actualizar clases del body
+    // Cambiamos las clases del body
     document.body.classList.remove(`theme-${temaActual}`);
     document.body.classList.add(`theme-${nuevoTema}`);
 
-    // Actualizar la URL
+    // Cambiamos la URL para reflejar el nuevo tema
     params.set('tema', nuevoTema);
     const nuevaUrl = `${window.location.pathname}?${params.toString()}`;
     window.history.replaceState({}, '', nuevaUrl);
 
-    // Actualizar el botón
+    // Actualizamos el botón para el nuevo tema
     actualizarBotonToggle(nuevoTema);
   }
 }

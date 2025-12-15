@@ -1,8 +1,8 @@
-// Sistema de Internacionalización (i18n)
-// Este archivo contiene la lógica para cargar y gestionar traducciones
-// Los textos están en archivos separados: i18n_es.js, i18n_en.js, etc.
+// Sistema de idiomas (i18n)
+// Acá está la lógica para cargar y manejar los textos traducidos
+// Los textos están en archivos como: i18n_es.js, i18n_en.js, etc.
 
-// Detecta qué idioma debe cargarse según el parámetro ?lang= de la URL
+// Detecta qué idioma hay que cargar según el parámetro ?lang= de la URL
 function obtenerIdiomaSeleccionado() {
   const params = new URLSearchParams(window.location.search);
   const langUrl = params.get('lang');
@@ -14,8 +14,8 @@ function obtenerIdiomaSeleccionado() {
   return DEFAULT_LANG;
 }
 
-// Carga dinámicamente el archivo JavaScript del idioma
-// Crea un <script> y lo inserta en el <head> del documento
+// Carga el archivo JS del idioma de forma dinámica
+// Crea un <script> y lo mete en el <head> del documento
 function cargarIdiomaScript(idiomaACargar) {
   const filePath = I18N_FILES[idiomaACargar];
 
@@ -52,8 +52,8 @@ function cargarIdiomaScript(idiomaACargar) {
   });
 }
 
-// Función principal de carga de idioma con fallback automático
-// Si el idioma solicitado falla, intenta cargar el idioma por defecto
+// Función principal para cargar el idioma, con intento de respaldo automático
+// Si el idioma que pediste falla, intenta cargar el idioma por defecto
 async function cargarIdioma() {
   const idiomaSolicitado = obtenerIdiomaSeleccionado();
   const idiomaDefault = DEFAULT_LANG;

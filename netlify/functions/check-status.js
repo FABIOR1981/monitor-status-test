@@ -3,8 +3,7 @@ const AbortController = require('abort-controller');
 const https = require('https');
 const http = require('http');
 
-// Ignoramos certificados SSL inválidos porque necesitamos monitorear
-// la disponibilidad del servicio, no la validez de sus certificados
+// No validamos los certificados SSL porque lo importante es saber si el servicio responde, no si el certificado es válido
 const httpsAgent = new https.Agent({
   rejectUnauthorized: false,
 });
@@ -38,8 +37,7 @@ exports.handler = async (event, context) => {
       method: 'GET',
       signal: controller.signal,
       redirect: 'follow',
-      // Agente dinámico: permite manejar redirecciones de HTTPS→HTTP automáticamente
-      // sin fallar por cambio de protocolo
+      // Usamos un agente que permite cambiar entre HTTPS y HTTP sin que falle por el cambio de protocolo
       agent: (_parsedURL) => {
         if (_parsedURL.protocol === 'http:') {
           return httpAgent;
@@ -75,9 +73,9 @@ exports.handler = async (event, context) => {
       `Error de conexión para ${targetUrl}: ${error.name} - ${error.message}`
     );
 
-    // Retornamos HTTP 200 con status=0 para distinguir entre:
-    // - Fallo de la función serverless (HTTP 500)
-    // - Fallo del servicio monitoreado (status: 0)
+    // Siempre devolvemos HTTP 200 con status=0 para que se pueda saber si:
+    // - Falló la función serverless (sería un HTTP 500 real)
+    // - Falló el servicio que estamos monitoreando (status: 0)
     return {
       statusCode: 200,
       headers,

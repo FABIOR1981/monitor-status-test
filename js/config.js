@@ -1,14 +1,14 @@
-// Umbrales de latencia en milisegundos
-// Estos valores clasifican el   rendimiento del servicio
-// Para más detalles ver docs/justificacion_rangos_latencia.md
+// Umbrales de latencia (en milisegundos)
+// Estos valores sirven para clasificar qué tan rápido o lento responde un servicio.
+// Si querés saber más, mirá el archivo docs/justificacion_rangos_latencia.md
 const UMBRALES_LATENCIA = {
-  MUY_RAPIDO: 300, // Excelente: respuesta casi instantánea
-  RAPIDO: 500, // Bueno: respuesta rápida perceptible
-  NORMAL: 800, // Aceptable: ligero retraso pero usable
-  LENTO: 1500, // Preocupante: retraso notable
-  CRITICO: 3000, // Grave: degradación significativa
-  RIESGO: 5000, // Muy grave: próximo a fallo
-  PENALIZACION_FALLO: 99999, // Marcador especial para fallos (no se suma al promedio)
+  MUY_RAPIDO: 300, // Excelente: responde casi al instante
+  RAPIDO: 500, // Bueno: rápido, se nota poco el retraso
+  NORMAL: 800, // Aceptable: algo lento pero usable
+  LENTO: 1500, // Lento: se nota el retraso
+  CRITICO: 3000, // Muy lento: ya es un problema serio
+  RIESGO: 5000, // Al borde del fallo: casi no responde
+  PENALIZACION_FALLO: 99999, // Valor especial para marcar fallos (no cuenta en el promedio)
 };
 
 const TEMA_DEFAULT = 'def';
@@ -25,9 +25,9 @@ const TEMA_FILES = {
   [TEMA_OSC]: 'css/monitor_osc.css',
 };
 
-// Configuración de pares de temas alternables con el botón toggle
-// Si un tema no tiene pareja, el botón no aparecerá
-// Orden: primero temas claros → oscuros, luego oscuros → claros
+// Temas que se pueden alternar con el botón de cambiar tema
+// Si un tema no tiene pareja, el botón no se muestra
+// El orden es: primero claros a oscuros, después oscuros a claros
 const TEMA_TOGGLE_PAIRS = {
   [TEMA_DEFAULT]: TEMA_OSC, // def (claro) → osc (oscuro)
   [TEMA_OSC]: TEMA_DEFAULT, // osc (oscuro) → def (claro)
@@ -36,7 +36,7 @@ const TEMA_TOGGLE_PAIRS = {
   // min no tiene pareja, entonces el botón se oculta
 };
 
-// Temas básicos que NO tienen funcionalidades avanzadas (sin expansión de errores, sin PSI)
+// Temas básicos: estos no tienen funciones avanzadas (no muestran detalles de errores ni botón PSI)
 const TEMAS_BASICOS = [TEMA_DEFAULT];
 
 const DEFAULT_LEYENDA_TEMA = TEMA_DEFAULT;
@@ -86,13 +86,13 @@ const FRECUENCIA_MONITOREO_MS = 5 * 60 * 1000;
 
 const HORAS_DISPONIBLES = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-// Construir opciones de duración del historial dinámicamente
-// Cada hora = 12 mediciones (una cada 5 minutos)
+// Armamos las opciones de duración del historial de forma automática
+// Cada hora equivale a 12 mediciones (una cada 5 minutos)
 const DURACION_OPCIONES = {};
 HORAS_DISPONIBLES.forEach((horas) => {
   const key = `${horas}h`;
   DURACION_OPCIONES[key] = {
-    mediciones: horas * 12, // 12 mediciones por hora (cada 5 minutos)
+    mediciones: horas * 12, // 12 mediciones por cada hora (una cada 5 minutos)
     etiqueta: horas === 1 ? '1 hora' : `${horas} horas`,
   };
 });
@@ -103,18 +103,18 @@ const MAX_HISTORIAL_ENTRIES = DURACION_OPCIONES[DURACION_DEFAULT].mediciones;
 const PSI_BASE_URL = 'https://pagespeed.web.dev/report?url=';
 const WEBSITES_FILE = 'data/webs.json';
 
-// Archivos de traducción disponibles
-// Se cargan dinámicamente según el parámetro ?lang=XX en la URL
+// Archivos de idioma disponibles
+// Se cargan automáticamente según el parámetro ?lang=XX en la URL
 const I18N_FILES = {
   es: 'lang/i18n_es.js',
   en: 'lang/i18n_en.js',
   fr: 'lang/i18n_fr.js',
 };
 
-const DEFAULT_LANG = 'es'; // Idioma por defecto si no se especifica ninguno
+const DEFAULT_LANG = 'es'; // Idioma por defecto si no se elige otro
 
-// Configuración de detección de fallo global
-// Se activa cuando 80% o más de los servicios críticos fallan o superan 9 segundos
+// Configuración para detectar un fallo global
+// Se activa si el 80% o más de los servicios críticos fallan o tardan más de 9 segundos
 const GRUPO_CRITICO_NOMBRE = 'CRITICO'; // Nombre del grupo de servicios críticos
-const UMBRAL_FALLO_GLOBAL_MS = 9000; // Latencia máxima antes de considerarse fallo (9 segundos)
-const PORCENTAJE_FALLO_GLOBAL = 0.8; // 80% de servicios críticos deben fallar para activar alerta global
+const UMBRAL_FALLO_GLOBAL_MS = 9000; // Si tarda más de 9 segundos, se considera fallo
+const PORCENTAJE_FALLO_GLOBAL = 0.8; // Si falla el 80% de los servicios críticos, se activa la alerta global

@@ -53,17 +53,16 @@ function inicializarSelectorDuracion() {
     const nuevaDuracion = e.target.value;
     guardarDuracionSeleccionada(nuevaDuracion);
     maxHistorialActual = DURACION_OPCIONES[nuevaDuracion].mediciones;
-    // Limpiamos el historial porque las mediciones antiguas pueden no tener sentido
-    // con la nueva ventana de tiempo (ej: pasar de 1 hora a 9 horas)
+    // Borramos el historial porque los datos viejos ya no sirven si cambiaste la duración
     historialStatus = {};
     guardarHistorial();
     monitorearTodosWebsites();
   });
 }
 
-// =======================================================
-// 2. FUNCIONES DE INTERNACIONALIZACIÓN (I18N) Y DOM
-// =======================================================
+// ===============================
+// 2. Idiomas y manejo del DOM
+// ===============================
 //
 async function cargarIdioma() {
   const idiomaSolicitado = obtenerIdiomaSeleccionado();
@@ -279,11 +278,9 @@ function obtenerEstadoVisual(tiempo, estado = 200) {
     className: 'status-extreme-risk',
   };
 }
-// Ordena los servicios poniendo primero los críticos (orden=1)
-// y luego el resto alfabéticamente para facilitar la búsqueda
+// Ordena los servicios: primero los críticos (orden=1), después el resto en orden alfabético
 function ordenarServiciosPersonalizado(servicios) {
-  // Los servicios con orden=1 siempre aparecen primero (servicios críticos)
-  // El resto se ordenan alfabéticamente para facilitar la búsqueda
+  // Los críticos van primero, el resto se ordena por nombre para que sea fácil de encontrar
   const fijos = servicios.filter((servicio) => servicio.orden === 1);
   const ordenables = servicios.filter((servicio) => servicio.orden !== 1);
 
@@ -340,9 +337,8 @@ function actualizarHistorial(url, time, status) {
   guardarHistorial();
 }
 
-// Calcula el promedio de latencia excluyendo errores
-// Solo se promedian las mediciones exitosas (status 200)
-// Las penalizaciones (99999ms) no   afectan el resultado
+// Calcula el promedio de latencia, pero solo cuenta los éxitos (status 200)
+// Los fallos (99999ms) no afectan el promedio
 function calcularPromedio(url) {
   const historial = historialStatus[url] || [];
 
@@ -504,7 +500,7 @@ function determinarFalloGlobal(websitesData, resultados) {
 // =======================================================
 
 /**
- * Llama al proxy Netlify para obtener el estado y latencia de una URL.
+ * Llama al proxy de Netlify para saber el estado y la latencia de una URL.
  */
 async function verificarEstado(url) {
   try {
@@ -539,7 +535,7 @@ async function verificarEstado(url) {
 }
 
 /**
- * Dibuja las filas iniciales con placeholders de carga.
+ * Dibuja las filas iniciales con los datos de carga (placeholders).
  */
 function dibujarFilasIniciales(servicios) {
   const tbody = document.getElementById('status-table-body');
@@ -590,8 +586,8 @@ function dibujarFilasIniciales(servicios) {
 }
 
 /**
- * [ACCESIBILIDAD] Añade roles y etiquetas ARIA a las celdas de estado de una fila.
- * @param {HTMLTableRowElement} row - Fila de la tabla con celdas de estados en índices 3 y 5.
+ * [Accesibilidad] Agrega roles y etiquetas ARIA a las celdas de estado de una fila.
+ * @param {HTMLTableRowElement} row - Fila de la tabla con celdas de estado en las posiciones 3 y 5.
  * @param {Object} labels - Opcional: {actual: string, promedio: string} con textos accesibles.
  */
 function aplicarAccesibilidadEstadoEnFila(row, labels = {}) {
@@ -629,7 +625,7 @@ function aplicarAccesibilidadEstadoEnFila(row, labels = {}) {
 }
 
 /**
- * Obtiene lista de errores del historial para una URL
+ * Devuelve la lista de errores del historial para una URL
  */
 function obtenerHistorialErrores(url) {
   const historial = historialStatus[url] || [];
@@ -640,7 +636,7 @@ function obtenerHistorialErrores(url) {
 }
 
 /**
- * Formatea timestamp a formato legible: "14/12 10:45"
+ * Convierte un timestamp a un formato fácil de leer: "14/12 10:45"
  */
 function formatearFecha(timestamp) {
   const fecha = new Date(timestamp);
@@ -652,7 +648,7 @@ function formatearFecha(timestamp) {
 }
 
 /**
- * Alterna la expansión de errores en una fila
+ * Muestra u oculta el detalle de errores en una fila
  */
 function toggleErroresDetalle(url) {
   const tbody = document.getElementById('status-table-body');
@@ -748,7 +744,7 @@ function toggleErroresDetalle(url) {
 window.toggleErroresDetalle = toggleErroresDetalle;
 
 /**
- * Obtiene mensaje descriptivo para código de error
+ * Devuelve un mensaje entendible para cada código de error
  */
 function obtenerMensajeError(codigo) {
   const mensajes = {
@@ -771,7 +767,7 @@ function obtenerMensajeError(codigo) {
 }
 
 /**
- * Actualiza una fila específica de la tabla con los datos reales.
+ * Actualiza una fila de la tabla con los datos reales.
  */
 function actualizarFila(web, resultado) {
   const tbody = document.getElementById('status-table-body');
@@ -853,8 +849,7 @@ function actualizarFila(web, resultado) {
 }
 
 /**
- * Función principal que orquesta la solicitud a la API del Proxy,
- * procesa los resultados y gestiona la visualización/resiliencia.
+ * Función principal: pide los datos al proxy, procesa los resultados y actualiza la pantalla.
  */
 async function monitorearTodosWebsites() {
   // 0. Limpiar el temporizador anterior
@@ -886,17 +881,16 @@ async function monitorearTodosWebsites() {
     return;
   }
 
-  // DIBUJAR PLACEHOLDERS y establecer 'Cargando...'
+  // Dibuja los placeholders y pone 'Cargando...'
   websitesData = ordenarServiciosPersonalizado(websitesData);
   dibujarFilasIniciales(websitesData);
   actualizarUltimaActualizacion(null);
 
-  // Usamos Promise.allSettled en lugar de Promise.all para que un servicio caído
-  // no interrumpa el monitoreo de los demás servicios
+  // Usamos Promise.allSettled para que si un servicio falla, no corte el monitoreo de los otros
   const promesas = websitesData.map((web) => verificarEstado(web.url));
   const allResults = await Promise.allSettled(promesas);
 
-  // Mapear resultados finales a un formato simple para el análisis de Fallo Global
+  // Convertimos los resultados a un formato simple para analizar si hay fallo global
   const resultadosMonitoreo = [];
   allResults.forEach((result, index) => {
     const web = websitesData[index];
@@ -959,26 +953,26 @@ async function monitorearTodosWebsites() {
   // =======================================================
   let maxValidCount = 0;
 
-  // Recorrer los resultados exitosos y actualizar el historial y la tabla
+  // Recorremos los resultados y actualizamos historial y tabla
   resultadosMonitoreo.forEach((res) => {
     const web = websitesData.find((w) => w.url === res.url);
 
-    // 4.1. Actualizar el historial
+    // 4.1. Guardar el historial
     actualizarHistorial(res.url, res.time, res.status);
 
-    // 4.2. Actualizar la fila en la UI
+    // 4.2. Actualizar la fila en la pantalla
     actualizarFila(web, res);
 
-    // 4.3. Recalcular el conteo para el encabezado
+    // 4.3. Recalcular el contador para el encabezado
     const { validCount } = calcularPromedio(res.url);
     maxValidCount = Math.max(maxValidCount, validCount);
   });
 
-  // 5. FINALIZAR Y PROGRAMAR LA PRÓXIMA EJECUCIÓN
+  // 5. Terminar y programar el próximo monitoreo
   actualizarEncabezadoPromedio(maxValidCount);
   actualizarUltimaActualizacion(new Date());
 
-  // Solo programar el siguiente monitoreo si NO hemos alcanzado el máximo
+  // Solo programamos el siguiente monitoreo si todavía no llegamos al máximo
   if (!historialCompleto()) {
     window.monitorTimeout = setTimeout(
       monitorearTodosWebsites,
@@ -991,9 +985,9 @@ async function monitorearTodosWebsites() {
   }
 }
 
-// =======================================================
-// 6. LÓGICA DE TEMAS E INICIALIZACIÓN
-// =======================================================
+// ===============================
+// 6. Temas y arranque de la app
+// ===============================
 
 /**
  * Obtiene el tema de los parámetros de la URL.
@@ -1340,7 +1334,7 @@ async function cargarYMostrarHistorialExistente() {
   }
 }
 
-// Punto de entrada principal al cargar el DOM
+// Cuando se carga la página, arranca todo el sistema
 document.addEventListener('DOMContentLoaded', async () => {
   inicializarTema();
   cargarHistorial();
