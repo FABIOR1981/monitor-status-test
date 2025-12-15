@@ -1166,6 +1166,12 @@ async function cargarYMostrarHistorialExistente() {
     const ultimaMedicion =
       historial.length > 0 ? historial[historial.length - 1] : null;
 
+    // Obtener tema actual y verificar si permite expansión (necesario para el botón ERR)
+    const params = new URLSearchParams(window.location.search);
+    const temaActual = params.get('tema') || TEMA_DEFAULT;
+    const permiteExpansion = TEMAS_CON_EXPANSION_ERRORES.includes(temaActual);
+    const errores = obtenerHistorialErrores(web.url);
+
     if (ultimaMedicion) {
       const estadoActual = obtenerEstadoVisual(
         ultimaMedicion.time,
@@ -1184,13 +1190,7 @@ async function cargarYMostrarHistorialExistente() {
       cellEstadoActual.className = estadoActual.className;
 
       // Agregar contador de errores si existen y el tema lo permite
-      const errores = obtenerHistorialErrores(web.url);
       const totalMediciones = historial.length;
-
-      // Obtener tema actual
-      const params = new URLSearchParams(window.location.search);
-      const temaActual = params.get('tema') || TEMA_DEFAULT;
-      const permiteExpansion = TEMAS_CON_EXPANSION_ERRORES.includes(temaActual);
 
       const contadorErrores =
         errores.length > 0 && permiteExpansion
