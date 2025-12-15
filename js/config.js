@@ -30,7 +30,8 @@ const TEMA_TOGGLE_PAIRS = {
   [TEMA_OSC]: TEMA_DEFAULT, // osc alterna con def
   // pro y min no tienen pareja, entonces el botón se oculta
 };
-
+// Temas que tienen sistema de expansión de errores (contador ⚠️ y click en badges)
+const TEMAS_CON_EXPANSION_ERRORES = [TEMA_PRO, TEMA_MIN];
 const DEFAULT_LEYENDA_TEMA = 'def';
 const LEYENDA_TEMA_FILES = {
   default: 'css/leyenda_def.css',

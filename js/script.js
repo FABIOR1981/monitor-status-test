@@ -1178,14 +1178,22 @@ async function cargarYMostrarHistorialExistente() {
       cellEstadoActual.textContent = estadoActual.text;
       cellEstadoActual.className = estadoActual.className;
 
-      // Agregar contador de errores si existen
+      // Agregar contador de errores si existen y el tema lo permite
       const errores = obtenerHistorialErrores(web.url);
       const totalMediciones = historial.length;
-      const contadorErrores =
-        errores.length > 0 ? ` ⚠️ ${errores.length}/${totalMediciones}` : '';
 
-      // Hacer clickeable el badge de estado actual si hay errores
-      if (errores.length > 0) {
+      // Obtener tema actual
+      const params = new URLSearchParams(window.location.search);
+      const temaActual = params.get('tema') || TEMA_DEFAULT;
+      const permiteExpansion = TEMAS_CON_EXPANSION_ERRORES.includes(temaActual);
+
+      const contadorErrores =
+        errores.length > 0 && permiteExpansion
+          ? ` ⚠️ ${errores.length}/${totalMediciones}`
+          : '';
+
+      // Hacer clickeable el badge de estado actual si hay errores Y el tema lo permite
+      if (errores.length > 0 && permiteExpansion) {
         cellEstadoActual.style.cursor = 'pointer';
         cellEstadoActual.setAttribute(
           'title',
@@ -1200,8 +1208,8 @@ async function cargarYMostrarHistorialExistente() {
       cellEstadoPromedio.textContent = estadoPromedio.text;
       cellEstadoPromedio.className = estadoPromedio.className;
 
-      // Hacer clickeable el badge de estado promedio si hay errores
-      if (errores.length > 0) {
+      // Hacer clickeable el badge de estado promedio si hay errores Y el tema lo permite
+      if (errores.length > 0 && permiteExpansion) {
         cellEstadoPromedio.style.cursor = 'pointer';
         cellEstadoPromedio.setAttribute(
           'title',
