@@ -230,24 +230,42 @@ h1 {
   white-space: nowrap;
 }
 
-/* Botón de toggle de errores */
-.toggle-errors-button {
-  display: inline-block;
-  border: none;
-  background: #dc3545;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 0.8em;
-  margin-right: 8px;
-  transition: background-color 0.2s;
-  vertical-align: middle;
-  font-weight: 500;
+/* Indicador visual para badges clickeables (con errores) */
+.status-very-fast[style*='cursor: pointer'],
+.status-fast[style*='cursor: pointer'],
+.status-normal[style*='cursor: pointer'],
+.status-slow[style*='cursor: pointer'],
+.status-critical[style*='cursor: pointer'],
+.status-risk[style*='cursor: pointer'],
+.status-extreme-risk[style*='cursor: pointer'],
+.status-down[style*='cursor: pointer'] {
+  position: relative;
 }
 
-.toggle-errors-button:hover {
-  background: #c82333;
+.status-very-fast[style*='cursor: pointer']::after,
+.status-fast[style*='cursor: pointer']::after,
+.status-normal[style*='cursor: pointer']::after,
+.status-slow[style*='cursor: pointer']::after,
+.status-critical[style*='cursor: pointer']::after,
+.status-risk[style*='cursor: pointer']::after,
+.status-extreme-risk[style*='cursor: pointer']::after,
+.status-down[style*='cursor: pointer']::after {
+  content: ' ▼';
+  font-size: 0.7em;
+  opacity: 0.6;
+}
+
+.status-very-fast[style*='cursor: pointer']:hover,
+.status-fast[style*='cursor: pointer']:hover,
+.status-normal[style*='cursor: pointer']:hover,
+.status-slow[style*='cursor: pointer']:hover,
+.status-critical[style*='cursor: pointer']:hover,
+.status-risk[style*='cursor: pointer']:hover,
+.status-extreme-risk[style*='cursor: pointer']:hover,
+.status-down[style*='cursor: pointer']:hover {
+  opacity: 0.85;
+  transform: scale(1.02);
+  transition: all 0.2s ease;
 }
 
 /* Botón PSI */
