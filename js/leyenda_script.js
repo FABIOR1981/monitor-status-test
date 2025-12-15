@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   let temaParam = params.get('tema') ? params.get('tema').toLowerCase() : null;
   const idioma = params.get('lang') || DEFAULT_LANG;
 
-  // Si no hay tema en URL, usar el tema por defecto
-  if (!temaParam) {
+  // Si no hay tema en URL o el tema no existe, usar el tema por defecto
+  if (!temaParam || !LEYENDA_TEMA_FILES[temaParam]) {
     temaParam = DEFAULT_LEYENDA_TEMA;
   }
 

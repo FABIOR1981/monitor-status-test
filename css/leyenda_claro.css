@@ -1,39 +1,39 @@
 /* ======================================================= */
-/* LEYENDA TEMA: MINIMALISTA (monitor_min.css) */
-/* Colores: Fondo Muy Claro (#f7f7f7), Texto Oscuro (#333), Acento Neutro (#6c757d) */
+/* LEYENDA TEMA: CLARO (Light Theme) */
+/* Colores: Fondo Claro (#f4f7f9), Texto Oscuro (#333), Acento Azul (#007bff) */
 /* ======================================================= */
 
 /* --- Colores de Base --- */
 body {
-  background-color: #f7f7f7;
+  background-color: #f4f7f9;
   color: #333;
 }
 
 header {
-  border-bottom: 2px solid #6c757d; /* Color de acento neutro */
+  border-bottom: 2px solid #007bff; /* Color de acento */
 }
 
 #titulo-leyenda {
-  color: #495057;
+  color: #007bff;
 }
 
 #contenido-leyenda {
-  background-color: #fff;
-  border: 1px solid #dee2e6;
+  background-color: #fff; /* Fondo del contenedor de contenido */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* --- Estilos de Tabla de Umbrales --- */
 .leyenda-tabla-umbrales th {
-  background-color: #e9ecef; /* Gris claro para header de tabla */
-  color: #495057; /* Texto neutro */
-  border: 1px solid #dee2e6;
+  background-color: #e6f0ff; /* Azul muy claro para header de tabla */
+  color: #0056b3; /* Azul oscuro para texto */
+  border: 1px solid #d1e7ff;
 }
 
 .leyenda-tabla-umbrales td {
   border: 1px solid #dee2e6;
 }
 
-/* Colores de estado movidos a variables */
+/* --- Colores de Estado (variables) --- */
 :root {
   --status-very-fast-bg: #d4edda;
   --status-very-fast-color: #0f5132;
@@ -53,7 +53,7 @@ header {
   --status-down-color: white;
 }
 
-/* Mantener peso de fuente y demás presentación */
+/* Keep font-weight where needed */
 .status-normal {
   font-weight: bold;
 }
@@ -66,7 +66,7 @@ footer {
   border-top: 1px solid #dee2e6;
 }
 #enlace-volver {
-  color: #6c757d;
+  color: #007bff;
 }
 
 /* ======================================================= */
@@ -75,15 +75,15 @@ footer {
 
 /* Estilo para el título de la nueva sección */
 .leyenda-section h3 {
-  color: #495057; /* Color neutro de texto */
-  border-bottom: 1px dashed #ced4da;
+  color: #007bff; /* Color primario */
+  border-bottom: 1px dashed #ccc;
 }
 
 /* Estilos de la nueva tabla de errores */
 .leyenda-tabla-errores th {
-  background-color: #e9ecef; /* Fondo de header de tabla */
-  color: #495057; /* Texto neutro */
-  border: 1px solid #dee2e6;
+  background-color: #e6f0ff; /* Fondo de header de tabla, igual que la tabla de umbrales */
+  color: #0056b3;
+  border: 1px solid #d1e7ff;
 }
 
 .leyenda-tabla-errores td {
@@ -93,18 +93,18 @@ footer {
 
 /* Colores para los elementos expandibles (details/summary) */
 .leyenda-tabla-umbrales summary {
-  color: #6c757d; /* Color de acento (gris) */
+  color: #007bff; /* Color de acento (azul) */
 }
 
 .leyenda-tabla-umbrales summary:hover {
-  color: #495057;
+  color: #0056b3;
 }
 
 .leyenda-tabla-umbrales summary::before {
-  color: #6c757d; /* Color de acento */
+  color: #007bff; /* Color de acento */
 }
 
 .leyenda-tabla-umbrales details p {
-  color: #333; /* Color de texto para el contenido expandido */
-  border-left: 2px solid #adb5bd; /* Línea lateral de acento (gris medio) */
+  color: #444; /* Color de texto para el contenido expandido */
+  border-left: 2px solid #007bff; /* Línea lateral de acento */
 }

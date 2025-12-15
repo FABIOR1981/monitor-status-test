@@ -39,13 +39,14 @@ const TEMA_TOGGLE_PAIRS = {
 // Temas básicos que NO tienen funcionalidades avanzadas (sin expansión de errores, sin PSI)
 const TEMAS_BASICOS = [TEMA_DEFAULT];
 
-const DEFAULT_LEYENDA_TEMA = 'def';
+const DEFAULT_LEYENDA_TEMA = TEMA_DEFAULT;
 const LEYENDA_TEMA_FILES = {
-  default: 'css/leyenda_def.css',
-  def: 'css/leyenda_def.css',
-  pro: 'css/leyenda_pro.css',
-  min: 'css/leyenda_min.css',
-  osc: 'css/leyenda_osc.css',
+  default: 'css/leyenda_claro.css',
+  def: 'css/leyenda_claro.css',
+  pro: 'css/leyenda_oscuro.css',
+  pro2: 'css/leyenda_claro.css',
+  min: 'css/leyenda_claro.css',
+  osc: 'css/leyenda_oscuro.css',
 };
 
 const ESTADO_ERROR_CONEXION = 0;
