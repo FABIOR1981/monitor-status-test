@@ -1038,36 +1038,61 @@ function inicializarTema() {
 
 /**
  * Actualiza el icono del botón toggle según el tema actual
+ * Oculta el botón si el tema no tiene pareja de alternancia
  */
 function actualizarBotonToggle(temaActual) {
   const themeIcon = document.getElementById('theme-icon');
   const themeBtn = document.getElementById('theme-toggle-btn');
 
+  if (!themeBtn) return;
+
+  // Verificar si el tema actual tiene pareja de alternancia
+  const tieneParejaToggle = TEMA_TOGGLE_PAIRS.hasOwnProperty(temaActual);
+
+  if (!tieneParejaToggle) {
+    // Ocultar el botón si no hay pareja
+    themeBtn.style.display = 'none';
+    return;
+  }
+
+  // Mostrar el botón si hay pareja
+  themeBtn.style.display = 'block';
+
   if (!themeIcon) return;
 
+  // Actualizar icono según el tema actual
   if (temaActual === TEMA_OSC) {
     themeIcon.textContent = '☀️';
-    if (themeBtn) themeBtn.setAttribute('title', 'Cambiar a modo claro');
+    themeBtn.setAttribute('title', 'Cambiar a modo claro');
   } else {
     themeIcon.textContent = '🌙';
-    if (themeBtn) themeBtn.setAttribute('title', 'Cambiar a modo oscuro');
+    themeBtn.setAttribute('title', 'Cambiar a modo oscuro');
   }
 }
 
 /**
- * Alterna entre modo claro (def) y modo oscuro (osc)
+ * Alterna entre temas configurados en TEMA_TOGGLE_PAIRS
  */
 function toggleDarkMode() {
   const estiloPrincipal = document.getElementById('estilo-principal');
-  const temaActual = localStorage.getItem('temaPreferido') || TEMA_DEFAULT;
+  const params = new URLSearchParams(window.location.search);
+  const temaUrl = params.get('tema');
 
-  // Alternar entre DEF y OSC
-  const nuevoTema = temaActual === TEMA_OSC ? TEMA_DEFAULT : TEMA_OSC;
+  // Determinar tema actual: priorizar URL, luego tomar el default
+  let temaActual = TEMA_DEFAULT;
+  if (temaUrl && TEMA_FILES[temaUrl]) {
+    temaActual = temaUrl;
+  }
+
+  // Obtener la pareja del tema actual
+  const nuevoTema = TEMA_TOGGLE_PAIRS[temaActual];
+
+  // Si no hay pareja configurada, no hacer nada
+  if (!nuevoTema) return;
 
   // Aplicar el nuevo tema
   if (TEMA_FILES[nuevoTema]) {
     estiloPrincipal.href = TEMA_FILES[nuevoTema];
-    localStorage.setItem('temaPreferido', nuevoTema);
     temaProActivo = nuevoTema !== TEMA_DEFAULT;
 
     // Actualizar el botón

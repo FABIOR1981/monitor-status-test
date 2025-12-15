@@ -23,6 +23,14 @@ const TEMA_FILES = {
   [TEMA_OSC]: 'css/monitor_osc.css',
 };
 
+// Configuración de pares de temas alternables con el botón toggle
+// Si un tema no tiene pareja, el botón no aparecerá
+const TEMA_TOGGLE_PAIRS = {
+  [TEMA_DEFAULT]: TEMA_OSC, // def alterna con osc
+  [TEMA_OSC]: TEMA_DEFAULT, // osc alterna con def
+  // pro y min no tienen pareja, entonces el botón se oculta
+};
+
 const DEFAULT_LEYENDA_TEMA = 'def';
 const LEYENDA_TEMA_FILES = {
   default: 'css/leyenda_def.css',
