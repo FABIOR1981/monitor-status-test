@@ -231,44 +231,6 @@ a:hover {
   text-decoration: underline;
 }
 
-/* --- Detalles de Errores Expandibles --- */
-.error-details {
-  background-color: #3a2020;
-  border: 1px solid #5f1a1a;
-  color: #ffcccc;
-}
-
-.error-details:hover {
-  background-color: #4a2a2a;
-}
-
-.error-item {
-  border-bottom: 1px solid #5f1a1a;
-}
-
-/* --- Contador de Errores --- */
-.error-count {
-  color: #ff6b6b;
-}
-
-/* --- Badge de Código HTTP --- */
-.http-code {
-  background-color: #3a3a3a;
-  color: #ffcccc;
-  border: 1px solid #5f1a1a;
-}
-
-/* --- Toggle de Errores --- */
-.toggle-errors-btn {
-  background-color: #3a3a3a;
-  color: #e0e0e0;
-  border: 1px solid #4a9eff;
-}
-
-.toggle-errors-btn:hover {
-  background-color: #4a4a4a;
-}
-
 /* --- PSI Button --- */
 .psi-btn {
   background-color: #1f3a5f;
