@@ -1166,6 +1166,20 @@ function actualizarVisibilidadABM() {
     enlaceABM.style.display = 'none';
   } else {
     enlaceABM.style.display = 'inline';
+  }
+}
+
+function reiniciarMonitoreo() {
+  // Limpiar historial
+  historialStatus = {};
+  guardarHistorial();
+
+  // Cancelar timeout pendiente si existe
+  if (window.monitorTimeout) {
+    clearTimeout(window.monitorTimeout);
+  }
+
+  const tbody = document.getElementById('status-table-body');
   if (tbody) {
     tbody.innerHTML = '';
   }
