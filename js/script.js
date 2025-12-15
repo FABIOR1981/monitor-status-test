@@ -1095,6 +1095,11 @@ function toggleDarkMode() {
     estiloPrincipal.href = TEMA_FILES[nuevoTema];
     temaProActivo = nuevoTema !== TEMA_DEFAULT;
 
+    // Actualizar la URL con el nuevo tema
+    params.set('tema', nuevoTema);
+    const nuevaUrl = `${window.location.pathname}?${params.toString()}`;
+    window.history.replaceState({}, '', nuevaUrl);
+
     // Actualizar el botón
     actualizarBotonToggle(nuevoTema);
   }
