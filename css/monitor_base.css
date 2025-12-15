@@ -230,31 +230,7 @@ h1 {
   white-space: nowrap;
 }
 
-/* Indicador visual para badges clickeables (con errores) */
-.status-very-fast[style*='cursor: pointer'],
-.status-fast[style*='cursor: pointer'],
-.status-normal[style*='cursor: pointer'],
-.status-slow[style*='cursor: pointer'],
-.status-critical[style*='cursor: pointer'],
-.status-risk[style*='cursor: pointer'],
-.status-extreme-risk[style*='cursor: pointer'],
-.status-down[style*='cursor: pointer'] {
-  position: relative;
-}
-
-.status-very-fast[style*='cursor: pointer']::after,
-.status-fast[style*='cursor: pointer']::after,
-.status-normal[style*='cursor: pointer']::after,
-.status-slow[style*='cursor: pointer']::after,
-.status-critical[style*='cursor: pointer']::after,
-.status-risk[style*='cursor: pointer']::after,
-.status-extreme-risk[style*='cursor: pointer']::after,
-.status-down[style*='cursor: pointer']::after {
-  content: ' ▼';
-  font-size: 0.7em;
-  opacity: 0.6;
-}
-
+/* Efecto hover para badges clickeables (con errores) */
 .status-very-fast[style*='cursor: pointer']:hover,
 .status-fast[style*='cursor: pointer']:hover,
 .status-normal[style*='cursor: pointer']:hover,
@@ -268,7 +244,7 @@ h1 {
   transition: all 0.2s ease;
 }
 
-/* Botón PSI */
+/* Botón PSI */ /* Botón PSI */
 .psi-button {
   display: inline-block;
   vertical-align: middle;
