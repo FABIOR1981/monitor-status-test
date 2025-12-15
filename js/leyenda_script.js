@@ -6,19 +6,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   let temaParam = params.get('tema') ? params.get('tema').toLowerCase() : null;
   const idioma = params.get('lang') || DEFAULT_LANG;
 
-  console.log('DEBUG - URL params tema:', temaParam);
-  console.log('DEBUG - LEYENDA_TEMA_FILES disponibles:', LEYENDA_TEMA_FILES);
-  console.log(
-    'DEBUG - Existe LEYENDA_TEMA_FILES[temaParam]?',
-    LEYENDA_TEMA_FILES[temaParam]
-  );
-
   // Si no hay tema en URL o el tema no existe, usar el tema por defecto
   if (!temaParam || !LEYENDA_TEMA_FILES[temaParam]) {
-    console.log(
-      'DEBUG - Tema no válido, usando default:',
-      DEFAULT_LEYENDA_TEMA
-    );
     temaParam = DEFAULT_LEYENDA_TEMA;
   }
 
@@ -30,14 +19,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         LEYENDA_TEMA_FILES[DEFAULT_LEYENDA_TEMA]
       : null;
 
-  console.log('DEBUG - Tema final:', temaParam);
-  console.log('DEBUG - Ruta CSS:', rutaCssTema);
-
   if (temaBaseLink && rutaCssTema) {
     // Evitar cache añadiendo timestamp único
     temaBaseLink.href = `${rutaCssTema}?v=2025121501`;
     document.body.classList.add(`theme-${temaParam}`);
-    console.log(`Tema aplicado (leyenda): ${temaParam} (${rutaCssTema})`);
   } else if (!temaBaseLink) {
     console.warn("Elemento con ID 'tema-base-css' no encontrado.");
   }
