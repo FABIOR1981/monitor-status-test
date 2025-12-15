@@ -34,8 +34,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   console.log('DEBUG - Ruta CSS:', rutaCssTema);
 
   if (temaBaseLink && rutaCssTema) {
-    // Evitar cache añadiendo timestamp
-    temaBaseLink.href = `${rutaCssTema}?v=${Date.now()}`;
+    // Evitar cache añadiendo timestamp único
+    temaBaseLink.href = `${rutaCssTema}?v=2025121501`;
     document.body.classList.add(`theme-${temaParam}`);
     console.log(`Tema aplicado (leyenda): ${temaParam} (${rutaCssTema})`);
   } else if (!temaBaseLink) {
