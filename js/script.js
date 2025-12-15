@@ -673,6 +673,8 @@ function toggleErroresDetalle(url) {
   const row = tbody.querySelector(`tr[data-url="${CSS.escape(url)}"]`);
   if (!row) return;
 
+  const toggleBtn = row.querySelector('.toggle-errors-button');
+
   // Buscar si ya existe una fila de detalle para esta URL
   let detalleRow = null;
   let nextRow = row.nextElementSibling;
@@ -687,6 +689,7 @@ function toggleErroresDetalle(url) {
   // Si ya existe la fila de detalle, colapsar
   if (detalleRow) {
     detalleRow.classList.remove('expanded');
+    if (toggleBtn) toggleBtn.textContent = '▼';
     setTimeout(() => {
       if (detalleRow && detalleRow.parentNode) {
         detalleRow.remove();
@@ -745,7 +748,10 @@ function toggleErroresDetalle(url) {
   if (row.nextSibling) {
     tbody.insertBefore(newRow, row.nextSibling);
   } else {
-    tbody.appendChild(newRow);
+    tCambiar ícono del botón a expandido
+  if (toggleBtn) toggleBtn.textContent = '▲';
+
+  // body.appendChild(newRow);
   }
 
   // Trigger animación
@@ -1156,32 +1162,11 @@ async function cargarYMostrarHistorialExistente() {
       const totalMediciones = historial.length;
       const contadorErrores =
         errores.length > 0 ? ` ⚠️ ${errores.length}/${totalMediciones}` : '';
-
-      // Hacer clickeable el estado actual si hay errores
-      if (errores.length > 0) {
-        cellEstadoActual.style.cursor = 'pointer';
-        cellEstadoActual.setAttribute(
-          'title',
-          'Click para ver detalles de errores'
-        );
-        cellEstadoActual.onclick = () => toggleErroresDetalle(web.url);
-      }
-
       row.insertCell().textContent = `${promedio} ms${contadorErrores}`;
 
       const cellEstadoPromedio = row.insertCell();
       cellEstadoPromedio.textContent = estadoPromedio.text;
       cellEstadoPromedio.className = estadoPromedio.className;
-
-      // Hacer clickeable el estado promedio si hay errores
-      if (errores.length > 0) {
-        cellEstadoPromedio.style.cursor = 'pointer';
-        cellEstadoPromedio.setAttribute(
-          'title',
-          'Click para ver detalles de errores'
-        );
-        cellEstadoPromedio.onclick = () => toggleErroresDetalle(web.url);
-      }
     } else {
       row.insertCell().textContent = '-';
       row.insertCell().textContent = '-';
@@ -1190,9 +1175,16 @@ async function cargarYMostrarHistorialExistente() {
     }
 
     const cellAccion = row.insertCell();
+    const errores = obtenerHistorialErrores(web.url);
     let actionsHTML = '';
 
-    // Solo mostrar el botón PSI (el toggle de errores ahora está en los badges de estado)
+    if (errores.length > 0) {
+      actionsHTML += `<button class="toggle-errors-button" onclick="toggleErroresDetalle('${web.url.replace(
+        /'/g,
+        "\\'"
+      )}')" title="Ver detalles de errores">▼</button> `;
+    }
+
     actionsHTML += `<button class="psi-button" onclick="window.open('https://pagespeed.web.dev/report?url=${web.url}', '_blank')" title="PageSpeed Insights">PSI</button>`;
 
     cellAccion.innerHTML = actionsHTML;

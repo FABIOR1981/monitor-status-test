@@ -1,36 +1,7 @@
 # 🎨 Registro de Cambios - Mejoras UI/UX
 
-**Fecha:** 14-15 de diciembre de 2025
-**Archivos modificados:** `css/monitor_def.css`, `css/monitor_osc.css`, `css/monitor_base.css`, `js/script.js`
-
----
-
-## ✨ MEJORA UX (15/12/2025 - 16:00)
-
-### 🎯 Badges Clickeables para Ver Errores
-
-**Motivación:** Mejorar la estética de la tabla eliminando el botón de toggle de errores que rompía el diseño limpio.
-
-**Cambios implementados:**
-
-1. **JavaScript (`js/script.js`):**
-
-   - ✅ Los badges de estado (Estado Actual y Estado Promedio) ahora son clickeables cuando hay errores
-   - ✅ Se agrega `cursor: pointer` y `title` automáticamente a badges con errores
-   - ✅ Eliminado el botón `toggle-errors-button` de la columna de acciones
-   - ✅ Solo queda el botón PSI en la columna de acciones
-
-2. **CSS (`css/monitor_base.css`):**
-   - ✅ Eliminados estilos de `.toggle-errors-button` (ya no existe)
-   - ✅ Agregado indicador visual `▼` a badges clickeables
-   - ✅ Efecto hover mejorado en badges clickeables (scale 1.02, opacity 0.85)
-
-**Resultado:** Interface más limpia y profesional. Los usuarios pueden hacer click directamente en los badges de error para expandir/colapsar detalles.
-
-**Revertir:**
-
-- Restaurar líneas 1177-1187 y 671-675 de `js/script.js` (versión anterior)
-- Restaurar líneas 234-252 de `css/monitor_base.css` (estilos del botón)
+**Fecha:** 14 de diciembre de 2025
+**Archivos modificados:** `css/monitor_def.css`, `css/monitor_osc.css`
 
 ---
 
