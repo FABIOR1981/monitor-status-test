@@ -333,16 +333,36 @@
           </div>
         </div>
 
-        <!-- Sección de descarga -->
+        <!-- Sección de guardado -->
         <div class="download-section">
           <p>
-            <strong>⚠️ Importante:</strong> Los cambios se guardan en tu
-            navegador. Descarga el archivo JSON actualizado para aplicar los
-            cambios al servidor.
+            <strong>💡 Opciones de guardado:</strong> Puedes guardar los cambios
+            directamente en GitHub o descargar el archivo JSON.
           </p>
-          <button class="btn btn-primary" onclick="descargarJSON()">
-            💾 Descargar webs.json
-          </button>
+          <div
+            style="
+              display: flex;
+              gap: 10px;
+              justify-content: center;
+              flex-wrap: wrap;
+              margin-top: 15px;
+            "
+          >
+            <button
+              class="btn btn-primary"
+              onclick="guardarEnGitHub()"
+              id="btn-guardar-github"
+            >
+              🚀 Guardar en GitHub
+            </button>
+            <button class="btn btn-edit" onclick="descargarJSON()">
+              💾 Descargar JSON
+            </button>
+          </div>
+          <div
+            id="estado-guardado"
+            style="margin-top: 15px; font-size: 0.9em; color: #666"
+          ></div>
         </div>
       </div>
     </div>
@@ -513,6 +533,54 @@
           guardarEnLocalStorage();
           renderizarTabla();
           mostrarMensaje('✅ Sitio eliminado correctamente', 'success');
+        }
+      }
+
+      // Guardar directamente en GitHub
+      async function guardarEnGitHub() {
+        const btn = document.getElementById('btn-guardar-github');
+        const estadoDiv = document.getElementById('estado-guardado');
+
+        try {
+          btn.disabled = true;
+          btn.textContent = '⏳ Guardando...';
+          estadoDiv.textContent = 'Enviando cambios al servidor...';
+
+          const response = await fetch('/.netlify/functions/update-webs', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              data: sitios,
+            }),
+          });
+
+          const result = await response.json();
+
+          if (response.ok) {
+            mostrarMensaje(
+              '✅ ¡Cambios guardados exitosamente en GitHub! El sitio se actualizará automáticamente.',
+              'success'
+            );
+            estadoDiv.innerHTML = `<span style="color: #28a745;">✓ Última actualización: ${new Date().toLocaleString()}</span>`;
+
+            // Limpiar localStorage después de guardar exitosamente
+            localStorage.removeItem('webs_abm');
+          } else {
+            throw new Error(result.error || 'Error desconocido');
+          }
+        } catch (error) {
+          mostrarMensaje(
+            '❌ Error al guardar: ' +
+              error.message +
+              '. Intenta descargar el JSON manualmente.',
+            'danger'
+          );
+          estadoDiv.innerHTML = `<span style="color: #dc3545;">✗ Error: ${error.message}</span>`;
+        } finally {
+          btn.disabled = false;
+          btn.textContent = '🚀 Guardar en GitHub';
         }
       }
 
