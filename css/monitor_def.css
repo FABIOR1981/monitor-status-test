@@ -163,8 +163,11 @@ h1 {
   padding: 6px 12px;
   border-radius: 4px;
   display: inline-block;
-  min-width: 120px;
+  width: 140px;
   text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Destacar estados críticos - TOP 2: Jerarquía Visual */
