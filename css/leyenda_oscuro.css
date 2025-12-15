@@ -1,11 +1,11 @@
 /* ======================================================= */
-/* LEYENDA TEMA: OSCURO (Dark Theme) */
+/* LEYENDA TEMA: OSCURO (Dark Theme) - v2025.12.15 */
 /* Colores: Fondo Oscuro (#1a1a1a), Texto Claro (#e0e0e0), Acento Azul (#4a9eff) */
 /* ======================================================= */
 
 /* --- Colores de Base --- */
 body {
-  background-color: #1a1a1a;
+  background-color: #1a1a1a !important;
   color: #e0e0e0;
 }
 

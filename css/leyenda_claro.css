@@ -1,11 +1,11 @@
 /* ======================================================= */
-/* LEYENDA TEMA: CLARO (Light Theme) */
+/* LEYENDA TEMA: CLARO (Light Theme) - v2025.12.15 */
 /* Colores: Fondo Claro (#f4f7f9), Texto Oscuro (#333), Acento Azul (#007bff) */
 /* ======================================================= */
 
 /* --- Colores de Base --- */
 body {
-  background-color: #f4f7f9;
+  background-color: #f4f7f9 !important;
   color: #333;
 }
 
