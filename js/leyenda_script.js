@@ -182,40 +182,91 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 /**
  * Actualiza el icono del botón toggle según el tema actual
+ * Oculta el botón si el tema no tiene pareja en TEMA_TOGGLE_PAIRS
  */
 function actualizarBotonToggle(temaActual) {
   const themeIcon = document.getElementById('theme-icon');
   const themeBtn = document.getElementById('theme-toggle-btn');
 
+  if (!themeBtn) return;
+
+  // Verificar si el tema actual tiene pareja de alternancia
+  const tieneParejaToggle =
+    typeof TEMA_TOGGLE_PAIRS !== 'undefined' &&
+    TEMA_TOGGLE_PAIRS.hasOwnProperty(temaActual);
+
+  if (!tieneParejaToggle) {
+    // Ocultar el botón si no hay pareja
+    themeBtn.style.display = 'none';
+    return;
+  }
+
+  // Mostrar el botón si hay pareja
+  themeBtn.style.display = 'block';
+
   if (!themeIcon) return;
 
+  // Actualizar icono según el tema actual (consistente con script.js)
   if (temaActual === 'osc') {
     themeIcon.textContent = '☀️';
-    if (themeBtn) themeBtn.setAttribute('title', 'Cambiar a modo claro');
-  } else {
+    themeBtn.setAttribute('title', 'Cambiar a modo claro (DEF)');
+  } else if (temaActual === 'def') {
     themeIcon.textContent = '🌙';
-    if (themeBtn) themeBtn.setAttribute('title', 'Cambiar a modo oscuro');
+    themeBtn.setAttribute('title', 'Cambiar a modo oscuro (OSC)');
+  } else if (temaActual === 'pro') {
+    themeIcon.textContent = '☀️';
+    themeBtn.setAttribute('title', 'Cambiar a modo claro (PRO2)');
+  } else if (temaActual === 'pro2') {
+    themeIcon.textContent = '🌙';
+    themeBtn.setAttribute('title', 'Cambiar a modo oscuro (PRO)');
+  } else {
+    // Tema desconocido con pareja
+    themeIcon.textContent = '🔄';
+    themeBtn.setAttribute('title', 'Alternar tema');
   }
 }
 
 /**
- * Alterna entre modo claro (def) y modo oscuro (osc) en la página de leyenda
+ * Alterna entre temas usando TEMA_TOGGLE_PAIRS (consistente con script.js)
  */
 function toggleDarkMode() {
   const temaBaseLink = document.getElementById('tema-base-css');
-  const temaActual = localStorage.getItem('temaPreferido') || 'def';
+  const params = new URLSearchParams(window.location.search);
+  const temaUrl = params.get('tema');
 
-  // Alternar entre def y osc
-  const nuevoTema = temaActual === 'osc' ? 'def' : 'osc';
+  // Determinar tema actual: priorizar URL, luego localStorage, luego default
+  let temaActual = 'def';
+  if (temaUrl && LEYENDA_TEMA_FILES[temaUrl]) {
+    temaActual = temaUrl;
+  } else {
+    const temaGuardado = localStorage.getItem('temaPreferido');
+    temaActual = temaGuardado || 'def';
+  }
+
+  // Obtener la pareja del tema actual desde TEMA_TOGGLE_PAIRS
+  const nuevoTema =
+    typeof TEMA_TOGGLE_PAIRS !== 'undefined'
+      ? TEMA_TOGGLE_PAIRS[temaActual]
+      : null;
+
+  // Si no hay pareja configurada, no hacer nada
+  if (!nuevoTema) return;
 
   // Aplicar el nuevo tema
   if (LEYENDA_TEMA_FILES[nuevoTema]) {
     temaBaseLink.href = LEYENDA_TEMA_FILES[nuevoTema];
+
+    // Guardar en localStorage
     localStorage.setItem('temaPreferido', nuevoTema);
 
     // Actualizar clases del body
     document.body.classList.remove(`theme-${temaActual}`);
     document.body.classList.add(`theme-${nuevoTema}`);
+
+    // Actualizar la URL (consistente con script.js)
+    params.set('tema', nuevoTema);
+    const nuevaUrl = `${window.location.pathname}?${params.toString()}`;
+    window.history.replaceState({}, '', nuevaUrl);
 
     // Actualizar el botón
     actualizarBotonToggle(nuevoTema);
