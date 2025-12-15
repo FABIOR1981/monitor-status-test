@@ -13,7 +13,7 @@ const UMBRALES_LATENCIA = {
 
 const TEMA_DEFAULT = 'def';
 const TEMA_PRO = 'pro';
-const TEMA_PRO2 = 'pro2';
+const TEMA_PRO2 = 'pro2'; // Versión clara de PRO
 const TEMA_MIN = 'min';
 const TEMA_OSC = 'osc';
 
