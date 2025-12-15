@@ -13,12 +13,14 @@ const UMBRALES_LATENCIA = {
 
 const TEMA_DEFAULT = 'def';
 const TEMA_PRO = 'pro';
+const TEMA_PRO2 = 'pro2';
 const TEMA_MIN = 'min';
 const TEMA_OSC = 'osc';
 
 const TEMA_FILES = {
   [TEMA_DEFAULT]: 'css/monitor_def.css',
   [TEMA_PRO]: 'css/monitor_pro.css',
+  [TEMA_PRO2]: 'css/monitor_pro2.css',
   [TEMA_MIN]: 'css/monitor_min.css',
   [TEMA_OSC]: 'css/monitor_osc.css',
 };
