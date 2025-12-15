@@ -20,6 +20,9 @@
     } catch (e) {}
   }
 
+  // Limpiar errores notificados al cargar la app (nueva sesión)
+  localStorage.removeItem('erroresNotificadosMonitor');
+
   // Función para limpiar el registro de error de un sitio (cuando se recupera)
   window.limpiarErrorSitio = function (nombre) {
     const erroresNotificados = getErroresNotificados();
