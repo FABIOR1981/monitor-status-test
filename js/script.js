@@ -1166,7 +1166,7 @@ function actualizarVisibilidadABM() {
   if (temaActual === TEMA_DEFAULT || temaActual === TEMA_OSC) {
     enlaceABM.style.display = 'none';
   } else {
-    enlaceABM.style.display = 'inline';
+    enlaceABM.style.display = 'inline-flex';
   }
 }
 

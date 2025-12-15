@@ -97,6 +97,40 @@ h1 {
   margin-bottom: 20px;
 }
 
+/* Menú horizontal */
+.menu-horizontal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.menu-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 16px;
+  font-size: 0.9em;
+  color: #007bff;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  background-color: rgba(0, 123, 255, 0.05);
+  border: 1px solid rgba(0, 123, 255, 0.2);
+}
+
+.menu-item:hover {
+  background-color: rgba(0, 123, 255, 0.1);
+  border-color: rgba(0, 123, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.15);
+}
+
+.menu-item:active {
+  transform: translateY(0);
+}
+
 /* Contenedor compartido de la tabla */
 .table-scroll-container {
   overflow-x: auto;
