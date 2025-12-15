@@ -1215,10 +1215,8 @@ async function cargarYMostrarHistorialExistente() {
     // Botón PSI
     actionsHTML += `<button class="psi-button" onclick="window.open('https://pagespeed.web.dev/report?url=${web.url}', '_blank')" title="PageSpeed Insights">PSI</button>`;
 
-    // Botón de errores (solo en temas PRO/MIN y si hay errores)
-    if (errores.length > 0 && permiteExpansion) {
-      actionsHTML += ` <button class="error-button" onclick="toggleErroresDetalle('${web.url}')" title="Ver detalles de ${errores.length} errores">ERR</button>`;
-    }
+    // Botón ERR (copia de prueba)
+    actionsHTML += ` <button class="error-button" onclick="alert('Botón ERR de prueba')" title="Botón de errores">ERR</button>`;
 
     cellAccion.innerHTML = actionsHTML;
   });
