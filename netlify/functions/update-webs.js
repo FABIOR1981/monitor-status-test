@@ -128,7 +128,11 @@ exports.handler = async (event, context) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        message: `🔧 Update webs.json via Admin Panel\n\nTotal sites: ${data.length}\nTimestamp: ${new Date().toLocaleString('es-UY', { timeZone: 'America/Montevideo' })}`,
+        message: `🔧 Update webs.json via Admin Panel\n\nTotal sites: ${
+          data.length
+        }\nTimestamp: ${new Date().toLocaleString('es-UY', {
+          timeZone: 'America/Montevideo',
+        })}`,
         content: encodedContent,
         sha: currentSha,
         branch: branch,
