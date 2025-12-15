@@ -8,9 +8,9 @@ Verifica automáticamente cada 5 minutos el **estado** y **tiempo de respuesta**
 
 - ✅ Monitoreo automático cada 5 minutos
 - 📊 7 niveles de clasificación (desde "Muy Rápido" hasta "Caído")
-- 🎨 4 temas visuales (Estándar, Profesional, Minimalista, Oscuro)
+- 🎨 5 temas visuales con alternancia claro/oscuro
 - 🌍 Multiidioma (Español, Inglés)
-- 📈 Historial configurable (12 horas hasta 7 días)
+- 📈 Historial configurable (1 a 9 horas)
 - 🚨 Detección inteligente de fallos
 - 📱 Diseño responsive
 
@@ -44,9 +44,9 @@ Edita `data/webs.json`:
 ### 3️⃣ Acceder al monitor
 
 ```
-https://tu-monitor.netlify.app/           → Tema estándar
-https://tu-monitor.netlify.app/?tema=pro  → Tema profesional
-https://tu-monitor.netlify.app/?tema=osc  → Tema oscuro
+https://tu-monitor.netlify.app/              → Tema estándar
+https://tu-monitor.netlify.app/?tema=pro     → Tema profesional oscuro
+https://tu-monitor.netlify.app/?tema=pro2    → Tema profesional claro
 ```
 
 ---
@@ -66,26 +66,26 @@ El monitor asigna un estado según el tiempo de respuesta:
 | 🔥 Riesgo Ext. | 5000-99999 ms | Abandono seguro      |
 | ❌ Caída       | Error/Timeout | Servicio no responde |
 
-> 💡 **¿Por qué estos umbrales?** Ver [justificacion_rangos_latencia.md](justificacion_rangos_latencia.md)
-
 ---
 
 ## 🎨 Temas Disponibles
 
 Cambia el tema agregando `?tema=` a la URL:
 
-| Tema                   | URL         | Uso recomendado      |
-| ---------------------- | ----------- | -------------------- |
-| Estándar (por defecto) | `?tema=def` | Vista general        |
-| Profesional            | `?tema=pro` | Análisis técnico     |
-| Minimalista            | `?tema=min` | Dashboards/Pantallas |
-| Oscuro                 | `?tema=osc` | Modo nocturno        |
+| Tema              | URL          | Descripción                |
+| ----------------- | ------------ | -------------------------- |
+| Estándar          | `?tema=def`  | Vista clara y simple       |
+| Oscuro            | `?tema=osc`  | Modo nocturno del estándar |
+| Profesional       | `?tema=pro`  | Análisis técnico (oscuro)  |
+| Profesional Claro | `?tema=pro2` | Análisis técnico (claro)   |
+| Minimalista       | `?tema=min`  | Dashboard sin decoraciones |
 
-**Diferencias principales:**
+**Botón de alternancia:** Los temas DEF↔OSC y PRO↔PRO2 incluyen un botón 🌙/☀️ para alternar entre modo claro y oscuro.
 
-- **PRO** muestra columnas adicionales (URL, Status HTTP)
-- **MIN** reduce decoraciones al mínimo
-- **OSC** usa fondo oscuro (#121212) con alto contraste
+**Funcionalidades por tema:**
+
+- **Básicos (DEF/OSC)**: Vista simple, solo botón PSI visible
+- **Avanzados (PRO/PRO2/MIN)**: Expansión de errores clickeando badges + botón PSI
 
 ---
 
@@ -102,12 +102,11 @@ Combina con temas: `?tema=pro&lang=en`
 
 ## 🔍 Ver Errores Detallados
 
-Cuando hay errores, aparece un contador `⚠️ 3/12`:
+**Solo en temas avanzados (PRO, PRO2, MIN):**
 
-- **3** = errores detectados
-- **12** = total de mediciones
+Cuando hay errores, aparece un contador `⚠️ 3/12` en la columna de promedio.
 
-Haz click en el botón **▼** para ver:
+Haz **click en el badge de error** (ej: "CAÍDA/ERROR") para expandir el detalle:
 
 - Fecha y hora del error
 - Código HTTP
@@ -120,12 +119,7 @@ Haz click en el botón **▼** para ver:
 
 ### Cambiar duración del historial
 
-En el selector de la interfaz:
-
-- **12 horas** → 144 mediciones
-- **1 día** → 288 mediciones
-- **3 días** → 864 mediciones
-- **7 días** → 2016 mediciones
+En el selector de la interfaz puedes elegir de **1 a 9 horas** (12 mediciones por hora).
 
 ### Ajustar umbrales de latencia
 
@@ -172,16 +166,22 @@ Accede en: `http://localhost:8888`
 
 ---
 
-## 📚 Documentación Detallada
+## 📚 Documentación Completa
 
-¿Necesitas más información? Consulta:
+Si necesitas información más detallada, consulta estos documentos:
 
-| Documento                                                            | Contenido                             |
-| -------------------------------------------------------------------- | ------------------------------------- |
-| [arquitectura.md](arquitectura.md)                                   | Cómo funciona internamente el sistema |
-| [estructura.md](estructura.md)                                       | Descripción de archivos y carpetas    |
-| [justificacion_rangos_latencia.md](justificacion_rangos_latencia.md) | Fundamento científico de los umbrales |
-| [resolución de problemas.md](resolución%20de%20problemas.md)         | Soluciones a problemas comunes        |
+### 📖 Fundamentos
+
+- **[justificacion_rangos_latencia.md](justificacion_rangos_latencia.md)** - Base científica de los umbrales de respuesta
+
+### 🏗️ Arquitectura y Código
+
+- **[arquitectura.md](arquitectura.md)** - Funcionamiento interno del sistema
+- **[estructura.md](estructura.md)** - Organización de archivos y carpetas
+
+### 🔧 Solución de Problemas
+
+- **[resolución de problemas.md](resolución%20de%20problemas.md)** - Errores comunes y soluciones
 
 ---
 
@@ -215,29 +215,7 @@ Esto evita **falsos positivos** cuando el problema es del monitoreo, no de tus s
 
 ### Para producción crítica
 
-💡 Complementa con servicios especializados:
-
-- Pingdom, UptimeRobot, New Relic
-- Múltiples ubicaciones de monitoreo
-- Alertas integradas (Slack, PagerDuty)
-
----
-
-## 🤝 Contribuir
-
-1. Fork el repositorio
-2. Crea una rama: `git checkout -b feature/nueva-caracteristica`
-3. Commit: `git commit -m 'feat: Descripción'`
-4. Push: `git push origin feature/nueva-caracteristica`
-5. Abre un Pull Request
-
-**Convenciones:**
-
-- `feat:` Nueva característica
-- `fix:` Corrección de bug
-- `docs:` Cambios en documentación
-- `style:` Formato
-- `refactor:` Refactorización
+💡 Complementa con servicios especializados (Pingdom, UptimeRobot, New Relic) que ofrecen múltiples ubicaciones y alertas integradas.
 
 ---
 
@@ -247,4 +225,4 @@ MIT License - Ver archivo LICENSE
 
 ---
 
-**¿Problemas?** Consulta [resolución de problemas.md](resolución%20de%20problemas.md) o abre un issue.
+**¿Tienes dudas?** Consulta la [documentación completa](#-documentación-completa) o abre un issue en GitHub.
