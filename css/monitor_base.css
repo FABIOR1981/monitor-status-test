@@ -143,6 +143,7 @@ h1 {
 
 /* Botones y métricas */
 .psi-button,
+.error-button,
 .btn-primary {
   border: none;
   padding: 5px 8px;
@@ -151,6 +152,35 @@ h1 {
   font-size: 0.8em;
   transition: background-color 0.2s;
 }
+
+/* Botón PSI específico */
+.psi-button {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Botón de Errores */
+.error-button {
+  background-color: #c92a2a;
+  color: #ffffff;
+  border: 1px solid #a61e1e;
+  margin-right: 5px;
+  display: inline-block;
+  vertical-align: middle;
+  font-weight: bold;
+}
+
+.error-button:hover {
+  background-color: #a61e1e;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(201, 42, 42, 0.3);
+}
+
+.error-button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
 .latency-metric {
   font-weight: bold;
   font-size: 1em;
@@ -224,25 +254,6 @@ h1 {
 /* ====================================
    ESTILOS PARA EXPANSIÓN DE ERRORES
    ==================================== */
-
-/* Contenedor de botones en línea */
-#monitor-table td:nth-child(7) {
-  white-space: nowrap;
-}
-
-/* Efecto hover para badges clickeables (con errores) */
-.status-very-fast[style*='cursor: pointer']:hover,
-.status-fast[style*='cursor: pointer']:hover,
-.status-normal[style*='cursor: pointer']:hover,
-.status-slow[style*='cursor: pointer']:hover,
-.status-critical[style*='cursor: pointer']:hover,
-.status-risk[style*='cursor: pointer']:hover,
-.status-extreme-risk[style*='cursor: pointer']:hover,
-.status-down[style*='cursor: pointer']:hover {
-  opacity: 0.85;
-  transform: scale(1.02);
-  transition: all 0.2s ease;
-}
 
 /* Botón PSI */
 .psi-button {

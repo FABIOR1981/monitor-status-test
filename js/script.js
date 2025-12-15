@@ -1197,31 +1197,11 @@ async function cargarYMostrarHistorialExistente() {
           ? ` ⚠️ ${errores.length}/${totalMediciones}`
           : '';
 
-      // Hacer clickeable el badge de estado actual si hay errores Y el tema lo permite
-      if (errores.length > 0 && permiteExpansion) {
-        cellEstadoActual.style.cursor = 'pointer';
-        cellEstadoActual.setAttribute(
-          'title',
-          'Click para ver detalles de errores'
-        );
-        cellEstadoActual.onclick = () => toggleErroresDetalle(web.url);
-      }
-
       row.insertCell().textContent = `${promedio} ms${contadorErrores}`;
 
       const cellEstadoPromedio = row.insertCell();
       cellEstadoPromedio.textContent = estadoPromedio.text;
       cellEstadoPromedio.className = estadoPromedio.className;
-
-      // Hacer clickeable el badge de estado promedio si hay errores Y el tema lo permite
-      if (errores.length > 0 && permiteExpansion) {
-        cellEstadoPromedio.style.cursor = 'pointer';
-        cellEstadoPromedio.setAttribute(
-          'title',
-          'Click para ver detalles de errores'
-        );
-        cellEstadoPromedio.onclick = () => toggleErroresDetalle(web.url);
-      }
     } else {
       row.insertCell().textContent = '-';
       row.insertCell().textContent = '-';
@@ -1232,7 +1212,12 @@ async function cargarYMostrarHistorialExistente() {
     const cellAccion = row.insertCell();
     let actionsHTML = '';
 
-    // Solo mostrar el botón PSI (el toggle de errores ahora está en los badges de estado)
+    // Botón de errores (solo en temas PRO/MIN y si hay errores)
+    if (errores.length > 0 && permiteExpansion) {
+      actionsHTML += `<button class="error-button" onclick="toggleErroresDetalle('${web.url}')" title="Ver detalles de ${errores.length} errores">⚠️ ${errores.length}</button> `;
+    }
+
+    // Botón PSI
     actionsHTML += `<button class="psi-button" onclick="window.open('https://pagespeed.web.dev/report?url=${web.url}', '_blank')" title="PageSpeed Insights">PSI</button>`;
 
     cellAccion.innerHTML = actionsHTML;
