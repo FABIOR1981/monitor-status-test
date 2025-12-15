@@ -30,11 +30,29 @@
     const clave = nombre + '|' + horaActualClave();
     if (erroresNotificados[clave]) return; // Ya se notificó este sitio en esta hora
     erroresNotificados[clave] = true;
+    let label = '',
+      desc = '';
+    if (
+      window.TEXTOS_ACTUAL &&
+      window.TEXTOS_ACTUAL.httpStatus &&
+      window.TEXTOS_ACTUAL.httpCodes
+    ) {
+      const info = window.TEXTOS_ACTUAL.httpCodes.find(
+        (e) => e.code === codigo
+      );
+      if (info) {
+        label = info.label;
+        desc = info.description;
+      }
+    }
     let mensaje = `ALERTA: Error detectado en "${nombre}"\n`;
     mensaje += `URL: ${url}\n`;
     if (latencia !== undefined) mensaje += `Latencia: ${latencia} ms\n`;
-    mensaje += `Código: ${codigo}\n`;
-    if (descripcion) mensaje += `Descripción: ${descripcion}`;
+    mensaje += `Código: ${codigo}`;
+    if (label) mensaje += ` - ${label}`;
+    mensaje += `\n`;
+    if (desc) mensaje += `Descripción: ${desc}`;
+    else if (descripcion) mensaje += `Descripción: ${descripcion}`;
     mostrarNotificacionError(mensaje);
   };
 
