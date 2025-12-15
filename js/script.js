@@ -808,17 +808,46 @@ function actualizarFila(web, resultado) {
   row.cells[3].textContent = estadoActual.text;
   row.cells[3].className = estadoActual.className;
 
-  // Columna 5: Promedio (ms) (índice 4)
-  // Agregar contador de errores si existen
+  // Obtener tema actual y verificar si permite expansión
+  const params = new URLSearchParams(window.location.search);
+  const temaActual = params.get('tema') || TEMA_DEFAULT;
+  const permiteExpansion = TEMAS_CON_EXPANSION_ERRORES.includes(temaActual);
+
+  // Hacer clickeable el badge si hay errores y el tema lo permite
   const errores = obtenerHistorialErrores(web.url);
+  if (errores.length > 0 && permiteExpansion) {
+    row.cells[3].style.cursor = 'pointer';
+    row.cells[3].title = 'Click para ver detalles de errores';
+    row.cells[3].onclick = () => toggleErroresDetalle(web.url);
+  } else {
+    row.cells[3].style.cursor = '';
+    row.cells[3].title = '';
+    row.cells[3].onclick = null;
+  }
+
+  // Columna 5: Promedio (ms) (índice 4)
+  // Agregar contador de errores si existen y el tema lo permite
   const totalMediciones = (historialStatus[web.url] || []).length;
   const contadorErrores =
-    errores.length > 0 ? ` ⚠️ ${errores.length}/${totalMediciones}` : '';
+    errores.length > 0 && permiteExpansion
+      ? ` ⚠️ ${errores.length}/${totalMediciones}`
+      : '';
   row.cells[4].textContent = `${promedio} ms${contadorErrores}`;
 
   // Columna 6: Estado Promedio (índice 5)
   row.cells[5].textContent = estadoPromedio.text;
   row.cells[5].className = estadoPromedio.className;
+
+  // Hacer clickeable el badge promedio si hay errores y el tema lo permite
+  if (errores.length > 0 && permiteExpansion) {
+    row.cells[5].style.cursor = 'pointer';
+    row.cells[5].title = 'Click para ver detalles de errores';
+    row.cells[5].onclick = () => toggleErroresDetalle(web.url);
+  } else {
+    row.cells[5].style.cursor = '';
+    row.cells[5].title = '';
+    row.cells[5].onclick = null;
+  }
 
   // Accesibilidad: actualizar atributos de forma consistente después de actualizar el texto
   aplicarAccesibilidadEstadoEnFila(row, {
@@ -829,14 +858,7 @@ function actualizarFila(web, resultado) {
   // Columna 7: Acción (índice 6)
   let actionsHTML = '';
 
-  // Agregar botón de toggle si hay errores (primero)
-  if (errores.length > 0) {
-    actionsHTML += `<button class="toggle-errors-button" onclick="toggleErroresDetalle('${web.url.replace(
-      /'/g,
-      "\\'"
-    )}')" title="Ver detalles de errores">▼</button> `;
-  }
-
+  // Solo botón PSI
   actionsHTML += `<button class="psi-button" onclick="window.open('https://pagespeed.web.dev/report?url=${web.url}', '_blank')" title="PageSpeed Insights">PSI</button>`;
 
   row.cells[6].innerHTML = actionsHTML;
