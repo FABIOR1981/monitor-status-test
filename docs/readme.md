@@ -15,13 +15,9 @@ Un sistema de monitoreo en tiempo real que verifica automáticamente cada 5 minu
 - 📱 **Diseño responsive** para cualquier dispositivo
 - 🔍 **Expansión de errores** con detalles completos (temas avanzados)
 
-## ¿Cómo funciona?
+---
 
-1. **Verificación periódica**: Cada 5 minutos ejecuta peticiones HTTP a tus servicios
-2. **Clasificación por latencia**: Asigna un estado según el tiempo de respuesta
-3. **Historial visual**: Muestra las últimas 1-9 horas en una tabla interactiva
-4. **Alertas visuales**: Colores y badges intuitivos para identificar problemas rápidamente
-5. **Detección inteligente**: Distingue entre fallos de tus servicios vs problemas de conectividad
+El sistema revisa automáticamente tus servicios y te muestra su estado de forma visual e intuitiva, para que siempre sepas si todo funciona bien.
 
 ## Inicio Rápido
 
