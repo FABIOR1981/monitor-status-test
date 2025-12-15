@@ -34,5 +34,9 @@
   {
     "nombre": "Notas",
     "url": "https://notas.correo.com.uy/notas"
+  },
+  {
+    "nombre": "Probaer error",
+    "url": "http://www.exportafacil.com.uy/exportafacil"
   }
 ]
