@@ -16,6 +16,7 @@
 - **Estados críticos** con borde rojo
 - **Servicios caídos** con animación de pulso
 - **Padding aumentado** para mejor legibilidad (12px → 16px)
+- **⭐ NUEVO: Anchos uniformes** - Badges de estado con `min-width: 120px` para aspecto de columna
 
 ### ✅ TOP 3: Modo Oscuro Mejorado
 
