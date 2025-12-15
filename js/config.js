@@ -43,9 +43,9 @@ const DEFAULT_LEYENDA_TEMA = TEMA_DEFAULT;
 const LEYENDA_TEMA_FILES = {
   default: 'css/leyenda_claro.css',
   def: 'css/leyenda_claro.css',
-  pro: 'css/leyenda_oscuro.css',
   pro2: 'css/leyenda_claro.css',
   min: 'css/leyenda_claro.css',
+  pro: 'css/leyenda_oscuro.css',
   osc: 'css/leyenda_oscuro.css',
 };
 
