@@ -3,6 +3,13 @@ let websitesData = [];
 let historialStatus = {};
 let maxHistorialActual = MAX_HISTORIAL_ENTRIES;
 
+// Cargar alertas_error.js para alertas de error por hora
+(function () {
+  const scriptAlertas = document.createElement('script');
+  scriptAlertas.src = 'js/alertas_error.js';
+  document.head.appendChild(scriptAlertas);
+})();
+
 function configurarEnlaceLeyenda() {
   const enlaceLeyenda = document.getElementById('enlace-leyenda');
   if (enlaceLeyenda) {
@@ -780,6 +787,18 @@ function actualizarFila(web, resultado) {
   const estadoActual = obtenerEstadoVisual(resultado.time, resultado.status);
   // Nota: calcularPromedio() obtiene los datos del historial que ACABA de ser actualizado
   const { promedio, estadoPromedio } = calcularPromedio(web.url);
+
+  // ALERTA: Si hay un error (status 0 o >=400), mostrar alerta solo la primera vez en la hora
+  if (resultado && (resultado.status === 0 || resultado.status >= 400)) {
+    window.registrarErrorSitio &&
+      window.registrarErrorSitio(
+        web.nombre || web.url,
+        web.url,
+        resultado.time,
+        resultado.status,
+        resultado.error || ''
+      );
+  }
 
   // --- Actualización de celdas (Columnas 3 a 7) ---
 
