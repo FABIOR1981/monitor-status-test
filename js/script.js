@@ -1135,6 +1135,10 @@ function toggleDarkMode() {
     // Guardar en localStorage en lugar de URL
     localStorage.setItem('temaPreferido', nuevoTema);
 
+    // Limpiar parámetro de URL para que localStorage sea la única fuente
+    const urlLimpia = window.location.pathname;
+    window.history.replaceState({}, '', urlLimpia);
+
     // Actualizar el botón
     actualizarBotonToggle(nuevoTema);
 
