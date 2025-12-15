@@ -205,6 +205,9 @@ function inicializarEtiquetas() {
 
   // Mostrar/ocultar enlace ABM según el tema
   actualizarVisibilidadABM();
+
+  // Mostrar/ocultar columna de acción según el tema
+  actualizarVisibilidadColumnaAccion();
 }
 
 function actualizarUltimaActualizacion(fecha) {
@@ -1028,27 +1031,21 @@ function obtenerTemaDeURL() {
 }
 
 /**
- * Lógica de cambio de tema: Prioriza localStorage, luego URL para compatibilidad.
+ * Lógica de cambio de tema: Prioriza la URL. Si no hay parámetro,
+ * usa TEMA_DEFAULT.
  */
 function inicializarTema() {
   const estiloPrincipal = document.getElementById('estilo-principal');
   let temaFinal = TEMA_DEFAULT;
 
-  // 1. Intentar obtener el tema de localStorage (MÁXIMA PRIORIDAD)
-  const temaGuardado = localStorage.getItem('temaPreferido');
-
-  // 2. Si no hay en localStorage, intentar obtener de URL (compatibilidad)
+  // 1. Intentar obtener el tema de la URL (MÁXIMA PRIORIDAD)
   const temaUrl = obtenerTemaDeURL();
 
-  if (temaGuardado && TEMA_FILES[temaGuardado]) {
-    temaFinal = temaGuardado;
-  } else if (temaUrl && TEMA_FILES[temaUrl]) {
+  if (temaUrl) {
     temaFinal = temaUrl;
-    // Guardar en localStorage para futuras visitas
-    localStorage.setItem('temaPreferido', temaUrl);
   }
 
-  // 3. Aplicar el tema
+  // 2. Aplicar el tema
   if (TEMA_FILES[temaFinal]) {
     estiloPrincipal.href = TEMA_FILES[temaFinal];
     temaProActivo = temaFinal !== TEMA_DEFAULT;
@@ -1111,12 +1108,11 @@ function actualizarBotonToggle(temaActual) {
  */
 function toggleDarkMode() {
   const estiloPrincipal = document.getElementById('estilo-principal');
-
-  // Obtener tema actual desde localStorage o URL (por compatibilidad)
-  let temaActual = localStorage.getItem('temaPreferido') || TEMA_DEFAULT;
   const params = new URLSearchParams(window.location.search);
   const temaUrl = params.get('tema');
 
+  // Determinar tema actual: priorizar URL, luego tomar el default
+  let temaActual = TEMA_DEFAULT;
   if (temaUrl && TEMA_FILES[temaUrl]) {
     temaActual = temaUrl;
   }
@@ -1132,18 +1128,14 @@ function toggleDarkMode() {
     estiloPrincipal.href = TEMA_FILES[nuevoTema];
     temaProActivo = nuevoTema !== TEMA_DEFAULT;
 
-    // Guardar en localStorage en lugar de URL
-    localStorage.setItem('temaPreferido', nuevoTema);
-
-    // Limpiar parámetro de URL para que localStorage sea la única fuente
-    const urlLimpia = window.location.pathname;
-    window.history.replaceState({}, '', urlLimpia);
-
-    // Actualizar el botón
-    actualizarBotonToggle(nuevoTema);
-
-    // Actualizar visibilidad del enlace ABM
+    // Actualizar la URL con el nuevo tema
+    params.set('tema', nuevoTema);
+    const nuevaUrl = `${window.location.pathname}?${params.toString()}`;
+    window.history.replaceState({}, '', nuevaUrl);
     actualizarVisibilidadABM();
+
+    // Actualizar visibilidad de columna acción
+    actualizarVisibilidadColumnaAccion();
   }
 }
 
@@ -1155,18 +1147,127 @@ function actualizarVisibilidadABM() {
   if (!enlaceABM) return;
 
   // Obtener tema desde localStorage o URL
-  let temaActual = localStorage.getItem('temaPreferido') || TEMA_DEFAULT;
+  let temaActual = localStorage.getItem('temaPreferido');
   const temaUrl = new URLSearchParams(window.location.search).get('tema');
 
+  // Prioridad: URL > localStorage > DEFAULT
   if (temaUrl && TEMA_FILES[temaUrl]) {
     temaActual = temaUrl;
+  } else if (!temaActual || !TEMA_FILES[temaActual]) {
+    temaActual = TEMA_DEFAULT;
   }
+
+  console.log('ABM Visibility - Tema actual:', temaActual);
 
   // Ocultar solo en temas básicos: def y osc
   if (temaActual === TEMA_DEFAULT || temaActual === TEMA_OSC) {
     enlaceABM.style.display = 'none';
+    console.log('ABM ocultado para tema:', temaActual);
   } else {
     enlaceABM.style.display = 'inline-flex';
+    console.log('ABM visible para tema:', temaActual);
+    /**
+     * Muestra u oculta la columna de acción según el tema activo
+     */
+    function actualizarVisibilidadColumnaAccion() {
+      // Obtener tema desde localStorage o URL
+      let temaActual = localStorage.getItem('temaPreferido');
+      const temaUrl = new URLSearchParams(window.location.search).get('tema');
+
+      // Prioridad: URL > localStorage > DEFAULT
+      if (temaUrl && TEMA_FILES[temaUrl]) {
+        temaActual = temaUrl;
+      } else if (!temaActual || !TEMA_FILES[temaActual]) {
+        temaActual = TEMA_DEFAULT;
+      }
+
+      const headerAccion = document.getElementById('header-action');
+      const tabla = document.getElementById('monitor-table');
+
+      // Ocultar columna en temas básicos: def y osc
+      if (temaActual === TEMA_DEFAULT || temaActual === TEMA_OSC) {
+        // Ocultar header
+        if (headerAccion) {
+          headerAccion.style.display = 'none';
+        }
+
+        // Ocultar todas las celdas de acción (7ma columna)
+        if (tabla) {
+          const rows = tabla.querySelectorAll('tr');
+          rows.forEach((row) => {
+            const cells = row.children;
+            if (cells.length >= 7) {
+              cells[6].style.display = 'none'; // índice 6 = 7ma columna
+            }
+          });
+        }
+      } else {
+        // Mostrar columna en temas avanzados
+        if (headerAccion) {
+          headerAccion.style.display = '';
+        }
+
+        if (tabla) {
+          const rows = tabla.querySelectorAll('tr');
+          rows.forEach((row) => {
+            const cells = row.children;
+            if (cells.length >= 7) {
+              cells[6].style.display = '';
+            }
+          });
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Muestra u oculta la columna de acción según el tema activo
+ */
+function actualizarVisibilidadColumnaAccion() {
+  const params = new URLSearchParams(window.location.search);
+  const temaUrl = params.get('tema');
+
+  let temaActual = TEMA_DEFAULT;
+  if (temaUrl && TEMA_FILES[temaUrl]) {
+    temaActual = temaUrl;
+  }
+
+  const headerAccion = document.getElementById('header-action');
+  const tabla = document.getElementById('monitor-table');
+
+  // Ocultar columna en temas básicos: def y osc
+  if (temaActual === TEMA_DEFAULT || temaActual === TEMA_OSC) {
+    // Ocultar header
+    if (headerAccion) {
+      headerAccion.style.display = 'none';
+    }
+
+    // Ocultar todas las celdas de acción (7ma columna)
+    if (tabla) {
+      const rows = tabla.querySelectorAll('tr');
+      rows.forEach((row) => {
+        const cells = row.children;
+        if (cells.length >= 7) {
+          cells[6].style.display = 'none';
+        }
+      });
+    }
+  } else {
+    // Mostrar columna en temas avanzados
+    if (headerAccion) {
+      headerAccion.style.display = '';
+    }
+
+    if (tabla) {
+      const rows = tabla.querySelectorAll('tr');
+      rows.forEach((row) => {
+        const cells = row.children;
+        if (cells.length >= 7) {
+          cells[6].style.display = '';
+        }
+      });
+    }
   }
 }
 
