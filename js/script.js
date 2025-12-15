@@ -1018,6 +1018,7 @@ function obtenerTemaDeURL() {
   const tema = params.get('tema');
   if (tema === TEMA_DEFAULT) return TEMA_DEFAULT;
   if (tema === TEMA_PRO) return TEMA_PRO;
+  if (tema === TEMA_PRO2) return TEMA_PRO2;
   if (tema === TEMA_MIN) return TEMA_MIN;
   if (tema === TEMA_OSC) return TEMA_OSC;
   return null;
