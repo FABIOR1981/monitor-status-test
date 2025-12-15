@@ -202,6 +202,9 @@ function inicializarEtiquetas() {
     btnReiniciar.textContent = window.TEXTOS_ACTUAL.general.BTN_REINICIAR;
 
   actualizarUltimaActualizacion(null);
+
+  // Mostrar/ocultar enlace ABM según el tema
+  actualizarVisibilidadABM();
 }
 
 function actualizarUltimaActualizacion(fecha) {
@@ -1137,21 +1140,32 @@ function toggleDarkMode() {
 
     // Actualizar el botón
     actualizarBotonToggle(nuevoTema);
+
+    // Actualizar visibilidad del enlace ABM
+    actualizarVisibilidadABM();
   }
 }
 
-function reiniciarMonitoreo() {
-  // Limpiar historial
-  historialStatus = {};
-  guardarHistorial();
+/**
+ * Muestra u oculta el enlace ABM según el tema activo
+ */
+function actualizarVisibilidadABM() {
+  const enlaceABM = document.getElementById('enlace-abm');
+  if (!enlaceABM) return;
 
-  // Cancelar timeout pendiente si existe
-  if (window.monitorTimeout) {
-    clearTimeout(window.monitorTimeout);
+  const params = new URLSearchParams(window.location.search);
+  const temaUrl = params.get('tema');
+
+  let temaActual = TEMA_DEFAULT;
+  if (temaUrl && TEMA_FILES[temaUrl]) {
+    temaActual = temaUrl;
   }
 
-  // Limpiar tabla
-  const tbody = document.getElementById('status-table-body');
+  // Ocultar solo en temas básicos: def y osc
+  if (temaActual === TEMA_DEFAULT || temaActual === TEMA_OSC) {
+    enlaceABM.style.display = 'none';
+  } else {
+    enlaceABM.style.display = 'inline';
   if (tbody) {
     tbody.innerHTML = '';
   }
