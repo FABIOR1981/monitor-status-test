@@ -263,7 +263,7 @@ a:hover {
   font-size: 0.8em;
   font-weight: 500;
   transition: all 0.2s;
-  margin-right: 5px;
+  margin-left: 5px;
 }
 
 .error-button:hover {

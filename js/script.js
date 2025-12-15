@@ -1212,13 +1212,13 @@ async function cargarYMostrarHistorialExistente() {
     const cellAccion = row.insertCell();
     let actionsHTML = '';
 
-    // Botón de errores (solo en temas PRO/MIN y si hay errores)
-    if (errores.length > 0 && permiteExpansion) {
-      actionsHTML += `<button class="error-button" onclick="toggleErroresDetalle('${web.url}')" title="Ver detalles de ${errores.length} errores">⚠️ ${errores.length}</button> `;
-    }
-
     // Botón PSI
     actionsHTML += `<button class="psi-button" onclick="window.open('https://pagespeed.web.dev/report?url=${web.url}', '_blank')" title="PageSpeed Insights">PSI</button>`;
+
+    // Botón de errores (solo en temas PRO/MIN y si hay errores)
+    if (errores.length > 0 && permiteExpansion) {
+      actionsHTML += ` <button class="error-button" onclick="toggleErroresDetalle('${web.url}')" title="Ver detalles de ${errores.length} errores">ERR</button>`;
+    }
 
     cellAccion.innerHTML = actionsHTML;
   });
