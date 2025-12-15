@@ -808,10 +808,10 @@ function actualizarFila(web, resultado) {
   row.cells[3].textContent = estadoActual.text;
   row.cells[3].className = estadoActual.className;
 
-  // Obtener tema actual y verificar si permite expansión
+  // Obtener tema actual y verificar si permite expansión (todos menos DEF y OSC)
   const params = new URLSearchParams(window.location.search);
   const temaActual = params.get('tema') || TEMA_DEFAULT;
-  const permiteExpansion = TEMAS_CON_EXPANSION_ERRORES.includes(temaActual);
+  const permiteExpansion = !TEMAS_BASICOS.includes(temaActual);
 
   // Hacer clickeable el badge si hay errores y el tema lo permite
   const errores = obtenerHistorialErrores(web.url);
@@ -858,8 +858,10 @@ function actualizarFila(web, resultado) {
   // Columna 7: Acción (índice 6)
   let actionsHTML = '';
 
-  // Solo botón PSI
-  actionsHTML += `<button class="psi-button" onclick="window.open('https://pagespeed.web.dev/report?url=${web.url}', '_blank')" title="PageSpeed Insights">PSI</button>`;
+  // Botón PSI (solo en temas PRO/MIN)
+  if (permiteExpansion) {
+    actionsHTML += `<button class="psi-button" onclick="window.open('https://pagespeed.web.dev/report?url=${web.url}', '_blank')" title="PageSpeed Insights">PSI</button>`;
+  }
 
   row.cells[6].innerHTML = actionsHTML;
 }
@@ -1188,10 +1190,10 @@ async function cargarYMostrarHistorialExistente() {
     const ultimaMedicion =
       historial.length > 0 ? historial[historial.length - 1] : null;
 
-    // Obtener tema actual y verificar si permite expansión (necesario para el botón ERR)
+    // Obtener tema actual y verificar si permite expansión (todos menos DEF y OSC)
     const params = new URLSearchParams(window.location.search);
     const temaActual = params.get('tema') || TEMA_DEFAULT;
-    const permiteExpansion = TEMAS_CON_EXPANSION_ERRORES.includes(temaActual);
+    const permiteExpansion = !TEMAS_BASICOS.includes(temaActual);
     const errores = obtenerHistorialErrores(web.url);
 
     if (ultimaMedicion) {
@@ -1248,8 +1250,10 @@ async function cargarYMostrarHistorialExistente() {
     const cellAccion = row.insertCell();
     let actionsHTML = '';
 
-    // Botón PSI
-    actionsHTML += `<button class="psi-button" onclick="window.open('https://pagespeed.web.dev/report?url=${web.url}', '_blank')" title="PageSpeed Insights">PSI</button>`;
+    // Botón PSI (solo en temas PRO/MIN)
+    if (permiteExpansion) {
+      actionsHTML += `<button class="psi-button" onclick="window.open('https://pagespeed.web.dev/report?url=${web.url}', '_blank')" title="PageSpeed Insights">PSI</button>`;
+    }
 
     cellAccion.innerHTML = actionsHTML;
   });
