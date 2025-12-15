@@ -108,6 +108,14 @@ h1 {
   text-align: center;
 }
 
+/* Centrar badges de estado (columnas 4 y 6) usando flexbox */
+#monitor-table td:nth-child(4),
+#monitor-table td:nth-child(6) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /* --- Contenedores y elementos principales --- */
 .container {
   background-color: var(--container-bg);
