@@ -1160,6 +1160,8 @@ function toggleDarkMode() {
 
     // Actualizar enlace de leyenda con nuevo tema
     configurarEnlaceLeyenda();
+    // Actualizar el icono del botón toggle para reflejar la nueva acción
+    actualizarBotonToggle(nuevoTema);
   }
 }
 
