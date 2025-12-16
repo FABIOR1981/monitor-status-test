@@ -54,7 +54,6 @@ Edita `data/webs.json` con las URLs que quieres monitorear:
 
 ```
 https://tu-monitor.netlify.app/              → Tema estándar
-https://tu-monitor.netlify.app/?tema=pro     → Tema profesional oscuro
 https://tu-monitor.netlify.app/?tema=pro2    → Tema profesional claro
 https://tu-monitor.netlify.app/?lang=en      → English version
 ```
