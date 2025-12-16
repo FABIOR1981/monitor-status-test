@@ -66,6 +66,4 @@ Licencia
 
 - MIT — consultá el archivo `LICENSE` para detalles.
 
-¿Querés más?
 
-- Si querés, puedo agregar ejemplos, capturas o una breve guía de "Cómo contribuir".
