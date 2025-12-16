@@ -1064,38 +1064,63 @@ function actualizarBotonToggle(temaActual) {
   const themeBtn = document.getElementById('theme-toggle-btn');
 
   if (!themeBtn) return;
+  // Normalizar temaActual: aceptar 'theme-xxx', rutas CSS o claves
+  let tema = temaActual || '';
+  if (typeof tema === 'string' && tema.startsWith('theme-')) {
+    tema = tema.replace('theme-', '');
+  }
+  // Si nos pasaron una ruta CSS, buscar la clave correspondiente
+  if (
+    typeof tema === 'string' &&
+    (tema.indexOf('/') !== -1 || tema.indexOf('.css') !== -1)
+  ) {
+    for (const k in TEMA_FILES) {
+      if (
+        TEMA_FILES[k] &&
+        tema.indexOf(TEMA_FILES[k].split('/').pop()) !== -1
+      ) {
+        tema = k;
+        break;
+      }
+    }
+  }
 
   // Verificar si el tema actual tiene pareja de alternancia
-  const tieneParejaToggle = TEMA_TOGGLE_PAIRS.hasOwnProperty(temaActual);
+  const tieneParejaToggle =
+    typeof TEMA_TOGGLE_PAIRS !== 'undefined' &&
+    TEMA_TOGGLE_PAIRS.hasOwnProperty(tema);
 
   if (!tieneParejaToggle) {
-    // Ocultar el botón si no hay pareja
     themeBtn.style.display = 'none';
     return;
   }
 
-  // Mostrar el botón si hay pareja
   themeBtn.style.display = 'block';
-
   if (!themeIcon) return;
 
-  // Actualizar icono según el tema actual
-  if (temaActual === TEMA_OSC) {
-    themeIcon.textContent = '☀️';
-    themeBtn.setAttribute('title', 'Cambiar a modo claro (DEF)');
-  } else if (temaActual === TEMA_DEFAULT) {
-    themeIcon.textContent = '🌙';
-    themeBtn.setAttribute('title', 'Cambiar a modo oscuro (OSC)');
-  } else if (temaActual === TEMA_PRO) {
-    themeIcon.textContent = '☀️';
-    themeBtn.setAttribute('title', 'Cambiar a modo claro (PRO2)');
-  } else if (temaActual === TEMA_PRO2) {
-    themeIcon.textContent = '🌙';
-    themeBtn.setAttribute('title', 'Cambiar a modo oscuro (PRO)');
-  } else {
-    // Tema sin icono específico
+  // Determinar tema destino (acción) y mostrar ícono según la acción
+  const temaDestino = TEMA_TOGGLE_PAIRS[tema];
+  if (!temaDestino) {
     themeIcon.textContent = '🔄';
     themeBtn.setAttribute('title', 'Alternar tema');
+    return;
+  }
+
+  // Si el tema destino es oscuro, mostrar luna (acción: pasar a oscuro)
+  const destinosOscuros = [TEMA_OSC, TEMA_PRO];
+  if (destinosOscuros.includes(temaDestino)) {
+    themeIcon.textContent = '🌙';
+    themeBtn.setAttribute(
+      'title',
+      `Cambiar a modo oscuro (${temaDestino.toUpperCase()})`
+    );
+  } else {
+    // Tema destino claro -> mostrar sol
+    themeIcon.textContent = '☀️';
+    themeBtn.setAttribute(
+      'title',
+      `Cambiar a modo claro (${temaDestino.toUpperCase()})`
+    );
   }
 }
 
