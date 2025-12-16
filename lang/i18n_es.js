@@ -21,6 +21,7 @@ const TEXTOS_ES = {
     BTN_REINICIAR: 'Reiniciar Monitoreo',
     BTN_COPIAR: 'Copiar',
     BTN_COPIADO: '¡Copiado!',
+    BTN_CERRAR: 'Cerrar',
   },
   velocidad: {
     VERY_FAST: 'MUY RÁPIDO',

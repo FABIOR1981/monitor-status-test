@@ -47,7 +47,6 @@
       setErroresNotificados(erroresNotificados);
     }
   };
-  // (Eliminado código suelto de ciclo y contador)
 
   // Función global para registrar un error y mostrar alert si corresponde
   window.registrarErrorSitio = function (
@@ -133,9 +132,14 @@
           .writeText(mensaje)
           .then(() => {
             btnCopiar.textContent = LABEL_COPIADO;
-            setTimeout(() => {
-              btnCopiar.textContent = LABEL_COPIAR;
-            }, 1500);
+            setTimeout(
+              () => {
+                btnCopiar.textContent = LABEL_COPIAR;
+              },
+              typeof ALERTAS_COPY_LABEL_RESET_MS !== 'undefined'
+                ? ALERTAS_COPY_LABEL_RESET_MS
+                : 1500
+            );
           })
           .catch((err) => {
             console.warn('Clipboard API falló, intentando fallback:', err);
@@ -158,10 +162,15 @@
     notif.appendChild(btnCerrar);
 
     contenedor.appendChild(notif);
-    // Auto-cerrar después de 30 segundos
-    setTimeout(() => {
-      if (contenedor.contains(notif)) contenedor.removeChild(notif);
-    }, 30000);
+    // Auto-cerrar después del tiempo configurado
+    setTimeout(
+      () => {
+        if (contenedor.contains(notif)) contenedor.removeChild(notif);
+      },
+      typeof ALERTAS_AUTO_CLOSE_MS !== 'undefined'
+        ? ALERTAS_AUTO_CLOSE_MS
+        : 30000
+    );
   }
 
   // Fallback de copia para navegadores sin Clipboard API
@@ -179,9 +188,14 @@
       document.body.removeChild(textarea);
       if (successful) {
         btn.textContent = labelCopiado;
-        setTimeout(() => {
-          btn.textContent = labelCopiar;
-        }, 1500);
+        setTimeout(
+          () => {
+            btn.textContent = labelCopiar;
+          },
+          typeof ALERTAS_COPY_LABEL_RESET_MS !== 'undefined'
+            ? ALERTAS_COPY_LABEL_RESET_MS
+            : 1500
+        );
       } else {
         console.warn('fallbackCopyText: execCommand(copy) no fue exitoso');
       }
