@@ -3,7 +3,7 @@ name: Minificar y Desplegar a Netlify
 on:
   push:
     branches:
-      - main # Se activa cada vez que subes algo a la rama main
+      - main  # Asegúrate de que tu rama se llame main o cámbialo a master
 
 jobs:
   build_and_deploy:
@@ -13,21 +13,29 @@ jobs:
       - name: Descargar código del repo
         uses: actions/checkout@v3
 
-      - name: Instalar herramientas de minificación
+      - name: Instalar herramientas
         run: |
           npm install -g minify terser
 
-      - name: Minificar archivos
+      - name: Preparar y Minificar
         run: |
           mkdir -p dist
-          # Usamos rsync para copiar todo excepto la carpeta dist a sí misma
-          # Si no tienes rsync, usamos este comando de copiado seguro:
-          cp -R [^dist]* dist/ || true
+          # Copiamos todo el contenido actual a la carpeta dist
+          cp -R . dist/ || true
+          # Borramos la carpeta .github de la copia para que no se suba a Netlify
+          rm -rf dist/.github
           
-          # Minificar
-          find dist -name "*.js" -exec terser {} -o {} \;
-          find dist -name "*.css" -exec minify {} -o {} \;
-          find dist -name "*.html" -exec minify {} -o {} \;
+          # Minificar JS (si existen archivos .js)
+          find dist -name "*.js" -exec terser {} -o {} \; || echo "No hay JS"
+          
+          # Minificar CSS y HTML (si existen)
+          find dist -name "*.css" -exec minify {} -o {} \; || echo "No hay CSS"
+          find dist -name "*.html" -exec minify {} -o {} \; || echo "No hay HTML"
+
+      - name: Verificación Visual (REVISA ESTO EN EL LOG)
+        run: |
+          echo "Contenido de la carpeta dist que se enviará a Netlify:"
+          ls -R dist
 
       - name: Desplegar a Netlify
         uses: nwtgck/actions-netlify@v2.0
