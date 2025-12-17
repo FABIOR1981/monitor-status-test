@@ -1,0 +1,38 @@
+name: Minificar y Desplegar a Netlify
+
+on:
+  push:
+    branches:
+      - main # Se activa cada vez que subes algo a la rama main
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar código del repo
+        uses: actions/checkout@v3
+
+      - name: Instalar herramientas de minificación
+        run: |
+          npm install -g minify terser
+
+      - name: Minificar archivos
+        run: |
+          mkdir -p dist
+          # Copia todo a la carpeta dist
+          cp -r * dist/ || true
+          # Minifica el JS (usando Terser para mejor compresión)
+          find dist -name "*.js" -exec terser {} -o {} \;
+          # Minifica el HTML y CSS
+          find dist -name "*.css" -exec minify {} -o {} \;
+          find dist -name "*.html" -exec minify {} -o {} \;
+
+      - name: Desplegar a Netlify
+        uses: nwtgck/actions-netlify@v2.0
+        with:
+          publish-dir: './dist'
+          production-deploy: true
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
