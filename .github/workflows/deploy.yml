@@ -20,11 +20,12 @@ jobs:
       - name: Minificar archivos
         run: |
           mkdir -p dist
-          # Copia todo a la carpeta dist
-          cp -r * dist/ || true
-          # Minifica el JS (usando Terser para mejor compresión)
+          # Usamos rsync para copiar todo excepto la carpeta dist a sí misma
+          # Si no tienes rsync, usamos este comando de copiado seguro:
+          cp -R [^dist]* dist/ || true
+          
+          # Minificar
           find dist -name "*.js" -exec terser {} -o {} \;
-          # Minifica el HTML y CSS
           find dist -name "*.css" -exec minify {} -o {} \;
           find dist -name "*.html" -exec minify {} -o {} \;
 
