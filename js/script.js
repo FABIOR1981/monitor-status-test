@@ -528,7 +528,33 @@ async function verificarEstado(url) {
     }
 
     const data = await response.json();
-    return data; // Retorna {time, status}
+
+    // Normalizar la estructura para mantener compatibilidad con versiones anteriores
+    // Preferimos `time`, si no está usamos `totalTime`, luego `ttfb`.
+    const rawTime =
+      data && (data.time ?? data.totalTime ?? data.ttfb ?? data.total_time);
+
+    const normalizedTime = (() => {
+      const n = Number(rawTime);
+      if (Number.isFinite(n)) return n;
+      // si no es numérico, aplicar penalización
+      return UMBRALES_LATENCIA.PENALIZACION_FALLO;
+    })();
+
+    const normalizedStatus = Number.isFinite(Number(data?.status))
+      ? Number(data.status)
+      : ESTADO_ERROR_CONEXION;
+
+    return {
+      // Campos esperados por el resto del sistema
+      time: normalizedTime,
+      status: normalizedStatus,
+      // Mantener campos adicionales para debugging si están presentes
+      ttfb: data?.ttfb ?? null,
+      totalTime: data?.totalTime ?? data?.time ?? null,
+      bytesRead: data?.bytesRead ?? null,
+      error: data?.error ?? null,
+    };
   } catch (error) {
     console.error(
       `${window.TEXTOS_ACTUAL.estados.DOWN_ERROR} al conectar con el proxy para ${url}:`,
