@@ -362,6 +362,7 @@ function calcularPromedio(url) {
   let medicionesExitosas = 0;
   let fallos = 0;
   let ultimoCodigoError = 200;
+  const tiemposExitosos = [];
 
   historial.forEach((entry) => {
     const esFallo =
@@ -375,6 +376,7 @@ function calcularPromedio(url) {
       // Solo sumar mediciones exitosas para el promedio
       totalTime += entry.time;
       medicionesExitosas++;
+      tiemposExitosos.push(entry.time);
     }
   });
 
@@ -397,6 +399,23 @@ function calcularPromedio(url) {
   const promedioMs =
     medicionesExitosas > 0 ? Math.round(totalTime / medicionesExitosas) : 0;
 
+  // Calcular percentiles (p50, p95) sobre tiempos exitosos
+  function percentile(arr, p) {
+    if (!arr || arr.length === 0) return 0;
+    const sorted = arr.slice().sort((a, b) => a - b);
+    const idx = (p / 100) * (sorted.length - 1);
+    const lower = Math.floor(idx);
+    const upper = Math.ceil(idx);
+    if (lower === upper) return Math.round(sorted[lower]);
+    const weight = idx - lower;
+    return Math.round(sorted[lower] * (1 - weight) + sorted[upper] * weight);
+  }
+
+  const p50 = percentile(tiemposExitosos, 50);
+  const p95 = percentile(tiemposExitosos, 95);
+
+  const failureRate = validCount > 0 ? Math.round((fallos / validCount) * 100) : 0;
+
   // Si no hay mediciones exitosas (todas fallaron), mostrar como error
   if (medicionesExitosas === 0) {
     return {
@@ -415,6 +434,9 @@ function calcularPromedio(url) {
     estadoPromedio: obtenerEstadoVisual(promedioMs, 200),
     validCount: validCount,
     historial: historial,
+    p50: p50,
+    p95: p95,
+    failureRate: failureRate,
   };
 }
 
@@ -832,7 +854,25 @@ function actualizarFila(web, resultado) {
   // --- Actualización de celdas (Columnas 3 a 7) ---
 
   // Columna 3: Latencia Actual (índice 2)
-  row.cells[2].textContent = `${resultado.time} ms`;
+  // Mostrar latencia principal y datos adicionales (ttfb / totalTime) si están presentes
+  const mainLatency = Number.isFinite(Number(resultado.time))
+    ? `${resultado.time} ms`
+    : window.TEXTOS_ACTUAL.general.LOADING;
+
+  const extraParts = [];
+  if (resultado.ttfb || resultado.ttfb === 0) {
+    extraParts.push(`ttfb: ${resultado.ttfb} ms`);
+  }
+  if (resultado.totalTime || resultado.totalTime === 0) {
+    extraParts.push(`total: ${resultado.totalTime} ms`);
+  }
+
+  const extrasHtml =
+    extraParts.length > 0
+      ? `<div class="small-stats" style="font-size:0.8em;color:var(--muted-color,#ccc);">${extraParts.join(' · ')}</div>`
+      : '';
+
+  row.cells[2].innerHTML = `<div>${mainLatency}</div>${extrasHtml}`;
 
   // Columna 4: Estado Actual (índice 3)
   row.cells[3].textContent = estadoActual.text;
@@ -862,7 +902,16 @@ function actualizarFila(web, resultado) {
     errores.length > 0 && permiteExpansion
       ? ` ⚠️ ${errores.length}/${totalMediciones}`
       : '';
-  row.cells[4].textContent = `${promedio} ms${contadorErrores}`;
+
+  // Mostrar promedio principal y estadísticas adicionales en texto pequeño
+  const statsHtml = `
+    <div>${promedio} ms${contadorErrores}</div>
+    <div class="small-stats" style="font-size:0.75em; color:var(--muted-color,#ccc);">
+      p50: ${estadoPromedio && typeof promedio === 'number' ? (typeof promedio === 'number' ? (typeof calcularPromedio === 'function' ? calcularPromedio(web.url).p50 : '') : '') : ''} ms · p95: ${calcularPromedio(web.url).p95} ms · fallos: ${calcularPromedio(web.url).failureRate}%
+    </div>
+  `;
+
+  row.cells[4].innerHTML = statsHtml;
 
   // Columna 6: Estado Promedio (índice 5)
   row.cells[5].textContent = estadoPromedio.text;
@@ -1330,7 +1379,7 @@ async function cargarYMostrarHistorialExistente() {
         ultimaMedicion.time,
         ultimaMedicion.status
       );
-      const { promedio, estadoPromedio, validCount } = calcularPromedio(
+      const { promedio, estadoPromedio, validCount, p50, p95 } = calcularPromedio(
         web.url
       );
 
@@ -1357,7 +1406,13 @@ async function cargarYMostrarHistorialExistente() {
           ? ` ⚠️ ${errores.length}/${totalMediciones}`
           : '';
 
-      row.insertCell().textContent = `${promedio} ms${contadorErrores}`;
+      const statsHtml = `
+        <div>${promedio} ms${contadorErrores}</div>
+        <div class="small-stats" style="font-size:0.75em; color:var(--muted-color,#ccc);">
+          p50: ${p50} ms · p95: ${p95} ms · fallos: ${Math.round((historial.filter(e => e.status !== 200 || e.time >= UMBRALES_LATENCIA.PENALIZACION_FALLO).length / (historial.length||1)) * 100)}%
+        </div>
+      `;
+      row.insertCell().innerHTML = statsHtml;
 
       const cellEstadoPromedio = row.insertCell();
       cellEstadoPromedio.textContent = estadoPromedio.text;
