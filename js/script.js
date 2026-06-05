@@ -869,12 +869,16 @@ function actualizarFila(web, resultado) {
     extraParts.push(`total: ${resultado.totalTime} ms`);
   }
 
+  const sourceBadge = resultado && resultado._source === 'rum'
+    ? '<span class="source-badge" style="display:inline-block;background:#2b8;color:#072;padding:2px 6px;border-radius:10px;font-size:0.7em;margin-left:8px;">RUM</span>'
+    : '';
+
   const extrasHtml =
     extraParts.length > 0
       ? `<div class="small-stats" style="font-size:0.8em;color:var(--muted-color,#ccc);">${extraParts.join(' · ')}</div>`
       : '';
 
-  row.cells[2].innerHTML = `<div>${mainLatency}</div>${extrasHtml}`;
+  row.cells[2].innerHTML = `<div>${mainLatency}${sourceBadge}</div>${extrasHtml}`;
 
   // Columna 4: Estado Actual (índice 3)
   row.cells[3].textContent = estadoActual.text;
