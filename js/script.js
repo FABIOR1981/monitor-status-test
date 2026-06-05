@@ -984,8 +984,27 @@ async function monitorearTodosWebsites() {
   dibujarFilasIniciales(websitesData);
   actualizarUltimaActualizacion(null);
 
-  // Usamos Promise.allSettled para que si un servicio falla, no corte el monitoreo de los otros
-  const promesas = websitesData.map((web) => verificarEstado(web.url));
+  // Intentar obtener agregados RUM en memoria (por instancia)
+  let rumAggregados = {};
+  try {
+    const r = await fetch('/.netlify/functions/rum-aggregate');
+    if (r.ok) {
+      rumAggregados = await r.json();
+    }
+  } catch (e) {
+    // no-op, seguiremos con probes
+  }
+
+  // Usamos Promise.allSettled; si hay datos RUM para una URL preferimos esos (fallback a proxy)
+  const promesas = websitesData.map((web) => {
+    const rum = rumAggregados[web.url];
+    if (rum && rum.count > 0) {
+      // Construir un resultado compatible: usamos p50 como latencia representativa
+      return Promise.resolve({ time: rum.p50, status: 200, _source: 'rum' });
+    }
+    return verificarEstado(web.url);
+  });
+
   const allResults = await Promise.allSettled(promesas);
 
   // Convertimos los resultados a un formato simple para analizar si hay fallo global
