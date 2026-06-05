@@ -834,7 +834,9 @@ function actualizarFila(web, resultado) {
   // --- Lógica de cálculo y estado ---
   const estadoActual = obtenerEstadoVisual(resultado.time, resultado.status);
   // Nota: calcularPromedio() obtiene los datos del historial que ACABA de ser actualizado
-  const { promedio, estadoPromedio } = calcularPromedio(web.url);
+  // Calcular una sola vez y reutilizar valores para evitar llamadas múltiples
+  const stats = calcularPromedio(web.url);
+  const { promedio, estadoPromedio, p50, p95, failureRate } = stats;
 
   // ALERTA: Si hay un error (status 0 o >=400), mostrar alerta solo la primera vez
   if (resultado && (resultado.status === 0 || resultado.status >= 400)) {
@@ -903,11 +905,10 @@ function actualizarFila(web, resultado) {
       ? ` ⚠️ ${errores.length}/${totalMediciones}`
       : '';
 
-  // Mostrar promedio principal y estadísticas adicionales en texto pequeño
   const statsHtml = `
     <div>${promedio} ms${contadorErrores}</div>
     <div class="small-stats" style="font-size:0.75em; color:var(--muted-color,#ccc);">
-      p50: ${estadoPromedio && typeof promedio === 'number' ? (typeof promedio === 'number' ? (typeof calcularPromedio === 'function' ? calcularPromedio(web.url).p50 : '') : '') : ''} ms · p95: ${calcularPromedio(web.url).p95} ms · fallos: ${calcularPromedio(web.url).failureRate}%
+      p50: ${p50} ms · p95: ${p95} ms · fallos: ${failureRate}%
     </div>
   `;
 
